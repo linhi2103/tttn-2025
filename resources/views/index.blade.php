@@ -7,6 +7,41 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <style>
+        .list-group-item {
+            transition: all 0.3s ease;
+        }
+
+        .list-group-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .list-group-item a {
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .list-group-item a:hover {
+            color: #dc3545;
+        }
+
+        .transition-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .list-group-item:hover .transition-icon {
+            transform: rotate(180deg);
+        }
+
+        .list-group-item-action {
+            padding: 0.5rem 1rem;
+        }
+
+        .list-group-item-action:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -47,40 +82,44 @@
             </div>
         </div>
         <div class="container">
-            <div class="row equal-height">
-                <div class="col-md-3 py-4 mb-4 d-flex">
-                    <nav class="navbar navbar-expand-md navbar-dark w-100">
-                        <div class="container-fluid">
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                                ☰ Danh Mục
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav flex-column w-100">
-                                    <?php 
-                                    $sql = "SELECT * FROM danhmuc WHERE LoaiDanhMuc = 'VatTu'";
-                                    $result = $conn->query($sql);
-
-                                    if ($result->num_rows > 0):
-                                        while ($row = $result->fetch_assoc()): 
-                                    ?>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#"><?php echo $row['TenDanhMuc']; ?></a>
-                                        </li>
-                                    <?php 
-                                        endwhile;
-                                    endif; 
-                                    ?>
-                                </ul>
+        <div class="row equal-height">
+            <div class="col-md-3 py-4 mb-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h6 class="mb-0"><i class="bi bi-list me-2"></i>Danh Mục Vật Tư</h6>
+            </div>
+            <div class="list-group list-group-flush">
+                @foreach ($DanhSachLoaiVatTu as $loaiVatTu)
+                    <div class="list-group-item p-0">
+                        <a class="d-flex justify-content-between align-items-center p-3 text-decoration-none text-dark" 
+                           data-bs-toggle="collapse" 
+                           href="#collapse-{{ $loaiVatTu->id }}" 
+                           role="button" 
+                           aria-expanded="false" 
+                           aria-controls="collapse-{{ $loaiVatTu->id }}">
+                            <span>{{ $loaiVatTu->TenLoaiVatTu }}</span>
+                            <i class="bi bi-chevron-down transition-icon"></i>
+                        </a>
+                        <div class="collapse" id="collapse-{{ $loaiVatTu->id }}">
+                            <div class="list-group list-group-flush">
+                                @foreach ($loaiVatTu->danhSachDanhMuc ?? [] as $danhMuc)
+                                    <a href="{{ route('danhmuc.show', $danhMuc->id) }}" 
+                                       class="list-group-item list-group-item-action border-0 ps-5">
+                                        <i class="bi bi-arrow-right-short me-2"></i>{{ $danhMuc->TenDanhMuc }}
+                                    </a>
+                                @endforeach
                             </div>
                         </div>
-                    </nav>
-                </div>
-
-                <div class="col-md-9 d-flex">
-                    <main class="main-content py-4 w-100">
-                        <div class="slider-section mb-4">
-                            <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+            <div class="col-md-9 d-flex">
+                <main class="main-content py-4 w-100">
+                    <div class="slider-section mb-4">
+                        <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="assets/images/slider1.png" class="d-block w-100" alt="Slider 1">
                                     </div>
@@ -104,7 +143,7 @@
             </div>
         </div>
 
-    <div class="container">
+   {{-- <div class="container">
         <h2 class="text-danger">TIVI</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php
@@ -293,7 +332,7 @@
             }
             ?>
         </div>
-    </div>
+    </div> --}}
 
     <hr>
     <footer class="footer bg-dark text-light py-4">
@@ -346,18 +385,27 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let navLinks = document.querySelectorAll('.nav-link[data-bs-toggle="collapse"]');
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', function () {
-                    let openMenus = document.querySelectorAll('.collapse.show');
-                    
-                    openMenus.forEach(menu => {
-                        if (menu !== document.querySelector(this.getAttribute('data-bs-target'))) {
-                            new bootstrap.Collapse(menu, { toggle: false }).hide();
-                        }
-                    });
+        
+        // Add hover effect for category menu
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryItems = document.querySelectorAll('.list-group-item');
+            
+            categoryItems.forEach(item => {
+                const collapseId = item.querySelector('a').getAttribute('href');
+                const collapseElement = document.querySelector(collapseId);
+                
+                item.addEventListener('mouseenter', function() {
+                    if (collapseElement) {
+                        collapseElement.classList.remove('collapse');
+                        collapseElement.classList.add('show');
+                    }
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    if (collapseElement) {
+                        collapseElement.classList.remove('show');
+                        collapseElement.classList.add('collapse');
+                    }
                 });
             });
         });

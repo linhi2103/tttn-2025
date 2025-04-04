@@ -20,17 +20,17 @@
     "src": "node_modules/font-awesome/fonts/fontawesome-webfont.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DK-B92Ug.css",
+    "file": "assets/app-DXBoY0xX.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BMsmd3IW.js",
+    "file": "assets/app-BytDtHBa.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-C0OLKT9t.css"
+      "assets/app-BNRGQtJH.css"
     ],
     "assets": [
       "assets/fontawesome-webfont-G5YE5S7X.eot",

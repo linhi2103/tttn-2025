@@ -13,12 +13,12 @@ return new class extends Migration
     {
         // Create nhanvien table
         Schema::create('nhanvien', function (Blueprint $table) {
-            $table->integer('manhanvien', false, true)->primary();
+            $table->string('manhanvien', 20)->primary();
             $table->string('tennhanvien', 255);
             $table->string('diachi', 255);
             $table->enum('gioitinh', ['Nam', 'Nữ']);
-            $table->integer('sdt')->unique();
-            $table->integer('cccd')->unique();
+            $table->bigInteger('sdt')->unique();
+            $table->bigInteger('cccd')->unique();
             $table->string('MaPhongBan', 20);
             $table->integer('mavaitro', false, true);
             

@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\VatTu;
+use App\Models\NhanVien;
+use App\Models\DanhMucKho;
 
 class ThongKeThuChi extends Model
 {
@@ -14,8 +17,15 @@ class ThongKeThuChi extends Model
         'MaKho',
         'MaNhanVien',
         'SoLuong',
-        'NgayKiemKe',
-        'TrangThai'
+        'NgayThongKe',
+        'Tungay',
+        'Denngay',
+        'TongThu',
+        'TongChi',
+        'ChenhLechThuChi',
+        'TrangThai',
+        'NgayTao',
+        'GhiChu'
     ];
     
     public function vatTu()

@@ -20,16 +20,16 @@ return new class extends Migration
             $table->decimal('GiaNhap', 18, 2);
             $table->decimal('GiaXuat', 18, 2);
             $table->integer('SoLuongTon')->default(0);
-            $table->string('MaSoThue_NhaCungUng', 20);
+            $table->string('MaSoThue_DoiTac', 20);
             $table->date('NgayNhap');
             $table->date('HanSuDung')->nullable();
             $table->text('GhiChu')->nullable();
             $table->string('AnhVatTu', 255)->nullable();
-            $table->enum('TrangThai', ['Còn hàng', 'Hết hàng', 'Sắp hết'])->default('Còn hàng');
+            $table->enum('TinhTrang', ['Còn hàng', 'Hết hàng', 'Sắp hết'])->default('Còn hàng');
             
             $table->foreign('MaDonViTinh')->references('MaDonViTinh')->on('donvitinh');
             $table->foreign('MaLoaiVatTu')->references('MaLoaiVatTu')->on('loaivattu');
-            $table->foreign('MaSoThue_NhaCungUng')->references('MaSoThue_NhaCungUng')->on('nhacungcap');
+            $table->foreign('MaSoThue_DoiTac')->references('MaSoThue_DoiTac')->on('doitac');
         });
     }
 

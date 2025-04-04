@@ -3,6 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\NhapKho;
+use App\Models\XuatKho;
+use App\Models\PhieuKiemKe;
+use App\Models\ThanhLyKho;
+use App\Models\ThongKeThucHi;
+use App\Models\DonViVanChuyen;
+use App\Models\LoaiVatTu;
+use App\Models\LenhDieuDong;
 
 class VatTu extends Model
 {
@@ -16,7 +24,7 @@ class VatTu extends Model
         'GiaNhap', 
         'GiaXuat', 
         'SoLuongTon', 
-        'MaSoThue_NhaCungUng', 
+        'MaSoThue_DoiTac', 
         'NgayNhap', 
         'HanSuDung', 
         'GhiChu', 
@@ -34,14 +42,9 @@ class VatTu extends Model
         return $this->belongsTo(DonViTinh::class, 'MaDonViTinh', 'MaDonViTinh');
     }
     
-    public function chitiet_lenhdieudong()
+    public function doitac()
     {
-        return $this->hasMany(ChiTietLenhDieuDong::class, 'MaVatTu', 'MaVatTu');
-    } 
-
-    public function nhacungcap()
-    {
-        return $this->belongsTo(NhaCungCap::class, 'MaSoThue_NhaCungUng', 'MaSoThue_NhaCungUng');
+        return $this->belongsTo(Doitac::class, 'MaSoThue_DoiTac', 'MaSoThue_DoiTac');
     }
 
     public function nhapkho()

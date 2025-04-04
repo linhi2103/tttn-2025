@@ -18,19 +18,24 @@ return new class extends Migration
             $table->string('MaPhieuNhap', 20);
             $table->string('MaKho', 10);
             $table->text('DiaChi')->nullable();
-            $table->text('GhiChu')->nullable();
             $table->string('MaVatTu', 20);
             $table->integer('SoLuong');
             $table->decimal('DonGia', 18, 2);
-            $table->string('MaSoThue_NhaCungUng', 20);
+            $table->date('NgayNhap')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('MaSoThue_DoiTac', 20);
+            $table->string('MaNhanVien', 20);
             $table->string('malenhdieudong', 20)->nullable();
+            $table->string('MaDonViVanChuyen', 20)->nullable();
+            $table->text('GhiChu')->nullable();
             
-            $table->primary(['MaPhieuNhap', 'MaKho', 'MaVatTu']);
+            $table->primary(['MaPhieuNhap', 'MaKho', 'MaVatTu', 'MaNhanVien', 'MaSoThue_DoiTac', 'MaDonViVanChuyen']);
             
             $table->foreign('MaKho')->references('MaKho')->on('danhmuckho')->cascadeOnUpdate();
+            $table->foreign('MaNhanVien')->references('manhanvien')->on('nhanvien')->cascadeOnUpdate();
             $table->foreign('MaVatTu')->references('MaVatTu')->on('vattu')->cascadeOnUpdate();
-            $table->foreign('MaSoThue_NhaCungUng')->references('MaSoThue_NhaCungUng')->on('nhacungcap')->cascadeOnUpdate();
+            $table->foreign('MaSoThue_DoiTac')->references('MaSoThue_DoiTac')->on('doitac')->cascadeOnUpdate();
             $table->foreign('malenhdieudong')->references('malenhdieudong')->on('lenhdieudong')->cascadeOnUpdate();
+            $table->foreign('MaDonViVanChuyen')->references('MaDonViVanChuyen')->on('donvivanchuyen')->cascadeOnUpdate();
         });
 
         // Add generated column for ThanhTien in nhapkho
@@ -41,23 +46,27 @@ return new class extends Migration
             $table->string('MaPhieuXuat', 20);
             $table->string('MaKho', 10);
             $table->date('NgayXuat');
-            $table->string('LenhDieuDongNoiBoText', 255)->nullable();
-            $table->string('TenNguoiVanChuyen', 255)->nullable();
-            $table->string('PhuongTienVanChuyen', 255);
+            $table->string('MaNhanVien', 20);
+            $table->string('MaDonViVanChuyen', 20);
             $table->string('DonViMuaHang', 255);
-            $table->string('MaSoThueMuaHang', 20);
+            $table->string('MaSoThue_DoiTac', 20);
             $table->string('DiaChiMuaHang', 255);
             $table->string('DonViTienTe', 50);
             $table->string('MaVatTu', 20);
             $table->integer('SoLuong');
             $table->decimal('DonGia', 18, 2);
             $table->string('malenhdieudong', 20)->nullable();
+            $table->text('GhiChu')->nullable();
+
             
-            $table->primary(['MaPhieuXuat', 'MaKho', 'MaVatTu']);
+            $table->primary(['MaPhieuXuat', 'MaKho', 'MaVatTu', 'MaNhanVien', 'MaSoThue_DoiTac', 'MaDonViVanChuyen']);
             
             $table->foreign('MaKho')->references('MaKho')->on('danhmuckho')->cascadeOnUpdate();
+            $table->foreign('MaDonViVanChuyen')->references('MaDonViVanChuyen')->on('donvivanchuyen')->cascadeOnUpdate();
             $table->foreign('MaVatTu')->references('MaVatTu')->on('vattu')->cascadeOnUpdate();
+            $table->foreign('MaSoThue_DoiTac')->references('MaSoThue_DoiTac')->on('doitac')->cascadeOnUpdate();
             $table->foreign('malenhdieudong')->references('malenhdieudong')->on('lenhdieudong')->cascadeOnUpdate();
+            $table->foreign('MaNhanVien')->references('manhanvien')->on('nhanvien')->cascadeOnUpdate();
         });
 
         // Add generated column for ThanhTien in xuatkho
@@ -68,16 +77,16 @@ return new class extends Migration
             $table->string('MaPhieuKiemKe', 20);
             $table->string('MaKho', 10);
             $table->date('NgayKiemKe');
-            $table->integer('MaNhanVien',false,true);
+            $table->string('MaNhanVien', 20);
             $table->enum('TrangThai', ['Chờ duyệt', 'Hoàn thành', 'Hủy'])->default('Chờ duyệt');
-            $table->text('GhiChu')->nullable();
             $table->string('MaVatTu', 20);
             $table->integer('SoLuongThucTe');
             $table->integer('SoLuongHeThong');
             $table->enum('TinhTrang', ['Còn tốt 100%', 'Kém chất lượng', 'Mất chất lượng']);
             $table->string('malenhdieudong', 20)->nullable();
+            $table->text('GhiChu')->nullable();
             
-            $table->primary(['MaPhieuKiemKe', 'MaKho', 'MaVatTu']);
+            $table->primary(['MaPhieuKiemKe', 'MaKho', 'MaVatTu', 'MaNhanVien']);
             
             $table->foreign('MaKho')->references('MaKho')->on('danhmuckho')->cascadeOnUpdate();
             $table->foreign('MaNhanVien')->references('manhanvien')->on('nhanvien')->cascadeOnUpdate();
@@ -91,18 +100,21 @@ return new class extends Migration
         // Create thanhlykho table
         Schema::create('thanhlykho', function (Blueprint $table) {
             $table->string('MaPhieuThanhLy', 20);
+            $table->string('MaKho', 10);
             $table->date('NgayLap');
-            $table->integer('MaNhanVien',false,true);
+            $table->string('MaNhanVien', 20);
             $table->enum('TrangThai', ['Đề xuất', 'Đã duyệt', 'Đã thanh lý', 'Đã hủy']);
-            $table->text('LyDoThanhLy');
+            $table->text('LyDoThanhLy')->nullable();
             $table->string('MaVatTu', 20);
             $table->integer('SoLuong');
             $table->decimal('DonGia', 18, 2);
-            $table->enum('BienPhapThanhLy', ['Bán thanh lý', 'Chuyển đổi sử dụng', 'Tiêu hủy']);
+            $table->enum('BienPhapThanhLy', ['Bán thanh lý', 'Chuyển đổi sử dụng', 'Tiêu hủy'])->default('Bán thanh lý');
             $table->string('malenhdieudong', 20)->nullable();
+            $table->text('GhiChu')->nullable();
             
-            $table->primary(['MaPhieuThanhLy', 'MaVatTu']);
+            $table->primary(['MaPhieuThanhLy', 'MaVatTu', 'MaNhanVien', 'MaKho']);
             
+            $table->foreign('MaKho')->references('MaKho')->on('danhmuckho')->cascadeOnUpdate();
             $table->foreign('MaNhanVien')->references('manhanvien')->on('nhanvien')->cascadeOnUpdate();
             $table->foreign('MaVatTu')->references('MaVatTu')->on('vattu')->cascadeOnUpdate();
             $table->foreign('malenhdieudong')->references('malenhdieudong')->on('lenhdieudong')->cascadeOnUpdate();
@@ -117,11 +129,10 @@ return new class extends Migration
             $table->decimal('tongthu', 15, 2)->default(0.00);
             $table->decimal('tongchi', 15, 2)->default(0.00);
             $table->decimal('chenhlechthuchi', 15, 2)->default(0.00);
-            $table->integer('manhanvien',false,true)->nullable();
-            $table->text('ghichu')->nullable();
+            $table->string('manhanvien', 20)->nullable();
             $table->string('trangthai', 20)->default('Chưa duyệt');
             $table->timestamp('ngaytao')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('nguoitao', 50)->nullable();
+            $table->text('ghichu')->nullable();
             
             $table->foreign('manhanvien')->references('manhanvien')->on('nhanvien')->cascadeOnUpdate();
         });

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\VatTu;
 use App\Models\NhanVien;
 use App\Models\DanhMucKho;
+use App\Models\LenhDieuDong;
 
 class PhieuKiemKe extends Model
 {
@@ -18,7 +19,12 @@ class PhieuKiemKe extends Model
         'MaNhanVien',
         'SoLuong',
         'NgayKiemKe',
-        'TrangThai'
+        'TrangThai',
+        'MaLenhDieuDong',  
+        'SoLuongThucTe',
+        'SoLuongHeThong',
+        'TinhTrang',
+        'GhiChu',
     ];
     
     public function vatTu()
@@ -34,5 +40,10 @@ class PhieuKiemKe extends Model
     public function kho()
     {
         return $this->belongsTo(DanhMucKho::class, 'MaKho', 'MaKho');
+    }
+    
+    public function lenhDieuDong()
+    {
+        return $this->belongsTo(LenhDieuDong::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
     }
 }

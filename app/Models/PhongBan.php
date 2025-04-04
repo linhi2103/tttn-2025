@@ -11,7 +11,7 @@ class PhongBan extends Model
     protected $primaryKey = 'MaPhongBan';
     protected $fillable = ['TenPhongBan'];
 
-    public function nhanvien()
+    public function nhanVien()
     {
         return $this->hasMany(NhanVien::class, 'MaPhongBan', 'MaPhongBan');
     }

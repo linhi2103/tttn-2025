@@ -13,7 +13,12 @@ class DanhMucKho extends Model
 {
     protected $table = 'danhmuckho';
     protected $primaryKey = 'MaKho';
-    protected $fillable = ['TenKho', 'DiaChi', 'QuyMo', 'DienTichSuDung'];
+    protected $fillable = [
+        'TenKho', 
+        'DiaChi', 
+        'QuyMo', 
+        'DienTichSuDung'
+    ];
 
     public function nhapkho()
     {

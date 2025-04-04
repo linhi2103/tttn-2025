@@ -5,11 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\VaiTro;
 use App\Models\PhongBan;
-use App\Models\NhapKho;
-use App\Models\XuatKho;
-use App\Models\PhieuKiemKe;
-use App\Models\ThanhLyKho;
-use App\Models\ThongKeThucHi;
 
 class NhanVien extends Model
 {
@@ -38,6 +33,10 @@ class NhanVien extends Model
     public function nhapkho()
     {
         return $this->hasMany(NhapKho::class, 'MaNhanVien', 'MaNhanVien');
+    }
+    public function donvivanchuyen()
+    {
+        return $this->hasMany(DonViVanChuyen::class, 'MaNhanVien', 'MaNhanVien');
     }
 
     public function xuatkho()

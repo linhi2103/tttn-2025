@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\NhanVien;
 use App\Models\DonViVanChuyen;
-use App\Models\ChiTietLenhDieuDong;
+// use App\Models\ChiTietLenhDieuDong;
 use App\Models\NhapKho;
 use App\Models\XuatKho;
 use App\Models\PhieuKiemKe;
@@ -21,19 +21,16 @@ class LenhDieuDong extends Model
     protected $fillable = [
         'malenhdieudong',
         'tenlenhdieudong',
-        'noidi',
-        'noiden',
         'lydo',
         'nguoilapdon_id',
-        'donvivanchuyen_id',
         'ngaylap',
-        'trangthai'
+        'trangthai',
+        'ghichu'
     ];
     
     protected $casts = [
         'ngaylap' => 'date',
-        'nguoilapdon_id' => 'integer',
-        'donvivanchuyen_id' => 'string'
+        'nguoilapdon_id' => 'integer'
     ];
     
     public function nhanVien()
@@ -41,15 +38,10 @@ class LenhDieuDong extends Model
         return $this->belongsTo(NhanVien::class, 'nguoilapdon_id', 'manhanvien');
     }
     
-    public function donViVanChuyen()
-    {
-        return $this->belongsTo(DonViVanChuyen::class, 'donvivanchuyen_id', 'MaDonViVanChuyen');
-    }
-    
-    public function chiTietLenhDieuDong()
-    {
-        return $this->hasMany(ChiTietLenhDieuDong::class, 'malenhdieudong');
-    }
+    // public function chitietlenhdieudong()
+    // {
+    //     return $this->hasMany(ChiTietLenhDieuDong::class, 'malenhdieudong');
+    // }
     
     public function nhapKho()
     {
