@@ -126,10 +126,14 @@ return new class extends Migration
             $table->date('ngaythongke');
             $table->date('tungay');
             $table->date('denngay');
+            $table->string('mavattu', 20);
+            $table->string('makho', 10);
+            $table->decimal('dongia', 18, 2);
+            $table->string('donvitiente', 10);
+            $table->string('manhanvien', 20)->nullable();
             $table->decimal('tongthu', 15, 2)->default(0.00);
             $table->decimal('tongchi', 15, 2)->default(0.00);
             $table->decimal('chenhlechthuchi', 15, 2)->default(0.00);
-            $table->string('manhanvien', 20)->nullable();
             $table->string('trangthai', 20)->default('Chưa duyệt');
             $table->timestamp('ngaytao')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->text('ghichu')->nullable();

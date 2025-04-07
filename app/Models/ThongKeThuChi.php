@@ -13,13 +13,14 @@ class ThongKeThuChi extends Model
     protected $primaryKey = 'MaThongKeThuChi';
     protected $fillable = [
         'MaThongKeThuChi',
-        'MaVatTu',
-        'MaKho',
-        'MaNhanVien',
-        'SoLuong',
         'NgayThongKe',
         'Tungay',
         'Denngay',
+        'MaVatTu',
+        'MaKho',
+        'DonGia',
+        'MaNhanVien',
+        'DonViTienTe',
         'TongThu',
         'TongChi',
         'ChenhLechThuChi',
