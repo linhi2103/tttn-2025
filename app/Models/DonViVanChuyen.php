@@ -10,12 +10,18 @@ class DonViVanChuyen extends Model
 {
     protected $table = 'donvivanchuyen';
     protected $primaryKey = 'MaDonViVanChuyen';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    
     protected $fillable = [
+        'MaDonViVanChuyen',
         'TenDonViVanChuyen',
         'MaNhanVien',
         'PhuongTienVanChuyen',
         'GhiChu'
     ];
+    
+    public $timestamps = false;  // Disable timestamps since they're not in the database
 
     public function lenhdieudong()
     {
@@ -24,6 +30,6 @@ class DonViVanChuyen extends Model
 
     public function nhanvien()
     {
-        return $this->belongsTo(NhanVien::class, 'MaNhanVien', 'manhanvien');
+        return $this->belongsTo(NhanVien::class, 'MaNhanVien', 'MaNhanVien');
     }
 }

@@ -9,7 +9,12 @@ class PhongBan extends Model
 {
     protected $table = 'phongban';
     protected $primaryKey = 'MaPhongBan';
-    protected $fillable = ['TenPhongBan'];
+    public $incrementing = false;
+    public $timestamps = false;
+    protected $fillable = [
+        'MaPhongBan',
+        'TenPhongBan'
+    ];
 
     public function nhanVien()
     {

@@ -14,10 +14,13 @@ use App\Models\LenhDieuDong;
 
 class VatTu extends Model
 {
-    protected $table = 'vattu';
+    public $timestamps = false;
     protected $primaryKey = 'MaVatTu';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $table = 'vattu';
     protected $fillable = [
-        'MaVatTu', 
+        'MaVatTu',
         'MaLoaiVatTu', 
         'TenVatTu', 
         'MaDonViTinh', 
@@ -30,7 +33,7 @@ class VatTu extends Model
         'HanSuDung', 
         'GhiChu', 
         'AnhVatTu', 
-        'TrangThai'
+        'TinhTrang'
     ];
 
     public function loaivattu()

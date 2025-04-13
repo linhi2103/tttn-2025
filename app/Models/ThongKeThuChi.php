@@ -10,7 +10,6 @@ use App\Models\DanhMucKho;
 class ThongKeThuChi extends Model
 {
     protected $table = 'thongkethuchi';
-    protected $primaryKey = 'MaThongKeThuChi';
     protected $fillable = [
         'MaThongKeThuChi',
         'NgayThongKe',

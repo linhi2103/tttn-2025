@@ -9,7 +9,12 @@ class DonViTinh extends Model
 {
     protected $table = 'donvitinh';
     protected $primaryKey = 'MaDonViTinh';
-    protected $fillable = ['TenDonViTinh'];
+    public $incrementing = false;
+    public $timestamps = false;
+    protected $fillable = [
+        'MaDonViTinh',
+        'TenDonViTinh'
+    ];
 
     public function vattu()
     {

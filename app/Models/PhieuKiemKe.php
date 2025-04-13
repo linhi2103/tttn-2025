@@ -11,7 +11,6 @@ use App\Models\LenhDieuDong;
 class PhieuKiemKe extends Model
 {
     protected $table = 'phieukiemke';
-    protected $primaryKey = 'MaPhieuKiemKe';
     protected $fillable = [
         'MaPhieuKiemKe',
         'MaVatTu',

@@ -10,14 +10,31 @@ class NhanVien extends Model
 {
     protected $table = 'nhanvien';
     protected $primaryKey = 'MaNhanVien';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    public $timestamps = false;  // Disable timestamps since they're not in the database
+    
     protected $fillable = [
-        'TenNhanVien', 
-        'MaPhongBan', 
-        'MaVaiTro',
-        'diachi',
-        'sdt',
-        'cccd',
-        'gioitinh'
+        'MaNhanVien',
+        'TenNhanVien',
+        'DiaChi',
+        'GioiTinh',
+        'Sdt',
+        'Cccd',
+        'MaPhongBan',
+        'MaVaiTro'
+    ];
+
+    const GIOI_TINH_VALUES = ['Nam', 'Nữ'];
+
+    protected $casts = [
+        'Sdt' => 'integer',
+        'Cccd' => 'integer',
+        'MaVaiTro' => 'integer'
+    ];
+
+    protected $attributes = [
+        'GioiTinh' => 'Nam'
     ];
 
     public function phongban()
@@ -27,7 +44,7 @@ class NhanVien extends Model
 
     public function vaitro()
     {
-        return $this->belongsTo(VaiTro::class, 'MaVaiTro', 'mavaitro');
+        return $this->belongsTo(VaiTro::class, 'MaVaiTro', 'MaVaiTro');
     }
 
     public function nhapkho()

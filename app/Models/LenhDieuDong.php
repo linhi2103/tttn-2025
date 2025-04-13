@@ -13,53 +13,61 @@ use App\Models\ThanhLyKho;
 
 class LenhDieuDong extends Model
 {
-    protected $table = 'lenhdieudong';
-    protected $primaryKey = 'malenhdieudong';
-    protected $keyType = 'string';
+    public $table = 'lenhdieudong';
+    public $primaryKey = 'MaLenhDieuDong';
+    public $keyType = 'string';
     public $incrementing = false;
-    
+    public $timestamps = false;
+
     protected $fillable = [
-        'malenhdieudong',
-        'tenlenhdieudong',
-        'lydo',
-        'nguoilapdon_id',
-        'ngaylap',
-        'trangthai',
-        'ghichu'
+        'MaLenhDieuDong',
+        'TenLenhDieuDong',
+        'NgayLapDon',
+        'LyDo',
+        'MaNhanVien',
+        'GhiChu',
+        'TrangThai'
     ];
-    
+
     protected $casts = [
-        'ngaylap' => 'date',
-        'nguoilapdon_id' => 'integer'
+        'NgayLapDon' => 'datetime',
+        'TrangThai' => 'boolean'
     ];
     
+    public function getNgayLapDonAttribute()
+    {
+        return array_key_exists('NgayLapDon', $this->attributes) && $this->attributes['NgayLapDon'] 
+            ? date('Y-m-d', strtotime($this->attributes['NgayLapDon'])) 
+            : null;
+    }
+
+    public function setNgayLapDonAttribute($value)
+    {
+        $this->attributes['NgayLapDon'] = $value;
+    }
+
     public function nhanVien()
     {
-        return $this->belongsTo(NhanVien::class, 'nguoilapdon_id', 'manhanvien');
+        return $this->belongsTo(NhanVien::class, 'MaNhanVien', 'MaNhanVien');
     }
-    
-    // public function chitietlenhdieudong()
-    // {
-    //     return $this->hasMany(ChiTietLenhDieuDong::class, 'malenhdieudong');
-    // }
     
     public function nhapKho()
     {
-        return $this->hasMany(NhapKho::class, 'malenhdieudong');
+        return $this->hasMany(NhapKho::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
     }
     
     public function xuatKho()
     {
-        return $this->hasMany(XuatKho::class, 'malenhdieudong');
+        return $this->hasMany(XuatKho::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
     }
     
     public function phieuKiemKe()
     {
-        return $this->hasMany(PhieuKiemKe::class, 'malenhdieudong');
+        return $this->hasMany(PhieuKiemKe::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
     }
     
     public function thanhLyKho()
     {
-        return $this->hasMany(ThanhLyKho::class, 'malenhdieudong');
+        return $this->hasMany(ThanhLyKho::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
     }
 }

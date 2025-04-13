@@ -12,22 +12,33 @@ use App\Models\LenhDieuDong;
 
 class NhapKho extends Model
 {
-    protected $table = 'nhapkho';
-    protected $primaryKey = 'MaPhieuNhap';
+    public $table = 'nhapkho';
+    public $primaryKey = 'MaPhieuNhap';
+    public $keyType = 'string';
+    public $incrementing = false;
+    public $timestamps = false;
+
     protected $fillable = [
         'MaPhieuNhap',
         'MaVatTu',
-        'MaKho',
         'MaNhanVien',
+        'MaKho',
         'SoLuong',
+        'DonGia',
         'NgayNhap',
         'MaDonViVanChuyen',
         'GhiChu',
         'MaLenhDieuDong',
         'DiaChi',
-        'DonGia',
         'MaSoThue_DoiTac',
     ];
+    
+    protected $casts = [
+        'NgayNhap' => 'datetime',
+    ];
+
+    protected $appends = ['DonGia'];
+    
     
     public function vatTu()
     {
@@ -50,9 +61,10 @@ class NhapKho extends Model
     }
     
     public function lenhDieuDong()
-    {
-        return $this->belongsTo(LenhDieuDong::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
-    }
+{
+    return $this->belongsTo(LenhDieuDong::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
+}
+
     
     public function doitac()
     {

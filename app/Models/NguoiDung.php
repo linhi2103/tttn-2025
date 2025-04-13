@@ -8,7 +8,6 @@ use App\Models\NhanVien;
 class NguoiDung extends Model
 {
     protected $table = 'nguoidung';
-    protected $primaryKey = 'taikhoan';
     protected $fillable = ['taikhoan', 'MatKhau', 'Email', 'manhanvien'];
 
     public function nhanvien()

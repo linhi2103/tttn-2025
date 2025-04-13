@@ -9,7 +9,12 @@ class LoaiVatTu extends Model
 {
     protected $table = 'loaivattu';
     protected $primaryKey = 'MaLoaiVatTu';
-    protected $fillable = ['TenLoaiVatTu'];
+    public $incrementing = false;
+    public $timestamps = false;
+    protected $fillable = [
+        'MaLoaiVatTu',
+        'TenLoaiVatTu'
+    ];
 
     public function vattu()
     {

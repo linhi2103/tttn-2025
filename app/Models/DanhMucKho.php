@@ -13,11 +13,15 @@ class DanhMucKho extends Model
 {
     protected $table = 'danhmuckho';
     protected $primaryKey = 'MaKho';
+    public $incrementing = false;
+    public $timestamps = false;  // Disable automatic timestamps
     protected $fillable = [
+        'MaKho',
         'TenKho', 
         'DiaChi', 
         'QuyMo', 
-        'DienTichSuDung'
+        'DienTichSuDung',
+        'TinhTrang'
     ];
 
     public function nhapkho()

@@ -12,7 +12,6 @@ use App\Models\NhaCungCap;
 class ThanhLyKho extends Model
 {
     protected $table = 'thanhlykho';
-    protected $primaryKey = 'MaPhieuThanhLy';
     protected $fillable = [
         'MaPhieuThanhLy',
         'MaVatTu',
