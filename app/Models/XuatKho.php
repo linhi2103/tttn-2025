@@ -14,8 +14,13 @@ use App\Models\LenhDieuDong;
 class XuatKho extends Model
 {
     protected $table = 'xuatkho';
+    protected $primaryKey = 'MaPhieuXuat';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    public $timestamps = false;
+
     protected $fillable = [
-        'MaXuatKho',
+        'MaPhieuXuat',
         'MaVatTu',
         'MaKho',
         'MaNhanVien',
@@ -23,7 +28,9 @@ class XuatKho extends Model
         'MaDonViVanChuyen',
         'NgayXuat',
         'TrangThai',
+        'DiaChi',
         'GhiChu',
+        'ThanhTien',
         'MaSoThue_DoiTac',
         'DonGia',
         'MaLenhDieuDong',

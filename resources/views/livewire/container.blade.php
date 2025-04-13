@@ -16,7 +16,7 @@
                         <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('dashboard')"><i class="fas fa-box"></i> Hàng hóa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('xuatkho')"><i class="fas fa-exchange-alt"></i> Xuất kho</a>
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('xuatkho')"><i class="fas fa-exchange-alt"></i> Xuất Kho</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('nhapkho')"><i class="fas fa-exchange-alt"></i> Nhập Kho</a>
@@ -115,6 +115,8 @@
                     @livewire('dashboard')
                 @elseif ($activeComponent === 'nhapkho')
                     @livewire('NhapKhoComponent')
+                @elseif ($activeComponent === 'xuatkho')
+                    @livewire('XuatKhoComponent')
                 @elseif ($activeComponent === 'loaivattu')
                     @livewire('LoaiVatTuComponent')
                 @elseif ($activeComponent === 'donvitinh')

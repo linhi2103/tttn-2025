@@ -64,7 +64,7 @@
         <div class="main-header py-3 bg-white shadow-sm">
             <div class="container d-flex align-items-center justify-content-between">
                 <a href="index.php" class="logo">
-                    <img src="assets\images\download.png" alt="Logo" class="img-fluid" style="height: 60px;">
+                    <img src="images/download.png" alt="Logo" class="img-fluid" style="height: 60px;">
                 </a>
                 <form class="search-form d-flex">
                     <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm...">
@@ -121,13 +121,13 @@
                         <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <img src="assets/images/slider1.png" class="d-block w-100" alt="Slider 1">
+                                        <img src="images/slider1.png" class="d-block w-100" alt="Slider 1">
                                     </div>
                                     <div class="carousel-item">
-                                        <img src="assets/images/slider2.jpg" class="d-block w-100" alt="Slider 2">
+                                        <img src="images/slider2.jpg" class="d-block w-100" alt="Slider 2">
                                     </div>
                                     <div class="carousel-item">
-                                        <img src="assets/images/slider3.png" class="d-block w-100" alt="Slider 3">
+                                        <img src="images/slider3.png" class="d-block w-100" alt="Slider 3">
                                     </div>
                                 </div>
                                 <button class="carousel-control-prev" type="button" data-bs-target="#mainSlider" data-bs-slide="prev">
