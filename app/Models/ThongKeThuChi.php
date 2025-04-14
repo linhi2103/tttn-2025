@@ -10,6 +10,11 @@ use App\Models\DanhMucKho;
 class ThongKeThuChi extends Model
 {
     protected $table = 'thongkethuchi';
+    protected $primaryKey = 'MaThongKeThuChi';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    public $timestamps = false;
+
     protected $fillable = [
         'MaThongKeThuChi',
         'NgayThongKe',

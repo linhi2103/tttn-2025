@@ -9,6 +9,7 @@ use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use App\Models\VatTu;
 use App\Models\XuatKho;
+use App\Models\PhieuKiemKe;
 use App\Models\DonViTinh;
 use App\Models\DanhMucKho;
 use App\Models\DonViVanChuyen;
@@ -18,239 +19,202 @@ use App\Models\Doitac;
 
 class XuatKhoComponent extends Component
 {
-    use WithFileUploads;
     use WithPagination;
-    
+    use WithFileUploads;
     public $search = '';
+    public $vattus = [];
+    public $danhmuckhos = [];
+    public $nhanViens = [];
+    public $donViVanChuyens = [];
+    public $lenhDieuDongs = [];
+    public $doiTacs = [];
+
+    public function mount()
+    {
+        $this->vattus = VatTu::all();
+        $this->danhmuckhos = DanhMucKho::all();
+        $this->nhanViens = NhanVien::all();
+        $this->donViVanChuyens = DonViVanChuyen::all();
+        $this->lenhDieuDongs = LenhDieuDong::all();
+        $this->doiTacs = Doitac::all();
+    }
+
+    public $MaPhieuXuat;
+    public $MaKho;
+    public $NgayXuat;
+    public $MaNhanVien;
+    public $MaDonViVanChuyen;
+    public $DonViMuaHang;
+    public $MaSoThue_DoiTac;
+    public $DiaChi;
+    public $DonViTienTe;
+    public $MaVatTu;
+    public $SoLuong;
+    public $DonGia;
+    public $MaLenhDieuDong;
+    public $GhiChu;
 
     public $isEdit = false;
     public $isAdd = false;
     public $isDelete = false;
 
-    public $MaPhieuXuat;
-    public $MaVatTu;
-    public $MaKho;
-    public $MaNhanVien;
-    public $SoLuong;
-    public $MaDonViVanChuyen;
-    public $NgayXuat;
-    public $TrangThai;
-    public $GhiChu;
-    public $MaSoThue_DoiTac;
-    public $DonGia;
-    public $MaLenhDieuDong;
-    public $DiaChi;
-    public $ThanhTien;
-    
-    public function render()
-    {
-        return view('livewire.xuat-kho')
-            ->with([
-                'xuatkhos' => XuatKho::query()
-                    ->when($this->search, function($query) {
-                        $query->where('MaPhieuXuat', 'like', "%{$this->search}%")
-                            ->orWhere('MaVatTu', 'like', "%{$this->search}%")
-                            ->orWhere('MaNhanVien', 'like', "%{$this->search}%")
-                            ->orWhere('MaKho', 'like', "%{$this->search}%")
-                            ->orWhere('MaSoThue_DoiTac', 'like', "%{$this->search}%")
-                            ->orWhereHas('vatTu', function($query) {
-                                $query->where('TenVatTu', 'like', "%{$this->search}%");
-                            });
-                    })
-                    ->orderBy('MaPhieuXuat', 'asc')
-                    ->paginate(10),
-                'vatTus' => VatTu::all(),
-                'khos' => DanhMucKho::all(),
-                'nhanViens' => NhanVien::all(),
-                'donViVanChuyens' => DonViVanChuyen::all(),
-                'doiTacs' => Doitac::all(),
-                'lenhDieuDongs' => LenhDieuDong::all()
-            ]);
-    }
-    
     public function showModalAdd()
     {
         $this->isAdd = true;
-        $this->NgayXuat = date('Y-m-d');
-        $this->ThanhTien = 0;
     }
-    
+
     public function showModalEdit($MaPhieuXuat)
     {
         $this->MaPhieuXuat = $MaPhieuXuat;
-        $xuatkho = XuatKho::where('MaPhieuXuat', $MaPhieuXuat)
-            ->with([
-                'vattu',
-                'nhanvien',
-                'donvivanchuyen',
-                'lenhDieuDong',
-                'doitac'
-            ])
-            ->first();
-
-        if (!$xuatkho) {
-            session()->flash('error', 'Không tìm thấy phiếu xuất kho');
-            return;
-        }
-
+        $xuatkho = XuatKho::where('MaPhieuXuat', $MaPhieuXuat)->first();
         $this->MaVatTu = $xuatkho->MaVatTu;
-        $this->MaNhanVien = $xuatkho->MaNhanVien;
         $this->MaKho = $xuatkho->MaKho;
+        $this->MaNhanVien = $xuatkho->MaNhanVien;
+        $this->NgayXuat = $xuatkho->NgayXuat;
+        $this->MaDonViVanChuyen = $xuatkho->MaDonViVanChuyen;
+        $this->DonViMuaHang = $xuatkho->DonViMuaHang;
+        $this->MaSoThue_DoiTac = $xuatkho->MaSoThue_DoiTac;
+        $this->DiaChi = $xuatkho->DiaChi;
+        $this->DonViTienTe = $xuatkho->DonViTienTe;
         $this->SoLuong = $xuatkho->SoLuong;
         $this->DonGia = $xuatkho->DonGia;
-        $this->NgayXuat = $xuatkho->NgayXuat;
-        $this->GhiChu = $xuatkho->GhiChu;
-        $this->DiaChi = $xuatkho->DiaChi;
-        $this->ThanhTien = $xuatkho->ThanhTien;
-        $this->MaDonViVanChuyen = $xuatkho->MaDonViVanChuyen;
         $this->MaLenhDieuDong = $xuatkho->MaLenhDieuDong;
-        $this->MaSoThue_DoiTac = $xuatkho->doitac->MaSoThue_DoiTac ?? $xuatkho->MaSoThue_DoiTac;
-
+        $this->GhiChu = $xuatkho->GhiChu;
         $this->isEdit = true;
     }
-    
     public function showModalDelete($MaPhieuXuat)
     {
         $this->isDelete = true;
         $this->MaPhieuXuat = $MaPhieuXuat;
     }
-    
-    public function closeModal()
-    {
+    public function closeModal(){
         $this->isEdit = false;
         $this->isAdd = false;
         $this->isDelete = false;
         $this->resetModal();
     }
-
-    public function resetForm() {
-        $this->reset([
-            'MaPhieuXuat', 'MaVatTu', 'MaNhanVien', 'MaKho',
-            'SoLuong', 'DonGia', 'NgayXuat', 'MaDonViVanChuyen',
-            'GhiChu', 'DiaChi', 'ThanhTien', 'MaSoThue_DoiTac', 'MaLenhDieuDong'
-        ]);
+    public function resetModal(){
+        $this->MaPhieuXuat = null;
+        $this->MaVatTu = null;
+        $this->MaKho = null;
+        $this->MaNhanVien = null;
+        $this->NgayXuat = null;
+        $this->MaDonViVanChuyen = null;
+        $this->DonViMuaHang = null;
+        $this->MaSoThue_DoiTac = null;
+        $this->DiaChi = null;
+        $this->DonViTienTe = null;
+        $this->SoLuong = null;
+        $this->DonGia = null;
+        $this->MaLenhDieuDong = null;
+        $this->GhiChu = null;
     }
-    
-    public function resetModal()
+    public function resetForm()
     {
         $this->MaPhieuXuat = null;
         $this->MaVatTu = null;
-        $this->MaNhanVien = null;
         $this->MaKho = null;
-        $this->SoLuong = null;
-        $this->DonGia = null;
+        $this->MaNhanVien = null;
         $this->NgayXuat = null;
         $this->MaDonViVanChuyen = null;
-        $this->GhiChu = null;
-        $this->DiaChi = null;
-        $this->ThanhTien = null;
+        $this->DonViMuaHang = null;
         $this->MaSoThue_DoiTac = null;
+        $this->DiaChi = null;
+        $this->DonViTienTe = null;
+        $this->SoLuong = null;
+        $this->DonGia = null;
         $this->MaLenhDieuDong = null;
+        $this->GhiChu = null;
     }
-    
-    public function calculateThanhTien()
+    public function save()
     {
-        if ($this->SoLuong && $this->DonGia) {
-            $this->ThanhTien = $this->SoLuong * $this->DonGia;
-        } else {
-            $this->ThanhTien = 0;
-        }
-    }
-    
-    public function save() {
         $this->validate([
-            'MaPhieuXuat' => 'required|unique:xuatkho,MaPhieuXuat',
             'MaVatTu' => 'required',
-            'MaNhanVien' => 'required',
             'MaKho' => 'required',
-            'MaSoThue_DoiTac' => 'required',
-            'SoLuong' => 'required|numeric|min:1',
-            'DonGia' => 'required|numeric|min:0',
-            'NgayXuat' => 'required|date',
-            'MaDonViVanChuyen' => 'required',
-            'MaLenhDieuDong' => 'required',
-            'DiaChi' => 'required',
-            'GhiChu' => 'required',
-        ]);
-    
-        XuatKho::create([
-            'MaPhieuXuat' => $this->MaPhieuXuat,
-            'MaVatTu' => $this->MaVatTu,
-            'MaNhanVien' => $this->MaNhanVien,
-            'MaKho' => $this->MaKho,
-            'SoLuong' => $this->SoLuong,
-            'DonGia' => $this->DonGia,
-            'ThanhTien' => $this->SoLuong * $this->DonGia,
-            'NgayXuat' => $this->NgayXuat,
-            'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
-            'MaSoThue_DoiTac' => $this->MaSoThue_DoiTac,
-            'MaLenhDieuDong' => $this->MaLenhDieuDong,
-            'DiaChi' => $this->DiaChi,
-            'GhiChu' => $this->GhiChu
-        ]);
-    
-        $this->resetForm();
-        $this->isAdd = false;
-        session()->flash('success', 'Đã thêm phiếu nhập thành công!');
-    }
-    
-    public function update() {
-        $this->validate([
-            'MaPhieuXuat' => 'required',
-            'MaVatTu' => 'required',
             'MaNhanVien' => 'required',
-            'MaKho' => 'required',
-            'MaSoThue_DoiTac' => 'required',
-            'SoLuong' => 'required|numeric|min:1',
-            'DonGia' => 'required|numeric|min:0',
-            'NgayXuat' => 'required|date',
+            'NgayXuat' => 'required',
             'MaDonViVanChuyen' => 'required',
-            'MaLenhDieuDong' => 'required',
+            'DonViMuaHang' => 'required',
+            'MaSoThue_DoiTac' => 'required',
             'DiaChi' => 'required',
-            'GhiChu' => 'required',
+            'DonViTienTe' => 'required',
+            'SoLuong' => 'required|integer',
+            'DonGia' => 'required|numeric',
+            'MaLenhDieuDong' => 'required',
+            'GhiChu' => 'nullable'
         ]);
         
-        // Debugging output
-        dd([
-            'MaPhieuXuat' => $this->MaPhieuXuat,
-            'MaVatTu' => $this->MaVatTu,
-            'MaNhanVien' => $this->MaNhanVien,
-            'MaKho' => $this->MaKho,
-            'SoLuong' => $this->SoLuong,
-            'DonGia' => $this->DonGia,
-            'NgayXuat' => $this->NgayXuat,
-            'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
-            'MaSoThue_DoiTac' => $this->MaSoThue_DoiTac,
-            'MaLenhDieuDong' => $this->MaLenhDieuDong,
-            'DiaChi' => $this->DiaChi,
-            'GhiChu' => $this->GhiChu
-        ]);
-
-        $xuatkho = XuatKho::where('MaPhieuXuat', $this->MaPhieuXuat)->first();
-        if ($xuatkho) {
-            $xuatkho->update([
-                'MaVatTu' => $this->MaVatTu,
-                'MaNhanVien' => $this->MaNhanVien,
-                'MaKho' => $this->MaKho,
-                'SoLuong' => $this->SoLuong,
-                'DonGia' => $this->DonGia,
-                'ThanhTien' => $this->SoLuong * $this->DonGia,
-                'NgayXuat' => $this->NgayXuat,
-                'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
-                'MaSoThue_DoiTac' => $this->MaSoThue_DoiTac,
-                'MaLenhDieuDong' => $this->MaLenhDieuDong,
-                'DiaChi' => $this->DiaChi,
-                'GhiChu' => $this->GhiChu
-            ]);
-        }
+        $xuatkho = new XuatKho();
+        $xuatkho->MaPhieuXuat = $this->MaPhieuXuat;
+        $xuatkho->MaVatTu = $this->MaVatTu;
+        $xuatkho->MaKho = $this->MaKho;
+        $xuatkho->MaNhanVien = $this->MaNhanVien;
+        $xuatkho->NgayXuat = $this->NgayXuat;
+        $xuatkho->MaDonViVanChuyen = $this->MaDonViVanChuyen;
+        $xuatkho->DonViMuaHang = $this->DonViMuaHang;
+        $xuatkho->MaSoThue_DoiTac = $this->MaSoThue_DoiTac;
+        $xuatkho->DiaChi = $this->DiaChi;
+        $xuatkho->DonViTienTe = $this->DonViTienTe;
+        $xuatkho->SoLuong = $this->SoLuong;
+        $xuatkho->DonGia = $this->DonGia;
+        $xuatkho->MaLenhDieuDong = $this->MaLenhDieuDong;
+        $xuatkho->GhiChu = $this->GhiChu;
+        
+        $xuatkho->save();
+        
+        $this->resetForm();
+        $this->isAdd = false;
+        
+        session()->flash('success', 'Phiếu xuất kho đã được tạo thành công!');
     }
-    
-    public function delete()
+    public function update()
     {
+        $this->validate([
+            'MaVatTu' => 'required',
+            'MaKho' => 'required',
+            'MaNhanVien' => 'required',
+            'NgayXuat' => 'required',
+            'MaDonViVanChuyen' => 'required',
+            'DonViMuaHang' => 'required',
+            'MaSoThue_DoiTac' => 'required',
+            'DiaChi' => 'required',
+            'DonViTienTe' => 'required',
+            'SoLuong' => 'required|integer',
+            'DonGia' => 'required|numeric',
+            'MaLenhDieuDong' => 'required',
+            'GhiChu' => 'nullable'
+        ]);
+        
+        $xuatkho = XuatKho::where('MaPhieuXuat', $this->MaPhieuXuat)->first();
+        $xuatkho->MaVatTu = $this->MaVatTu;
+        $xuatkho->MaKho = $this->MaKho;
+        $xuatkho->MaNhanVien = $this->MaNhanVien;
+        $xuatkho->NgayXuat = $this->NgayXuat;
+        $xuatkho->MaDonViVanChuyen = $this->MaDonViVanChuyen;
+        $xuatkho->DonViMuaHang = $this->DonViMuaHang;
+        $xuatkho->MaSoThue_DoiTac = $this->MaSoThue_DoiTac;
+        $xuatkho->DiaChi = $this->DiaChi;
+        $xuatkho->DonViTienTe = $this->DonViTienTe;
+        $xuatkho->SoLuong = $this->SoLuong;
+        $xuatkho->DonGia = $this->DonGia;
+        $xuatkho->MaLenhDieuDong = $this->MaLenhDieuDong;
+        $xuatkho->GhiChu = $this->GhiChu;
+        
+        $xuatkho->save();
+        
+        $this->resetForm();
+        $this->isEdit = false;
+        
+        session()->flash('success', 'Phiếu xuất kho đã được cập nhật thành công!');
+    }
+    public function delete(){
         try {
             $xuatkho = XuatKho::where('MaPhieuXuat', $this->MaPhieuXuat)->first();
-            if (!$xuatkho) {
-                throw new \Exception('Không tìm thấy phiếu xuất kho!');
+            
+            if ($xuatkho->vattu()->exists()) {
+                session()->flash('error', 'Không thể xóa Phiếu Xuất Kho này vì nó đang được sử dụng trong các Vật Tư.');
+                $this->closeModal();
+                return;
             }
             
             $xuatkho->delete();
@@ -261,15 +225,20 @@ class XuatKhoComponent extends Component
             session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
     }
-
-    public function updatedSoLuong()
+    public function render()
     {
-        $this->calculateThanhTien();
-    }
-
-    public function updatedDonGia()
-    {
-        $this->calculateThanhTien();
+        $xuatkhos = XuatKho::query()
+            ->where('MaPhieuXuat', 'like', "%{$this->search}%")
+            ->orWhere('MaVatTu', 'like', "%{$this->search}%")
+            ->orWhere('MaKho', 'like', "%{$this->search}%")
+            ->orWhere('MaNhanVien', 'like', "%{$this->search}%")
+            ->orWhere('MaLenhDieuDong', 'like', "%{$this->search}%")
+            ->orderBy('MaPhieuXuat', 'asc')
+            ->paginate(10);
+        
+        return view('livewire.xuat-kho', [
+            'xuatkhos' => $xuatkhos
+        ]);
     }
 
     #[On('search')]

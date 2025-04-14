@@ -22,7 +22,15 @@
                         <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('nhapkho')"><i class="fas fa-exchange-alt"></i> Nhập Kho</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('baocao')"><i class="fas fa-chart-bar"></i> Báo cáo</a>
+    <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('thanh-ly-kho')">
+        <i class="fas fa-chart-bar"></i> Thanh lý kho
+    </a>
+</li> 
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('thongke-thuchi')"><i class="fas fa-chart-bar"></i> Thống kê Thu Chi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('phieukiemke')"><i class="fas fa-chart-bar"></i> Phiếu Kiểm Kê</a>
                     </li>
                 </ul>
                 <div class="d-flex">
@@ -135,6 +143,12 @@
                     @livewire('DoiTacComponent')
                 @elseif ($activeComponent === 'lenhDieuDong')
                     @livewire('LenhDieuDongComponent')
+                @elseif ($activeComponent === 'phieukiemke')
+                    @livewire('PhieuKiemKeComponent')
+                @elseif ($activeComponent === 'thanh-ly-kho')
+                    @livewire('ThanhLyKhoComponent')
+                @elseif ($activeComponent === 'thongke-thuchi')
+                    @livewire('ThongKeThuChiComponent')
                 @endif
             </main>
         </div>

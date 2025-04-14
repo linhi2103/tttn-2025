@@ -11,21 +11,39 @@ use App\Models\LenhDieuDong;
 class PhieuKiemKe extends Model
 {
     protected $table = 'phieukiemke';
+    protected $primaryKey = 'MaPhieuKiemKe';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    public $timestamps = false;
+
     protected $fillable = [
         'MaPhieuKiemKe',
-        'MaVatTu',
         'MaKho',
-        'MaNhanVien',
-        'SoLuong',
         'NgayKiemKe',
+        'MaNhanVien',
         'TrangThai',
-        'MaLenhDieuDong',  
+        'MaVatTu',
         'SoLuongThucTe',
         'SoLuongHeThong',
         'TinhTrang',
-        'GhiChu',
+        'MaLenhDieuDong',
+        'GhiChu'
     ];
     
+    protected $casts = [
+        'NgayKiemKe' => 'date',
+        'SoLuongThucTe' => 'integer',
+        'SoLuongHeThong' => 'integer',
+        'ChenhLech' => 'integer'
+    ];
+
+    protected $attributes = [
+        'TrangThai' => 'Chờ duyệt',
+        'TinhTrang' => 'Còn tốt 100%',
+        'SoLuongThucTe' => 0,
+        'SoLuongHeThong' => 0
+    ];
+
     public function vatTu()
     {
         return $this->belongsTo(VatTu::class, 'MaVatTu', 'MaVatTu');
@@ -44,5 +62,15 @@ class PhieuKiemKe extends Model
     public function lenhDieuDong()
     {
         return $this->belongsTo(LenhDieuDong::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
+    }
+
+    public function getChenhLechAttribute()
+    {
+        return $this->attributes['ChenhLech'] ?? ($this->SoLuongThucTe - $this->SoLuongHeThong);
+    }
+
+    public function save(array $options = [])
+    {
+        return parent::save($options);
     }
 }

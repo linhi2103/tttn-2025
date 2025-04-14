@@ -7,11 +7,15 @@ use App\Models\VatTu;
 use App\Models\NhanVien;
 use App\Models\DanhMucKho;
 use App\Models\LenhDieuDong;
-use App\Models\NhaCungCap;
 
 class ThanhLyKho extends Model
 {
     protected $table = 'thanhlykho';
+    protected $primaryKey = 'MaPhieuThanhLy';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    public $timestamps = false;
+
     protected $fillable = [
         'MaPhieuThanhLy',
         'MaVatTu',
@@ -26,7 +30,7 @@ class ThanhLyKho extends Model
         'BienPhapThanhLy',
         'MaLenhDieuDong',
     ];
-    
+
     public function vatTu()
     {
         return $this->belongsTo(VatTu::class, 'MaVatTu', 'MaVatTu');

@@ -245,7 +245,6 @@ class NhapKhoComponent extends Component
         }
     }
 
-    // Add a method to auto-calculate ThanhTien when SoLuong or DonGia changes
     public function updatedSoLuong()
     {
         $this->calculateThanhTien();
