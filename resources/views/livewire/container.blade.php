@@ -145,7 +145,7 @@
                     @livewire('LenhDieuDongComponent')
                 @elseif ($activeComponent === 'phieukiemke')
                     @livewire('PhieuKiemKeComponent')
-                @elseif ($activeComponent === 'thanh-ly-kho')
+                @elseif ($activeComponent === 'ThanhLyKho')
                     @livewire('ThanhLyKhoComponent')
                 @elseif ($activeComponent === 'thongke-thuchi')
                     @livewire('ThongKeThuChiComponent')
