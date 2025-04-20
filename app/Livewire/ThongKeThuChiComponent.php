@@ -130,7 +130,6 @@ class ThongKeThuChiComponent extends Component
             'TongChi' => 'required|numeric',
             'ChenhLechThuChi' => 'required|numeric',
             'TrangThai' => 'required',
-
             'NgayTao' => 'required',
             'GhiChu' => 'nullable'
         ]);

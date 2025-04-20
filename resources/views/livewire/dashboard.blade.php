@@ -1,15 +1,22 @@
 <div class="card">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center me-2">
             <h5 class="card-title">Danh sách Vật Tư</h5>
-            <div class="d-flex">
+            <div class="d-flex" style="height: 60px;">
+                <select class="form-select me-2" wire:model.live="filter">
+                    <option value="">-- Chọn Loại Vật Tư --</option>
+                    @foreach($loaivattus as $loaivattu)
+                        <option value="{{ $loaivattu->MaLoaiVatTu }}" {{ $loaivattu->MaLoaiVatTu == $MaLoaiVatTu ? 'selected': '' }}>{{ $loaivattu->TenLoaiVatTu }}</option>
+                    @endforeach
+                </select>
                 <input type="text" wire:model.live="search" class="form-control me-2" placeholder="Tìm kiếm Vật Tư">
-                <button class="btn btn-lg-red ms-2" wire:click="showModalAdd">
+                <button class="btn btn-lg-red ms-2" wire:click="showModalAdd" style="white-space: nowrap;">
                     <i class="fas fa-plus me-2"></i>Thêm Vật Tư
                 </button>
             </div>
         </div>
-
+    </div>
+    <div class="card-body">
         <!-- Success Message -->
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -25,7 +32,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>

@@ -16,6 +16,7 @@ class Dashboard extends Component
 {
     use WithPagination, WithFileUploads;
     public $search = '';
+    public $filter = '';
     
     //Modal status
     public $isEdit = false;
@@ -207,16 +208,20 @@ class Dashboard extends Component
         $loaivattus = LoaiVatTu::all();
         $doitacs = DoiTac::all();
         $vatTus = VatTu::query()
-            ->with('loaivattu')
-            ->where(function($query) {
-                $query->where('TenVatTu', 'like', "%{$this->search}%")
-                    ->orWhereHas('loaivattu', function($q) {
-                        $q->where('TenLoaiVatTu', 'like', "%{$this->search}%");
-                    });
-            })
-            ->orWhere('MaVatTu', 'like', "%{$this->search}%")
-            ->orderBy('MaVatTu', 'asc')
-            ->paginate(10);
+                ->with('loaivattu')
+                ->where(function($query) {
+                    $query->where('TenVatTu', 'like', "%{$this->search}%")
+                        ->orWhereHas('loaivattu', function($q) {
+                            $q->where('TenLoaiVatTu', 'like', "%{$this->search}%");
+                        })
+                        ->orWhere('MaVatTu', 'like', "%{$this->search}%");
+                });
+
+        if ($this->filter) {
+            $vatTus->where('MaLoaiVatTu', $this->filter);
+        }
+
+        $vatTus = $vatTus->orderBy('MaVatTu', 'asc')->paginate(10);
 
 
         return view('livewire.dashboard', [
@@ -229,6 +234,12 @@ class Dashboard extends Component
 
     #[On('search')]
     public function search()
+    {
+        $this->resetPage();
+    }
+
+    #[On('filter')]
+    public function filterByLoaiVatTu()
     {
         $this->resetPage();
     }

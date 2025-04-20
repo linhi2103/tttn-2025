@@ -555,3 +555,43 @@ ul.collapse {
       flex: 1;
   }
 
+  .category-dropdown-container {
+    position: relative;
+    }
+    
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        z-index: 1000;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        background-color: #fff;
+    }
+    
+    .category-dropdown-container:hover .dropdown-menu {
+        display: block;
+    }
+    
+    .border-left-4 {
+        border-left: 4px solid transparent;
+        transition: all 0.2s ease;
+    }
+    
+    .border-left-4:hover {
+        border-left-color: #dc3545;
+        background-color: #f8f9fa;
+    }
+    
+    .list-group-item-action:hover {
+        color: #dc3545;
+    }
+    
+    .btn-danger i.bi-chevron-down {
+        transition: transform 0.3s ease;
+    }
+    
+    .category-dropdown-container:hover i.bi-chevron-down {
+        transform: rotate(180deg);
+    }
+

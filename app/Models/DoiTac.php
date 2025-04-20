@@ -9,12 +9,13 @@ use App\Models\NhapKho;
 class Doitac extends Model
 {
     public $table = 'doitac';
-    public $primaryKey = 'MaSoThue_DoiTac';
+    public $primaryKey = 'id';
     public $keyType = 'string';
     public $incrementing = false;
     public $timestamps = false;
     
     public $fillable = [
+        'id',
         'MaSoThue_DoiTac',
         'TenDoiTac',
         'Email',

@@ -88,7 +88,6 @@ class LoaiVatTuComponent extends Component
         try {
             $loaivattu = LoaiVatTu::where('MaLoaiVatTu', $this->MaLoaiVatTu)->first();
             
-            // Check if there are any related records in vattu table
             if ($loaivattu->vattu()->exists()) {
                 session()->flash('error', 'Không thể xóa Loại Vật Tư này vì nó đang được sử dụng trong các Vật Tư.');
                 $this->closeModal();

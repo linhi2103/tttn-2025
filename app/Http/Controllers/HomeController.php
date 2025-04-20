@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\LoaiVatTu;
+use App\Models\VatTu;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $DanhSachLoaiVatTu = LoaiVatTu::all();
+        $loaivattus = LoaiVatTu::all();
+
         return view('index',[
-            'DanhSachLoaiVatTu' => $DanhSachLoaiVatTu
+            'loaivattus' => $loaivattus,
         ]);
     }
 }
