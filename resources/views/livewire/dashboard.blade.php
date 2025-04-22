@@ -143,6 +143,11 @@
                                 <label class="form-label">Số Lượng Tồn</label>
                                 <input type="number" class="form-control" wire:model="SoLuongTon" value="{{ $SoLuongTon || 0 }}" required>
                             </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Hạn Sử Dụng</label>
+                                <input type="date" class="form-control" wire:model="HanSuDung" value="{{ $HanSuDung || '' }}" required>
+                            </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Tình Trạng</label>
                                 <input type="text" class="form-control" wire:model="TinhTrang" value="{{ $TinhTrang || 'Còn hàng' }}" required>
@@ -162,7 +167,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Hạn Sử Dụng</label>
-                                <input type="date" class="form-control" wire:model="HanSuDung" value="{{ $HanSuDung ? new DateTime($HanSuDung)->format('Y-m-d') : '' }}">
+                                <input type="date" class="form-control" wire:model="HanSuDung" value="{{ $HanSuDung ? new DateTime($HanSuDung)->format('Y-m-d') : '' }}" required>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Ghi Chú</label>
