@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('MatKhau', 255);
             $table->string('Email', 100)->unique();
             $table->string('manhanvien', 20)->nullable();
-            
-            $table->foreign('manhanvien')->references('manhanvien')->on('nhanvien')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
     

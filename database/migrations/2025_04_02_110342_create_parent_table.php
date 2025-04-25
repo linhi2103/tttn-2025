@@ -20,8 +20,8 @@ return new class extends Migration
 
         // Create vaitro table
         Schema::create('vaitro', function (Blueprint $table) {
-            $table->integer('mavaitro', false, true)->primary();
-            $table->string('tenvaitro', 255);
+            $table->integer('MaVaiTro', false, true)->primary();
+            $table->string('TenVaiTro', 255);
         });
 
         // Create danhmuckho table

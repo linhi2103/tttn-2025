@@ -10,27 +10,44 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" wire:click.prevent="setActiveComponent('dashboard')"><i class="fas fa-home"></i> Trang chủ</a>
+                        <a class="nav-link active" href="#" wire:click.prevent="setActiveComponent('dashboard')">
+                            <i class="fas fa-home"></i> Trang chủ
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('dashboard')"><i class="fas fa-box"></i> Hàng hóa</a>
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('dashboard')">
+                            <i class="fas fa-box"></i> Hàng hóa
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('xuatkho')"><i class="fas fa-exchange-alt"></i> Xuất Kho</a>
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('xuatkho')">
+                            <i class="fas fa-exchange-alt"></i> Xuất Kho
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('nhapkho')"><i class="fas fa-exchange-alt"></i> Nhập Kho</a>
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('nhapkho')">
+                            <i class="fas fa-exchange-alt"></i> Nhập Kho
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('thanh-ly-kho')">
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('thanhlykho')">
                             <i class="fas fa-chart-bar"></i> Thanh lý kho
                         </a>
                     </li> 
                     <li class="nav-item">
-                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('thongke-thuchi')"><i class="fas fa-chart-bar"></i> Thống kê Thu Chi</a>
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('phieudonkho')">
+                            <i class="fas fa-chart-bar"></i> Phiếu Dồn Kho
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('phieukiemke')"><i class="fas fa-chart-bar"></i> Phiếu Kiểm Kê</a>
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('phieuluanchuyen')">
+                            <i class="fas fa-chart-bar"></i> Phiếu Luân Chuyển
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('phieukiemke')">
+                            <i class="fas fa-chart-bar"></i> Phiếu Kiểm Kê
+                        </a>
                     </li>
                 </ul>
                 <div class="d-flex">
@@ -115,6 +132,10 @@
                     @livewire('NhapKhoComponent')
                 @elseif ($activeComponent === 'xuatkho')
                     @livewire('XuatKhoComponent')
+                @elseif ($activeComponent === 'phieudonkho')
+                    @livewire('PhieuDonKhoComponent')
+                @elseif ($activeComponent === 'phieuluanchuyen')
+                    @livewire('PhieuLuanChuyenComponent')
                 @elseif ($activeComponent === 'loaivattu')
                     @livewire('LoaiVatTuComponent')
                 @elseif ($activeComponent === 'donvitinh')
@@ -135,10 +156,8 @@
                     @livewire('LenhDieuDongComponent')
                 @elseif ($activeComponent === 'phieukiemke')
                     @livewire('PhieuKiemKeComponent')
-                @elseif ($activeComponent === 'ThanhLyKho')
+                @elseif ($activeComponent === 'thanhlykho')
                     @livewire('ThanhLyKhoComponent')
-                @elseif ($activeComponent === 'thongke-thuchi')
-                    @livewire('ThongKeThuChiComponent')
                 @endif
             </main>
         </div>

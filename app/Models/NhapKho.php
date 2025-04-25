@@ -40,7 +40,7 @@ class NhapKho extends Model
     protected $appends = ['DonGia'];
     
     
-    public function vatTu()
+    public function vattu()
     {
         return $this->belongsTo(VatTu::class, 'MaVatTu', 'MaVatTu');
     }   
@@ -55,17 +55,16 @@ class NhapKho extends Model
         return $this->belongsTo(DanhMucKho::class, 'MaKho', 'MaKho');
     }
     
-    public function donvivanchuyen()
+    public function donViVanChuyen()
     {
         return $this->belongsTo(DonViVanChuyen::class, 'MaDonViVanChuyen', 'MaDonViVanChuyen');
     }
     
     public function lenhDieuDong()
-{
-    return $this->belongsTo(LenhDieuDong::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
-}
+    {
+        return $this->belongsTo(LenhDieuDong::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
+    }
 
-    
     public function doitac()
     {
         return $this->belongsTo(Doitac::class, 'MaSoThue_DoiTac', 'MaSoThue_DoiTac');

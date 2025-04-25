@@ -10,7 +10,7 @@ use App\Models\VatTu;
 use App\Models\DanhMucKho;
 use App\Models\NhanVien;
 use App\Models\LenhDieuDong;
-use App\Models\ThanhLyKho; // Added missing model import
+use App\Models\ThanhLyKho;
 
 class ThanhLyKhoComponent extends Component
 {
@@ -42,7 +42,7 @@ class ThanhLyKhoComponent extends Component
     public $LyDoThanhLy;
     public $BienPhapThanhLy;
     public $MaLenhDieuDong;
-    public $TinhTrang; // Added missing property that appears in the view
+    public $TinhTrang;
 
     public $isEdit = false;
     public $isAdd = false;
@@ -69,7 +69,7 @@ class ThanhLyKhoComponent extends Component
         $this->GhiChu = $phieuthanhly->GhiChu;
         $this->LyDoThanhLy = $phieuthanhly->LyDoThanhLy;
         $this->BienPhapThanhLy = $phieuthanhly->BienPhapThanhLy;
-        $this->TinhTrang = $phieuthanhly->TinhTrang; // Added missing property
+        $this->TinhTrang = $phieuthanhly->TinhTrang;
         $this->isEdit = true;
     }
     public function showModalDelete($MaPhieuThanhLy)
@@ -96,7 +96,7 @@ class ThanhLyKhoComponent extends Component
         $this->GhiChu = null;
         $this->LyDoThanhLy = null;
         $this->BienPhapThanhLy = null;
-        $this->TinhTrang = null; // Added missing property
+        $this->TinhTrang = null;
     }
     public function resetForm()
     {
@@ -112,12 +112,12 @@ class ThanhLyKhoComponent extends Component
         $this->GhiChu = null;
         $this->LyDoThanhLy = null;
         $this->BienPhapThanhLy = null;
-        $this->TinhTrang = null; // Added missing property
+        $this->TinhTrang = null;
     }
     public function save()
     {
         $this->validate([
-            'MaPhieuThanhLy' => 'required|unique:thanh_ly_khos,MaPhieuThanhLy', // Added validation for unique ID
+            'MaPhieuThanhLy' => 'required|unique:thanh-ly-kho,MaPhieuThanhLy',
             'MaVatTu' => 'required',
             'MaKho' => 'required',
             'MaNhanVien' => 'required',
@@ -125,8 +125,8 @@ class ThanhLyKhoComponent extends Component
             'TrangThai' => 'required',
             'SoLuong' => 'required|integer|min:1',
             'DonGia' => 'required|numeric|min:0',
-            'LyDoThanhLy' => 'required', // Added required validation
-            'BienPhapThanhLy' => 'required', // Added required validation
+            'LyDoThanhLy' => 'required',
+            'BienPhapThanhLy' => 'required',
             'GhiChu' => 'nullable'
         ]);
         
@@ -143,7 +143,7 @@ class ThanhLyKhoComponent extends Component
         $phieuthanhly->GhiChu = $this->GhiChu;
         $phieuthanhly->LyDoThanhLy = $this->LyDoThanhLy;
         $phieuthanhly->BienPhapThanhLy = $this->BienPhapThanhLy;
-        $phieuthanhly->TinhTrang = $this->TinhTrang; // Added missing property
+        $phieuthanhly->TinhTrang = $this->TinhTrang;
         
         $phieuthanhly->save();
         
@@ -202,9 +202,6 @@ class ThanhLyKhoComponent extends Component
                 $this->closeModal();
                 return;
             }
-            
-            // Removed check for vattu relation as it's incorrect
-            // The relationship between ThanhLyKho and VatTu is in the other direction
             
             $phieuthanhly->delete();
             $this->closeModal();

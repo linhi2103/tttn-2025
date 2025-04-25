@@ -27,10 +27,6 @@ return new class extends Migration
             $table->text('GhiChu')->nullable();
             $table->string('AnhVatTu', 255)->nullable();
             $table->enum('TinhTrang', ['Còn hàng', 'Hết hàng', 'Sắp hết'])->default('Còn hàng');
-            
-            $table->foreign('MaDonViTinh')->references('MaDonViTinh')->on('donvitinh');
-            $table->foreign('MaLoaiVatTu')->references('MaLoaiVatTu')->on('loaivattu');
-            $table->foreign('MaSoThue_DoiTac')->references('MaSoThue_DoiTac')->on('doitac');
         });
     }
 

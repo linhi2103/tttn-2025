@@ -13,20 +13,15 @@ return new class extends Migration
     {
         // Create nhanvien table
         Schema::create('nhanvien', function (Blueprint $table) {
-            $table->string('manhanvien', 20)->primary();
-            $table->string('tennhanvien', 255);
-            $table->string('diachi', 255);
-            $table->enum('gioitinh', ['Nam', 'Nữ']);
-            $table->bigInteger('sdt')->unique();
-            $table->bigInteger('cccd')->unique();
+            $table->string('MaNhanVien', 20)->primary();
+            $table->string('TenNhanVien', 255);
+            $table->string('DiaChi', 255);
+            $table->enum('GioiTinh', ['Nam', 'Nữ']);
+            $table->bigInteger('SDT')->unique();
+            $table->bigInteger('CCCD')->unique();
             $table->string('MaPhongBan', 20);
-            $table->integer('mavaitro', false, true);
+            $table->integer('MaVaiTro', false, true);
             
-            $table->foreign('MaPhongBan')->references('MaPhongBan')->on('phongban')->cascadeOnUpdate();
-            $table->foreign('mavaitro')->references('mavaitro')->on('vaitro')->cascadeOnUpdate();
-            
-            $table->index('MaPhongBan', 'idx_nhanvien_maphongban');
-            $table->index('mavaitro', 'idx_nhanvien_mavaitro');
         });
     }
 

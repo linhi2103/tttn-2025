@@ -52,17 +52,17 @@ class NhapKhoComponent extends Component
                             ->orWhere('MaNhanVien', 'like', "%{$this->search}%")
                             ->orWhere('MaKho', 'like', "%{$this->search}%")
                             ->orWhere('MaSoThue_DoiTac', 'like', "%{$this->search}%")
-                            ->orWhereHas('vatTu', function($query) {
+                            ->orWhereHas('vattu', function($query) {
                                 $query->where('TenVatTu', 'like', "%{$this->search}%");
                             });
                     })
                     ->orderBy('MaPhieuNhap', 'asc')
                     ->paginate(10),
-                'vatTus' => VatTu::all(),
+                'vattus' => VatTu::all(),
                 'khos' => DanhMucKho::all(),
                 'nhanViens' => NhanVien::all(),
-                'donViVanChuyens' => DonViVanChuyen::all(),
-                'doiTacs' => Doitac::all(),
+                'donViVanChuyen' => DonViVanChuyen::all(),
+                'doitacs' => Doitac::all(),
                 'lenhDieuDongs' => LenhDieuDong::all()
             ]);
     }
@@ -82,8 +82,8 @@ class NhapKhoComponent extends Component
         $nhapkho = NhapKho::where('MaPhieuNhap', $MaPhieuNhap)
             ->with([
                 'vattu',
-                'nhanvien',
-                'donvivanchuyen',
+                'nhanVien',
+                'donViVanChuyen',
                 'lenhDieuDong',
                 'doitac'
             ])
