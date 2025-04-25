@@ -39,19 +39,17 @@ return new class extends Migration
             $table->date('NgayXuat');
             $table->string('MaNhanVien', 20);
             $table->string('MaDonViVanChuyen', 20);
-            $table->string('DonViMuaHang', 255);
             $table->string('MaSoThue_DoiTac', 20);
-            $table->string('DiaChiMuaHang', 255);
+            $table->string('DiaChi', 255);
             $table->string('DonViTienTe', 50);
             $table->string('MaVatTu', 20);
             $table->integer('SoLuong');
             $table->decimal('DonGia', 18, 2);
-            $table->string('malenhdieudong', 20)->nullable();
-            $table->text('GhiChu')->nullable();            
+            $table->decimal('ThanhTien', 18, 2)->generatedAs('SoLuong * DonGia')->stored();
+            $table->string('MaLenhDieuDong', 20)->nullable();
+            $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Đang thực hiện', 'Hoàn thành', 'Hủy'])->default('Chờ duyệt');
+            $table->text('GhiChu')->nullable();
         });
-
-        // Add generated column for ThanhTien in xuatkho
-        DB::statement("ALTER TABLE xuatkho ADD COLUMN ThanhTien decimal(18, 2) GENERATED ALWAYS AS (SoLuong * DonGia) STORED");
 
         // Create phieukiemke table
         Schema::create('phieukiemke', function (Blueprint $table) {
@@ -64,7 +62,7 @@ return new class extends Migration
             $table->integer('SoLuongThucTe');
             $table->integer('SoLuongHeThong');
             $table->enum('TinhTrang', ['Còn tốt 100%', 'Kém chất lượng', 'Mất chất lượng']);
-            $table->string('malenhdieudong', 20)->nullable();
+            $table->string('MaLenhDieuDong', 20)->nullable();
             $table->text('GhiChu')->nullable();
         });
 
@@ -83,7 +81,7 @@ return new class extends Migration
             $table->integer('SoLuong');
             $table->decimal('DonGia', 18, 2);
             $table->enum('BienPhapThanhLy', ['Bán thanh lý', 'Chuyển đổi sử dụng', 'Tiêu hủy'])->default('Bán thanh lý');
-            $table->string('malenhdieudong', 20)->nullable();
+            $table->string('MaLenhDieuDong', 20)->nullable();
             $table->text('GhiChu')->nullable();
         });
 
@@ -111,6 +109,7 @@ return new class extends Migration
             $table->integer('SoLuong');
             $table->decimal('DonGia', 18, 2);
             $table->string('MaVanChuyen', 20)->nullable();
+            $table->string('MaLenhDieuDong', 20)->nullable();
             $table->date('NgayLuanChuyen')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('MaNhanVien', 20);
             $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Đang vận chuyển', 'Hoàn thành', 'Hủy'])->default('Chờ duyệt');

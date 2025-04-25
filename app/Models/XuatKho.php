@@ -24,7 +24,6 @@ class XuatKho extends Model
         'NgayXuat',
         'MaNhanVien',
         'MaDonViVanChuyen',
-        'DonViMuaHang',
         'MaSoThue_DoiTac',
         'DiaChi',
         'DonViTienTe',
@@ -39,9 +38,11 @@ class XuatKho extends Model
         'NgayXuat' => 'date',
         'SoLuong' => 'integer',
         'DonGia' => 'decimal:2',
-        'ThanhTien' => 'decimal:2'
     ];
-    
+    public function ThanhTien()
+{
+    return $this->SoLuong * $this->DonGia;
+}
     public function doitac()
     {
         return $this->belongsTo(Doitac::class, 'MaSoThue_DoiTac', 'MaSoThue_DoiTac');

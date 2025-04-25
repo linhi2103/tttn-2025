@@ -43,7 +43,6 @@
                         <th>Ngày Xuất</th>
                         <th>Mã Nhân Viên</th>
                         <th>Đơn Vị Vận Chuyển</th>
-                        <th>Đơn Vị Mua Hàng</th>
                         <th>Mã Số Thuế - đối tác</th>
                         <th>Địa chỉ</th>
                         <th>Đơn Vị Tiền tệ</th>
@@ -52,6 +51,7 @@
                         <th>Đơn Giá</th>
                         <th>Thành Tiền</th>
                         <th>Lệnh Điều Động</th>
+                        <th>Trạng thái</th>
                         <th>Ghi Chú</th>
                         <th>Thao tác</th>
                     </tr>
@@ -73,6 +73,7 @@
                             <td>{{ number_format($item->DonGia, 0, ',', '.') }}</td>
                             <td>{{ number_format($item->ThanhTien, 0, ',', '.') }}</td>
                             <td>{{ $item->lenhDieuDong->MaLenhDieuDong ?? 'N/A' }}</td>
+                            <td>{{ $item->TrangThai }}</td>
                             <td>{{ $item->GhiChu ?? 'N/A' }}</td>
                             <td>
                                 <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $item->MaPhieuXuat }}')">
@@ -149,12 +150,6 @@
                                 @error('MaDonViVanChuyen') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label>Đơn vị mua hàng</label>
-                                <input type="text" class="form-control @error('TenDoiTac') is-invalid @enderror" 
-                                       wire:model="TenDoiTac" required>
-                                @error('TenDoiTac') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
                                 <label>Mã Số Thuế Đối Tác</label>
                                 <select class="form-control @error('MaSoThue_DoiTac') is-invalid @enderror" 
                                         wire:model="MaSoThue_DoiTac" required>
@@ -203,6 +198,19 @@
                                 <label>Thành Tiền (tự động tính)</label>
                                 <input type="text" class="form-control" 
                                     value="{{ number_format($SoLuong * $DonGia, 0, ',', '.') }}" readonly>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Trạng thái</label>
+                                <select class="form-control @error('TrangThai') is-invalid @enderror"
+                                        wire:model="TrangThai" required>
+                                    <option value="">-- Chọn Trạng thái --</option>
+                                    <option value="Chờ duyệt">Chờ duyệt</option>
+                                    <option value="Đã duyệt">Đã duyệt</option>
+                                    <option value="Đang thực hiện">Đang thực hiện</option>
+                                    <option value="Hoàn thành">Hoàn thành</option>
+                                    <option value="Hủy">Hủy</option>
+                                </select>
+                                @error('TrangThai') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Lệnh Điều Động (nếu có)</label>

@@ -36,7 +36,7 @@ class XuatKhoComponent extends Component
         $this->nhanViens = NhanVien::all();
         $this->donViVanChuyens = DonViVanChuyen::all();
         $this->lenhDieuDongs = LenhDieuDong::all();
-        $this->doiTacs = Doitac::all();
+        $this->doiTacs = DoiTac::all();
     }
 
     public $MaPhieuXuat;
@@ -44,11 +44,11 @@ class XuatKhoComponent extends Component
     public $NgayXuat;
     public $MaNhanVien;
     public $MaDonViVanChuyen;
-    public $DonViMuaHang;
     public $MaSoThue_DoiTac;
     public $DiaChi;
     public $DonViTienTe;
     public $MaVatTu;
+    public $ThanhTien;
     public $SoLuong;
     public $DonGia;
     public $MaLenhDieuDong;
@@ -72,12 +72,12 @@ class XuatKhoComponent extends Component
         $this->MaNhanVien = $xuatkho->MaNhanVien;
         $this->NgayXuat = $xuatkho->NgayXuat;
         $this->MaDonViVanChuyen = $xuatkho->MaDonViVanChuyen;
-        $this->DonViMuaHang = $xuatkho->DonViMuaHang;
         $this->MaSoThue_DoiTac = $xuatkho->MaSoThue_DoiTac;
         $this->DiaChi = $xuatkho->DiaChi;
         $this->DonViTienTe = $xuatkho->DonViTienTe;
         $this->SoLuong = $xuatkho->SoLuong;
         $this->DonGia = $xuatkho->DonGia;
+        $this->ThanhTien = $xuatkho->ThanhTien;
         $this->MaLenhDieuDong = $xuatkho->MaLenhDieuDong;
         $this->GhiChu = $xuatkho->GhiChu;
         $this->isEdit = true;
@@ -100,7 +100,6 @@ class XuatKhoComponent extends Component
         $this->MaNhanVien = null;
         $this->NgayXuat = null;
         $this->MaDonViVanChuyen = null;
-        $this->DonViMuaHang = null;
         $this->MaSoThue_DoiTac = null;
         $this->DiaChi = null;
         $this->DonViTienTe = null;
@@ -117,12 +116,12 @@ class XuatKhoComponent extends Component
         $this->MaNhanVien = null;
         $this->NgayXuat = null;
         $this->MaDonViVanChuyen = null;
-        $this->DonViMuaHang = null;
         $this->MaSoThue_DoiTac = null;
         $this->DiaChi = null;
         $this->DonViTienTe = null;
         $this->SoLuong = null;
         $this->DonGia = null;
+        $this->ThanhTien = null;
         $this->MaLenhDieuDong = null;
         $this->GhiChu = null;
     }
@@ -134,11 +133,11 @@ class XuatKhoComponent extends Component
             'MaNhanVien' => 'required',
             'NgayXuat' => 'required',
             'MaDonViVanChuyen' => 'required',
-            'DonViMuaHang' => 'required',
             'MaSoThue_DoiTac' => 'required',
             'DiaChi' => 'required',
             'DonViTienTe' => 'required',
             'SoLuong' => 'required|integer',
+            'ThanhTien' => 'required|numeric',
             'DonGia' => 'required|numeric',
             'MaLenhDieuDong' => 'required',
             'GhiChu' => 'nullable'
@@ -151,12 +150,12 @@ class XuatKhoComponent extends Component
         $xuatkho->MaNhanVien = $this->MaNhanVien;
         $xuatkho->NgayXuat = $this->NgayXuat;
         $xuatkho->MaDonViVanChuyen = $this->MaDonViVanChuyen;
-        $xuatkho->DonViMuaHang = $this->DonViMuaHang;
         $xuatkho->MaSoThue_DoiTac = $this->MaSoThue_DoiTac;
         $xuatkho->DiaChi = $this->DiaChi;
         $xuatkho->DonViTienTe = $this->DonViTienTe;
         $xuatkho->SoLuong = $this->SoLuong;
         $xuatkho->DonGia = $this->DonGia;
+        $xuatkho->ThanhTien = $this->ThanhTien;
         $xuatkho->MaLenhDieuDong = $this->MaLenhDieuDong;
         $xuatkho->GhiChu = $this->GhiChu;
         
@@ -175,12 +174,12 @@ class XuatKhoComponent extends Component
             'MaNhanVien' => 'required',
             'NgayXuat' => 'required',
             'MaDonViVanChuyen' => 'required',
-            'DonViMuaHang' => 'required',
             'MaSoThue_DoiTac' => 'required',
             'DiaChi' => 'required',
             'DonViTienTe' => 'required',
             'SoLuong' => 'required|integer',
             'DonGia' => 'required|numeric',
+            'ThanhTien' => 'required|numeric',
             'MaLenhDieuDong' => 'required',
             'GhiChu' => 'nullable'
         ]);
@@ -191,12 +190,12 @@ class XuatKhoComponent extends Component
         $xuatkho->MaNhanVien = $this->MaNhanVien;
         $xuatkho->NgayXuat = $this->NgayXuat;
         $xuatkho->MaDonViVanChuyen = $this->MaDonViVanChuyen;
-        $xuatkho->DonViMuaHang = $this->DonViMuaHang;
         $xuatkho->MaSoThue_DoiTac = $this->MaSoThue_DoiTac;
         $xuatkho->DiaChi = $this->DiaChi;
         $xuatkho->DonViTienTe = $this->DonViTienTe;
         $xuatkho->SoLuong = $this->SoLuong;
         $xuatkho->DonGia = $this->DonGia;
+        $xuatkho->ThanhTien = $this->ThanhTien;
         $xuatkho->MaLenhDieuDong = $this->MaLenhDieuDong;
         $xuatkho->GhiChu = $this->GhiChu;
         
