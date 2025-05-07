@@ -55,7 +55,7 @@ class XuatKho extends Model
         return $this->belongsTo(DonViVanChuyen::class, 'MaDonViVanChuyen', 'MaDonViVanChuyen');
     }
     
-    public function kho()
+    public function danhmuckho()
     {
         return $this->belongsTo(DanhMucKho::class, 'MaKho', 'MaKho');
     }

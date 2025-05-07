@@ -84,38 +84,6 @@ return new class extends Migration
             $table->string('MaLenhDieuDong', 20)->nullable();
             $table->text('GhiChu')->nullable();
         });
-
-        // Create phieudonkho table
-        Schema::create('phieudonkho', function (Blueprint $table) {
-            $table->string('MaPhieuDonKho', 20)->primary();
-            $table->date('NgayDonKho')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('MaKhoNguon', 10);
-            $table->string('MaKhoDich', 10);
-            $table->string('MaVatTu', 20);
-            $table->integer('SoLuong');
-            $table->date('NgayTao')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('MaNhanVien', 20);
-            $table->string('MaVanChuyen', 20)->nullable();
-            $table->string('MaLenhDieuDong', 20)->nullable();
-            $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Đang thực hiện', 'Hoàn thành', 'Hủy'])->default('Chờ duyệt');
-            $table->text('GhiChu')->nullable();
-        });
-
-        // Create phieuluanchuyenkho table
-        Schema::create('phieuluanchuyenkho', function (Blueprint $table) {
-            $table->string('MaPhieuLuanChuyen', 20)->primary();
-            $table->string('MaKhoXuat', 10);
-            $table->string('MaKhoNhap', 10);
-            $table->string('MaVatTu', 20);
-            $table->integer('SoLuong');
-            $table->decimal('DonGia', 18, 2);
-            $table->string('MaVanChuyen', 20)->nullable();
-            $table->string('MaLenhDieuDong', 20)->nullable();
-            $table->date('NgayLuanChuyen')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('MaNhanVien', 20);
-            $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Đang vận chuyển', 'Hoàn thành', 'Hủy'])->default('Chờ duyệt');
-            $table->text('GhiChu')->nullable();
-        });
     }
 
     /**
@@ -128,7 +96,5 @@ return new class extends Migration
         Schema::dropIfExists('phieukiemke');
         Schema::dropIfExists('xuatkho');
         Schema::dropIfExists('nhapkho');
-        Schema::dropIfExists('phieudonkho');
-        Schema::dropIfExists('phieuluanchuyenkho');
     }
 };

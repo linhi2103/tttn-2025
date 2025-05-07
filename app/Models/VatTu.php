@@ -71,9 +71,6 @@ class VatTu extends Model
         return $this->hasMany(ThanhLyKho::class, 'MaVatTu', 'MaVatTu');
     }
 
-    public function thongkethuchi()
-    {
-        return $this->hasMany(ThongKeThucHi::class, 'MaVatTu', 'MaVatTu');
-    }
+    
 
 }

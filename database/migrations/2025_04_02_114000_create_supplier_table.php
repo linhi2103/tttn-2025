@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('MaSoThue_DoiTac', 20)->primary();
             $table->string('TenDoiTac', 255);
             $table->string('Email', 255);
-            $table->string('Sdt', 10);
+            $table->string('SDT', 10);
             $table->string('DiaChi', 255);  
         });
     }

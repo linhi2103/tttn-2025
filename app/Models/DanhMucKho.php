@@ -44,8 +44,8 @@ class DanhMucKho extends Model
         return $this->hasMany(ThanhLyKho::class, 'MaKho', 'MaKho');
     }
 
-    public function thongkethuchi()
-    {
-        return $this->hasMany(ThongKeThucHi::class, 'MaKho', 'MaKho');
-    }
+    // public function thongkethuchi()
+    // {
+    //     return $this->hasMany(ThongKeThucHi::class, 'MaKho', 'MaKho');
+    // }
 }

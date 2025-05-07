@@ -28,8 +28,8 @@ class NhanVien extends Model
     const GIOI_TINH_VALUES = ['Nam', 'Nữ'];
 
     protected $casts = [
-        'Sdt' => 'integer',
-        'Cccd' => 'integer',
+        'SDT' => 'integer',
+        'CCCD' => 'integer',
         'MaVaiTro' => 'integer'
     ];
 
@@ -71,8 +71,5 @@ class NhanVien extends Model
         return $this->hasMany(ThanhLyKho::class, 'MaNhanVien', 'MaNhanVien');
     }
 
-    public function thongkethuchi()
-    {
-        return $this->hasMany(ThongKeThucHi::class, 'MaNhanVien', 'MaNhanVien');
-    }
+    
 }
