@@ -19,8 +19,8 @@ class NhanVienComponent extends Component
     // Modal fields
     public $MaNhanVien;
     public $TenNhanVien;
-    public $Sdt;
-    public $Cccd;
+    public $SDT;
+    public $CCCD;
     public $DiaChi;
     public $GioiTinh = 'Nam'; // Gán giá trị mặc định
     public $MaPhongBan;
@@ -43,8 +43,8 @@ class NhanVienComponent extends Component
         $this->MaNhanVien = $MaNhanVien;
         $nhanvien = NhanVien::where('MaNhanVien', $MaNhanVien)->first();
         $this->TenNhanVien = $nhanvien->TenNhanVien;
-        $this->Sdt = $nhanvien->Sdt;
-        $this->Cccd = $nhanvien->Cccd;
+        $this->SDT = $nhanvien->SDT;
+        $this->CCCD = $nhanvien->CCCD;
         $this->DiaChi = $nhanvien->DiaChi;
         $this->GioiTinh = $nhanvien->GioiTinh;
         $this->MaPhongBan = $nhanvien->MaPhongBan;
@@ -70,8 +70,8 @@ class NhanVienComponent extends Component
     {
         $this->MaNhanVien = null;
         $this->TenNhanVien = null;
-        $this->Sdt = null;
-        $this->Cccd = null;
+        $this->SDT = null;
+        $this->CCCD = null;
         $this->DiaChi = null;
         $this->GioiTinh = 'Nam'; // Reset về giá trị mặc định
         $this->MaPhongBan = null;
@@ -86,8 +86,8 @@ class NhanVienComponent extends Component
                 'TenNhanVien' => 'required',
                 'DiaChi' => 'required',
                 'GioiTinh' => 'required|in:Nam,Nữ',
-                'Sdt' => 'required|numeric',
-                'Cccd' => 'required|numeric',
+                'SDT' => 'required|numeric',
+                'CCCD' => 'required|numeric',
                 'MaPhongBan' => 'required',
                 'MaVaiTro' => 'required|integer',
             ]);
@@ -97,8 +97,8 @@ class NhanVienComponent extends Component
             $nhanvien->TenNhanVien = $this->TenNhanVien;
             $nhanvien->DiaChi = $this->DiaChi;
             $nhanvien->GioiTinh = $this->GioiTinh;
-            $nhanvien->Sdt = $this->Sdt;
-            $nhanvien->Cccd = $this->Cccd;
+            $nhanvien->SDT = $this->SDT;
+            $nhanvien->CCCD = $this->CCCD;
             $nhanvien->MaPhongBan = $this->MaPhongBan;
             $nhanvien->MaVaiTro = $this->MaVaiTro;
             $nhanvien->save();
@@ -117,8 +117,8 @@ class NhanVienComponent extends Component
                 'TenNhanVien' => 'required',
                 'DiaChi' => 'required',
                 'GioiTinh' => 'required|in:Nam,Nữ',
-                'Sdt' => 'required|numeric',
-                'Cccd' => 'required|numeric',
+                'SDT' => 'required|numeric',
+                'CCCD' => 'required|numeric',
                 'MaPhongBan' => 'required',
                 'MaVaiTro' => 'required|integer',
             ]);
@@ -128,8 +128,8 @@ class NhanVienComponent extends Component
                 $nhanvien->TenNhanVien = $this->TenNhanVien;
                 $nhanvien->DiaChi = $this->DiaChi;
                 $nhanvien->GioiTinh = $this->GioiTinh;
-                $nhanvien->Sdt = $this->Sdt;
-                $nhanvien->Cccd = $this->Cccd;
+                $nhanvien->SDT = $this->SDT;
+                $nhanvien->CCCD = $this->CCCD;
                 $nhanvien->MaPhongBan = $this->MaPhongBan;
                 $nhanvien->MaVaiTro = $this->MaVaiTro;
                 $nhanvien->save();
@@ -178,8 +178,8 @@ class NhanVienComponent extends Component
             ->where(function($query) {
                 $query->where('TenNhanVien', 'like', "%{$this->search}%")
                     ->orWhere('MaNhanVien', 'like', "%{$this->search}%")
-                    ->orWhere('Sdt', 'like', "%{$this->search}%")
-                    ->orWhere('Cccd', 'like', "%{$this->search}%")
+                    ->orWhere('SDT', 'like', "%{$this->search}%")
+                    ->orWhere('CCCD', 'like', "%{$this->search}%")
                     ->orWhere('DiaChi', 'like', "%{$this->search}%");
             })
             ->orderBy('MaNhanVien', 'asc')

@@ -42,12 +42,15 @@
                         <th>Tên Kho</th>
                         <th>Ngày Xuất</th>
                         <th>Mã Nhân Viên</th>
+                        <th>Tên Nhân Viên</th>
                         <th>Đơn Vị Vận Chuyển</th>
                         <th>Mã Số Thuế - đối tác</th>
+                        <th>Tên Đối Tác</th>
                         <th>Địa chỉ</th>
                         <th>Đơn Vị Tiền tệ</th>
                         <th>Tên Vật Tư</th>
                         <th>Số Lượng</th>
+                        <th>Đơn vị tính</th>
                         <th>Đơn Giá</th>
                         <th>Thành Tiền</th>
                         <th>Lệnh Điều Động</th>
@@ -62,14 +65,17 @@
                             <td>{{ $item->MaPhieuXuat }}</td>
                             <td>{{ $item->kho->TenKho ?? 'N/A' }}</td>
                             <td>{{ date('d/m/Y', strtotime($item->NgayXuat)) }}</td>
+                            <td>{{ $item->nhanvien->MaNhanVien ?? 'N/A' }}</td>
                             <td>{{ $item->nhanvien->TenNhanVien ?? 'N/A' }}</td>
                             <td>{{ $item->donvivanchuyen->TenDonViVanChuyen ?? 'N/A' }}</td>
-                            <td>{{ $item->doitac->TenDoiTac ?? 'N/A' }}</td>
+                            
                             <td>{{ $item->doitac->MaSoThue_DoiTac ?? 'N/A' }}</td>
+                            <td>{{ $item->doitac->TenDoiTac ?? 'N/A' }}</td>
                             <td>{{ $item->DiaChi }}</td>
                             <td>{{ $item->DonViTienTe }}</td>
                             <td>{{ $item->vatTu->TenVatTu ?? 'N/A' }}</td>
                             <td>{{ $item->SoLuong }}</td>
+                            <td>{{ $item->vatTu->DonViTinh->TenDonViTinh ?? 'N/A' }}</td>
                             <td>{{ number_format($item->DonGia, 0, ',', '.') }}</td>
                             <td>{{ number_format($item->ThanhTien, 0, ',', '.') }}</td>
                             <td>{{ $item->lenhDieuDong->MaLenhDieuDong ?? 'N/A' }}</td>

@@ -100,6 +100,7 @@ return new class extends Migration
             $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Đang thực hiện', 'Hoàn thành', 'Hủy'])->default('Chờ duyệt');
             $table->text('GhiChu')->nullable();
         });
+
         // Create phieuluanchuyenkho table
         Schema::create('phieuluanchuyenkho', function (Blueprint $table) {
             $table->string('MaPhieuLuanChuyen', 20)->primary();

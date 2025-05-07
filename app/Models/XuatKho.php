@@ -39,10 +39,7 @@ class XuatKho extends Model
         'SoLuong' => 'integer',
         'DonGia' => 'decimal:2',
     ];
-    public function ThanhTien()
-{
-    return $this->SoLuong * $this->DonGia;
-}
+    
     public function doitac()
     {
         return $this->belongsTo(Doitac::class, 'MaSoThue_DoiTac', 'MaSoThue_DoiTac');

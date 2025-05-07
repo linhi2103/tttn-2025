@@ -42,11 +42,11 @@
                             <td>{{ $nhanvien->MaNhanVien }}</td>
                             <td>{{ $nhanvien->TenNhanVien }}</td>
                             <td>{{ $nhanvien->GioiTinh }}</td>
-                            <td>{{ $nhanvien->Sdt }}</td>
+                            <td>{{ $nhanvien->SDT }}</td>
                             <td>{{ $nhanvien->DiaChi }}</td>
                             <td>{{ $nhanvien->phongban->TenPhongBan }}</td>
                             <td>{{ $nhanvien->vaitro->TenVaiTro }}</td>
-                            <td>{{ $nhanvien->Cccd }}</td>
+                            <td>{{ $nhanvien->CCCD }}</td>
                             <td>
                                 <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $nhanvien->MaNhanVien }}')">
                                     <i class="fas fa-edit"></i>
@@ -94,7 +94,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">SĐT</label>
-                                <input type="text" class="form-control" wire:model="Sdt" value="{{ $Sdt || '' }}" required>
+                                <input type="text" class="form-control" wire:model="SDT" value="{{ $SDT || '' }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Địa chỉ</label>
@@ -120,7 +120,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">CCCD</label>
-                                <input type="text" class="form-control" wire:model="Cccd" value="{{ $Cccd || '' }}" required>
+                                <input type="text" class="form-control" wire:model="CCCD" value="{{ $CCCD || '' }}" required>
                             </div>
                         </div>
                     </form>

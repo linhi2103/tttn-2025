@@ -31,8 +31,10 @@
                     <thead>
                         <tr>
                         <th>Mã Thanh Lý Kho</th>
+                        <th>Mã Vật Tư</th>
                         <th>Tên Vật Tư</th>
-                        <th>Tên Kho</th>
+                        <th>Mã Kho</th>
+                        <th>Mã Nhân Viên</th>
                         <th>Tên Nhân Viên</th>
                         <th>Số Lượng</th>
                         <th>Ngày Lập</th>
@@ -41,7 +43,6 @@
                         <th>Đơn Giá</th>
                         <th>Lý Do Thanh Lý</th>
                         <th>Biện Pháp Thanh Lý</th>
-                        <th>Tình Trạng</th>
                         <th>Ghi Chú</th>
                         <th>Thao tác</th>
                         </tr>
@@ -50,8 +51,10 @@
                         @foreach ($phieuthanhlys as $item)
                             <tr>
                                 <td>{{ $item->MaPhieuThanhLy }}</td>
+                                <td>{{ $item->MaVatTu }}</td>
                                 <td>{{ $item->vattu->TenVatTu ?? 'N/A' }}</td>
-                                <td>{{ $item->danhmuckho->TenKho ?? 'N/A' }}</td>
+                                <td>{{ $item->MaKho }}</td>
+                                <td>{{ $item->MaNhanVien }}</td>
                                 <td>{{ $item->nhanvien->TenNhanVien ?? 'N/A' }}</td>
                                 <td>{{ $item->SoLuong }}</td>
                                 <td>{{ $item->NgayLap }}</td>
@@ -60,7 +63,6 @@
                                 <td>{{ $item->DonGia }}</td>
                                 <td>{{ $item->LyDoThanhLy ?? 'N/A' }}</td>
                                 <td>{{ $item->BienPhapThanhLy ?? 'N/A' }}</td>
-                                <td>{{ $item->TinhTrang ?? 'N/A' }}</td>
                                 <td>{{ $item->GhiChu ?? 'N/A' }}</td>
                                 <td>
                                     <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $item->MaPhieuThanhLy }}')">
@@ -99,32 +101,32 @@
                                     @error('MaPhieuThanhLy') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label>Tên Vật Tư</label>
+                                    <label>Mã Vật Tư</label>
                                     <select class="form-control @error('MaVatTu') is-invalid @enderror" wire:model="MaVatTu" required>
                                         <option value="">-- Chọn Vật Tư --</option>
                                         @foreach ($vattus as $vattu)
-                                            <option value="{{ $vattu->MaVatTu }}">{{ $vattu->TenVatTu }}</option>
+                                            <option value="{{ $vattu->MaVatTu }}">{{ $vattu->MaVatTu }}</option>
                                         @endforeach
                                     </select>
                                     @error('MaVatTu') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label>Tên Kho</label>
+                                    <label>Mã Kho</label>
                                     <select class="form-control @error('MaKho') is-invalid @enderror" wire:model="MaKho" required>
                                         <option value="">-- Chọn Kho --</option>
                                         @foreach ($danhmuckhos as $kho)
-                                            <option value="{{ $kho->MaKho }}">{{ $kho->TenKho }}</option>
+                                            <option value="{{ $kho->MaKho }}">{{ $kho->MaKho }}</option>
                                         @endforeach
                                     </select>
                                     @error('MaKho') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label>Tên Nhân Viên</label>
+                                    <label>Mã Nhân Viên</label>
                                     <select class="form-control @error('MaNhanVien') is-invalid @enderror" 
                                             wire:model="MaNhanVien" required>
                                         <option value="">-- Chọn Nhân Viên --</option>
                                         @foreach ($nhanViens as $nhanvien)
-                                            <option value="{{ $nhanvien->MaNhanVien }}">{{ $nhanvien->TenNhanVien }}</option>
+                                            <option value="{{ $nhanvien->MaNhanVien }}">{{ $nhanvien->MaNhanVien }}</option>
                                         @endforeach
                                     </select>
                                     @error('MaNhanVien') <div class="invalid-feedback">{{ $message }}</div> @enderror

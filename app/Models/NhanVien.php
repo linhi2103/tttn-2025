@@ -19,8 +19,8 @@ class NhanVien extends Model
         'TenNhanVien',
         'DiaChi',
         'GioiTinh',
-        'Sdt',
-        'Cccd',
+        'SDT',
+        'CCCD',
         'MaPhongBan',
         'MaVaiTro'
     ];

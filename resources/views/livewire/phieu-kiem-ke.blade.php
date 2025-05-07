@@ -31,8 +31,10 @@
                     <thead>
                         <tr>
                         <th>Mã Phiếu Kiểm Kê</th>
+                        <th>Mã Vật Tư</th>
                         <th>Tên Vật Tư</th>
                         <th>Mã Kho</th>
+                        <th>Mã Nhân Viên</th>
                         <th>Tên Nhân Viên</th>
                         <th>Chênh Lệch</th>
                         <th>Ngày Kiểm Kê</th>
@@ -48,8 +50,10 @@
                         @foreach ($phieukiemkes as $item)
                             <tr>
                                 <td>{{ $item->MaPhieuKiemKe }}</td>
+                                <td>{{ $item->MaVatTu }}</td>
                                 <td>{{ $item->vattu->TenVatTu ?? 'N/A' }}</td>
                                 <td>{{ $item->MaKho }}</td>
+                                <td>{{ $item->nhanvien->MaNhanVien ?? 'N/A' }}</td>
                                 <td>{{ $item->nhanvien->TenNhanVien ?? 'N/A' }}</td>
                                 <td>{{ $item->ChenhLech }}</td>
                                 <td>{{ $item->NgayKiemKe }}</td>
@@ -116,12 +120,12 @@
                                     @error('MaKho') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label>Tên Nhân Viên</label>
+                                    <label>Mã Nhân Viên</label>
                                     <select class="form-control @error('MaNhanVien') is-invalid @enderror" 
                                             wire:model="MaNhanVien" required>
                                         <option value="">-- Chọn Nhân Viên --</option>
                                         @foreach ($nhanViens as $nhanvien)
-                                            <option value="{{ $nhanvien->MaNhanVien }}">{{ $nhanvien->TenNhanVien }}</option>
+                                            <option value="{{ $nhanvien->MaNhanVien }}">{{ $nhanvien->MaNhanVien }}</option>
                                         @endforeach
                                     </select>
                                     @error('MaNhanVien') <div class="invalid-feedback">{{ $message }}</div> @enderror
