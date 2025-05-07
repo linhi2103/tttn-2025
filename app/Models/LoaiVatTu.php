@@ -7,7 +7,7 @@ use App\Models\VatTu;
 
 class LoaiVatTu extends Model
 {
-    protected $table = 'loaivaZttu';
+    protected $table = 'loaivattu';
     protected $primaryKey = 'MaLoaiVatTu';
     public $incrementing = false;
     public $timestamps = false;

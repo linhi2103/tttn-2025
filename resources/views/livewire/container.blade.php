@@ -35,16 +35,6 @@
                         </a>
                     </li> 
                     <li class="nav-item">
-                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('phieudonkho')">
-                            <i class="fas fa-chart-bar"></i> Phiếu Dồn Kho
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('phieuluanchuyen')">
-                            <i class="fas fa-chart-bar"></i> Phiếu Luân Chuyển
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('phieukiemke')">
                             <i class="fas fa-chart-bar"></i> Phiếu Kiểm Kê
                         </a>
@@ -132,10 +122,6 @@
                     @livewire('NhapKhoComponent')
                 @elseif ($activeComponent === 'xuatkho')
                     @livewire('XuatKhoComponent')
-                @elseif ($activeComponent === 'phieudonkho')
-                    @livewire('PhieuDonKhoComponent')
-                @elseif ($activeComponent === 'phieuluanchuyen')
-                    @livewire('PhieuLuanChuyenComponent')
                 @elseif ($activeComponent === 'loaivattu')
                     @livewire('LoaiVatTuComponent')
                 @elseif ($activeComponent === 'donvitinh')

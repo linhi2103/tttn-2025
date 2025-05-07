@@ -8,3 +8,5 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/dashboard', function () {
     return view('livewire.app');
 })->name('dashboard');
+Route::get('vattu/{MaVatTu}', [HomeController::class, 'show']);
+

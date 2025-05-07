@@ -16,4 +16,10 @@ class HomeController extends Controller
             'loaivattus' => $loaivattus,
         ]);
     }
+    public function show($MaVatTu)
+    {
+        $vatTu = VatTu::findOrFail($MaVatTu);
+        return view('livewire.vattu-detail', compact('vatTu'));
+    }
+
 }
