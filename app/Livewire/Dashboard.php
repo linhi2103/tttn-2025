@@ -99,7 +99,6 @@ class Dashboard extends Component
                 'MaLoaiVatTu' => 'required',
                 'MaDonViTinh' => 'required',
                 'GiaNhap' => 'required',
-                'GiaXuat' => 'required',
                 'DonViTienTe' => 'required',
                 'SoLuongTon' => 'required',
                 'TinhTrang' => 'required',
@@ -116,7 +115,6 @@ class Dashboard extends Component
             $vatTu->MaLoaiVatTu = $this->MaLoaiVatTu;
             $vatTu->MaDonViTinh = $this->MaDonViTinh;
             $vatTu->GiaNhap = $this->GiaNhap;
-            $vatTu->GiaXuat = $this->GiaXuat;
             $vatTu->DonViTienTe = $this->DonViTienTe;
             $vatTu->SoLuongTon = $this->SoLuongTon;
             $vatTu->TinhTrang = $this->TinhTrang;
@@ -150,7 +148,6 @@ class Dashboard extends Component
                 'MaLoaiVatTu' => 'required',
                 'MaDonViTinh' => 'required',
                 'GiaNhap' => 'required',
-                'GiaXuat' => 'required',
                 'DonViTienTe' => 'required',
                 'SoLuongTon' => 'required',
                 'TinhTrang' => 'required',
@@ -165,7 +162,6 @@ class Dashboard extends Component
             $vatTu->MaLoaiVatTu = $this->MaLoaiVatTu;
             $vatTu->MaDonViTinh = $this->MaDonViTinh;
             $vatTu->GiaNhap = $this->GiaNhap;
-            $vatTu->GiaXuat = $this->GiaXuat;
             $vatTu->DonViTienTe = $this->DonViTienTe;
             $vatTu->SoLuongTon = $this->SoLuongTon;
             $vatTu->TinhTrang = $this->TinhTrang;

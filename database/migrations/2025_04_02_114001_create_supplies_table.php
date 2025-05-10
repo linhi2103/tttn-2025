@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('TenVatTu', 255);
             $table->string('MaDonViTinh', 20);
             $table->decimal('GiaNhap', 18, 2);
-            $table->decimal('GiaXuat', 18, 2);
             $table->string('DonViTienTe', 10);
             $table->integer('SoLuongTon')->default(0);
             $table->string('MaSoThue_DoiTac', 20);

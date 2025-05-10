@@ -41,7 +41,7 @@
                             <th>Tên Nhân Viên</th>
                             <th>Lệnh Điều Động</th>
                             <th>Đơn Vị vận chuyển</th>
-                            <th>Ngày Lập</th>
+                            <th>Ngày Nhập</th>
                             <th>Địa Chỉ</th>
                             <th>Ghi chú</th>
                             <th>Thao tác</th>
@@ -61,7 +61,7 @@
                                 <td>{{ $item->nhanVien->TenNhanVien ?? 'N/A' }}</td>
                                 <td>{{ $item->lenhDieuDong->MaLenhDieuDong ?? 'N/A' }}</td>
                                 <td>{{ $item->donViVanChuyen->TenDonViVanChuyen ?? 'N/A' }}</td>
-                                <td>{{ date('d/m/Y', strtotime($item->NgayLap)) }}</td>
+                                <td>{{ date('d/m/Y', strtotime($item->NgayNhap)) }}</td>
                                 <td>{{ $item->DiaChi ?? 'N/A' }}</td>
                                 <td>{{ $item->GhiChu ?? 'N/A' }}</td>
                                 <td>
@@ -113,30 +113,27 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Tên Vật Tư</label>
-                                    <select class="form-control @error('MaVatTu') is-invalid @enderror" wire:model="MaVatTu" required>
+                                    <select class="form-control @error('MaVatTu') is-invalid @enderror" wire:model.live="MaVatTu" required>
                                         <option value="">-- Chọn Vật Tư --</option>
-                                        @foreach ($vatTus as $vattu)
-                                            <option value="{{ $vattu->MaVatTu }}">{{ $vattu->TenVatTu }}</option>
+                                        @foreach($vattus as $vatTu)
+                                            <option value="{{ $vatTu->MaVatTu }}">{{ $vatTu->TenVatTu }}</option>
                                         @endforeach
                                     </select>
                                     @error('MaVatTu') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Số Lượng</label>
-                                    <input type="number" class="form-control @error('SoLuong') is-invalid @enderror" 
-                                           wire:model="SoLuong" min="1" required>
+                                    <input type="number" class="form-control @error('SoLuong') is-invalid @enderror" wire:model.live="SoLuong" required>
                                     @error('SoLuong') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Đơn Giá</label>
-                                    <input type="number" class="form-control @error('DonGia') is-invalid @enderror" 
-                                           wire:model="DonGia" min="0" required>
+                                    <input type="number" class="form-control @error('DonGia') is-invalid @enderror" wire:model="DonGia" required readonly>
                                     @error('DonGia') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Thành Tiền (tự động tính)</label>
-                                    <input type="text" class="form-control" 
-                                           value="{{ number_format($SoLuong * $DonGia, 0, ',', '.') }}" readonly>
+                                    <input type="text" class="form-control" wire:model="ThanhTien" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Ngày Nhập</label>
@@ -179,7 +176,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Lệnh Điều Động (nếu có)</label>
-                                    <select wire:model="MaLenhDieuDong">
+                                    <select class="form-control" wire:model="MaLenhDieuDong">
                                         <option value="">-- Chọn Lệnh Điều Động --</option>
                                         @foreach($lenhDieuDongs as $ldd)
                                             <option value="{{ $ldd->MaLenhDieuDong }}">{{ $ldd->MaLenhDieuDong }}</option>
@@ -199,7 +196,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" wire:click="closeModal">Hủy</button>
-                        <button class="btn btn-danger" wire:click="{{ $isAdd ? 'save' : 'update' }}">Lưu</button>
+                        <button class="btn btn-primary" wire:click="{{ $isAdd ? 'save' : 'update' }}">Lưu</button>
                     </div>
                 </div>
             </div>

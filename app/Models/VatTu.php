@@ -25,7 +25,6 @@ class VatTu extends Model
         'TenVatTu', 
         'MaDonViTinh', 
         'GiaNhap', 
-        'GiaXuat', 
         'SoLuongTon', 
         'MaSoThue_DoiTac', 
         'DonViTienTe', 

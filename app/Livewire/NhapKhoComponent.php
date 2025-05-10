@@ -66,14 +66,11 @@ class NhapKhoComponent extends Component
                 'lenhDieuDongs' => LenhDieuDong::all()
             ]);
     }
-
-    
     
     public function showModalAdd()
     {
+        $this->NgayNhap = now()->format('Y-m-d');
         $this->isAdd = true;
-        $this->NgayNhap = date('Y-m-d');
-        $this->ThanhTien = 0;
     }
     
     public function showModalEdit($MaPhieuNhap)
@@ -99,7 +96,7 @@ class NhapKhoComponent extends Component
         $this->MaKho = $nhapkho->MaKho;
         $this->SoLuong = $nhapkho->SoLuong;
         $this->DonGia = $nhapkho->DonGia;
-        $this->NgayNhap = $nhapkho->NgayNhap;
+        $this->NgayNhap = $nhapkho->NgayNhap->format('Y-m-d');
         $this->GhiChu = $nhapkho->GhiChu;
         $this->DiaChi = $nhapkho->DiaChi;
         $this->ThanhTien = $nhapkho->ThanhTien;
@@ -150,18 +147,10 @@ class NhapKhoComponent extends Component
         $this->MaSoThue_DoiTac = null;
     }
     
-    public function calculateThanhTien()
-    {
-        if ($this->SoLuong && $this->DonGia) {
-            $this->ThanhTien = $this->SoLuong * $this->DonGia;
-        } else {
-            $this->ThanhTien = 0;
-        }
-    }
     
     public function save() {
         $this->validate([
-            'MaPhieuNhap' => 'required|unique:nhap_khos,MaPhieuNhap',
+            'MaPhieuNhap' => 'required|unique:nhapkho,MaPhieuNhap',
             'MaVatTu' => 'required',
             'MaNhanVien' => 'required',
             'MaKho' => 'required',
@@ -172,6 +161,16 @@ class NhapKhoComponent extends Component
             'MaSoThue_DoiTac' => 'required',
         ]);
     
+        if(VatTu::where('MaVatTu', $this->MaVatTu)->exists()) {
+            $vatTu = VatTu::where('MaVatTu', $this->MaVatTu)->first();
+            if ($vatTu) {
+                $vatTu->increment('SoLuongTon', $this->SoLuong);
+            }
+        } else {
+            session()->flash('error','Vật tư không tồn tại!');
+            return;
+        }
+
         NhapKho::create([
             'MaPhieuNhap' => $this->MaPhieuNhap,
             'MaVatTu' => $this->MaVatTu,
@@ -187,6 +186,7 @@ class NhapKhoComponent extends Component
             'DiaChi' => $this->DiaChi,
             'GhiChu' => $this->GhiChu,
         ]);
+
     
         $this->resetForm();
         $this->isAdd = false;
@@ -204,6 +204,20 @@ class NhapKhoComponent extends Component
             'MaDonViVanChuyen' => 'required',
             'MaSoThue_DoiTac' => 'required',
         ]);
+
+        if(VatTu::where('MaVatTu', $this->MaVatTu)->exists()) {
+            $vatTu = VatTu::where('MaVatTu', $this->MaVatTu)->first();
+            if ($vatTu) {
+                $oldNhapKho = NhapKho::where('MaPhieuNhap', $this->MaPhieuNhap)->first();
+                if ($oldNhapKho) {
+                    $vatTu->SoLuongTon = $vatTu->SoLuongTon - $oldNhapKho->SoLuong + $this->SoLuong;
+                    $vatTu->save();
+                }
+            }
+        } else {
+            session()->flash('error','Vật tư không tồn tại!');
+            return;
+        }
     
         $nhapkho = NhapKho::where('MaPhieuNhap', $this->MaPhieuNhap)->first();
         if ($nhapkho) {
@@ -245,19 +259,29 @@ class NhapKhoComponent extends Component
         }
     }
 
-    public function updatedSoLuong()
-    {
-        $this->calculateThanhTien();
-    }
-
-    public function updatedDonGia()
-    {
-        $this->calculateThanhTien();
-    }
-
     #[On('search')]
     public function search()
     {
         $this->resetPage();
+    }
+
+    #[On('MaVatTu')]
+    public function updatedMaVatTu($value)
+    {
+        $vatTu = VatTu::where('MaVatTu', $value)->first();
+        if ($vatTu) {
+            $this->DonGia = $vatTu->GiaNhap;
+            $this->ThanhTien = $this->SoLuong * $this->DonGia;
+        }
+    }
+
+    #[On('SoLuong')]
+    public function updatedSoLuong($value)
+    {
+        if (!empty($value) && $value > 0) {
+            $this->ThanhTien = $value * $this->DonGia;
+        }else{
+            $this->ThanhTien = 0;
+        }
     }
 }

@@ -42,7 +42,6 @@
                         <th>Tên Vật Tư</th>
                         <th>Đơn Vị Tính</th>
                         <th>Giá Nhập</th>
-                        <th>Giá Xuất</th>
                         <th>Số Lượng Tồn</th>
                         <th>Trạng Thái</th> 
                         <th>Mã Số Thuế</th>
@@ -61,7 +60,6 @@
                             <td>{{ $vatTu->TenVatTu }}</td>
                             <td>{{ $vatTu->donvitinh->TenDonViTinh }}</td>
                             <td>{{ $vatTu->GiaNhap }}</td>
-                            <td>{{ $vatTu->GiaXuat }}</td>
                             <td>{{ $vatTu->SoLuongTon }}</td>
                             <td>
                                 <span class="badge rounded-pill {{ $vatTu->TinhTrang == 'Còn hàng' ? 'bg-success' : ($vatTu->TinhTrang == 'Gần hết' ? 'bg-warning' : 'bg-danger') }}">
@@ -132,10 +130,6 @@
                                 <input type="number" class="form-control" wire:model="GiaNhap" value="{{ $GiaNhap || 0 }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Giá Xuất</label>
-                                <input type="number" class="form-control" wire:model="GiaXuat" value="{{ $GiaXuat || 0 }}" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
                                 <label class="form-label">Đơn Vị Tiền Tệ</label>
                                 <input type="text" class="form-control" wire:model="DonViTienTe" value="{{ $DonViTienTe || 'VND' }}" required>
                             </div>
@@ -164,10 +158,6 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Ngày Nhập</label>
                                 <input type="date" class="form-control" wire:model="NgayNhap" value="{{ $NgayNhap ? new DateTime($NgayNhap)->format('Y-m-d') : '' }}" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Hạn Sử Dụng</label>
-                                <input type="date" class="form-control" wire:model="HanSuDung" value="{{ $HanSuDung ? new DateTime($HanSuDung)->format('Y-m-d') : '' }}" required>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Ghi Chú</label>
