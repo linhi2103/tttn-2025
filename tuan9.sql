@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 07, 2025 lúc 07:20 PM
+-- Thời gian đã tạo: Th5 14, 2025 lúc 08:09 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -42,7 +42,7 @@ CREATE TABLE `danhmuckho` (
 
 INSERT INTO `danhmuckho` (`MaKho`, `TenKho`, `DiaChi`, `QuyMo`, `DienTichSuDung`) VALUES
 ('KHO001', 'Kho A', 'Số 1, Đường ABC, TP. HCM', 1000, 750),
-('KHO002', 'Kho B', 'Số 2, Đường XYZ, TP. Hà Nội', 1500, 500),
+('KHO002', 'Kho B', 'Số 2, Đường XYZ, TP. Hải Phòng', 1500, 500),
 ('KHO003', 'Kho C', 'Số 3, Đường DEF, TP. Đà Nẵng', 2000, 1000),
 ('KHO004', 'Kho D', 'Số 4, Đường GHI, TP. Cần Thơ', 1200, 0),
 ('KHO005', 'Kho E', 'Số 43, Đường ABC, TP. HCM', 320, 120);
@@ -57,7 +57,7 @@ CREATE TABLE `doitac` (
   `MaSoThue_DoiTac` varchar(20) NOT NULL,
   `TenDoiTac` varchar(255) NOT NULL,
   `Email` varchar(255) NOT NULL,
-  `Sdt` varchar(10) NOT NULL,
+  `SDT` varchar(10) NOT NULL,
   `DiaChi` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -65,7 +65,7 @@ CREATE TABLE `doitac` (
 -- Đang đổ dữ liệu cho bảng `doitac`
 --
 
-INSERT INTO `doitac` (`MaSoThue_DoiTac`, `TenDoiTac`, `Email`, `Sdt`, `DiaChi`) VALUES
+INSERT INTO `doitac` (`MaSoThue_DoiTac`, `TenDoiTac`, `Email`, `SDT`, `DiaChi`) VALUES
 ('0201234567', 'Công ty TNHH Cơ khí Thành Công', 'thanhcong@doitac.vn', '0901234567', 'Lô A2, KCN An Dương, Hải Phòng 1'),
 ('0207654321', 'Công ty TNHH Bao bì Minh Long', 'minhlong@doitac.vn', '0912345678', 'Lô B5, KCN An Dương, Hải Phòng'),
 ('0209988776', 'Công ty TNHH Vận tải Hoàng Gia 34', 'hoanggia@doitac.vn', '0923456789', 'Lô C3, KCN An Dương, Hải Phòng'),
@@ -203,7 +203,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `nguoidung` (
-  `taikhoan` varchar(20) NOT NULL,
+  `TaiKhoan` varchar(20) NOT NULL,
   `MatKhau` varchar(255) NOT NULL,
   `Email` varchar(100) NOT NULL,
   `manhanvien` varchar(20) DEFAULT NULL
@@ -213,7 +213,7 @@ CREATE TABLE `nguoidung` (
 -- Đang đổ dữ liệu cho bảng `nguoidung`
 --
 
-INSERT INTO `nguoidung` (`taikhoan`, `MatKhau`, `Email`, `manhanvien`) VALUES
+INSERT INTO `nguoidung` (`TaiKhoan`, `MatKhau`, `Email`, `manhanvien`) VALUES
 ('admin01', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHeFx4Ex4e0GeqZoTRpBqTfP4yx.mxy5eW', 'admin01@lg.com', 'NV001'),
 ('nhansu1', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHeFx4Ex4e0GeqZoTRpBqTfP4yx.mxy5eW', 'nhansu01@lg.com', 'NV003'),
 ('quanlykho1', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHeFx4Ex4e0GeqZoTRpBqTfP4yx.mxy5eW', 'kho01@lg.com', 'NV002');
@@ -272,39 +272,10 @@ CREATE TABLE `nhapkho` (
 --
 
 INSERT INTO `nhapkho` (`MaPhieuNhap`, `MaKho`, `DiaChi`, `MaVatTu`, `SoLuong`, `DonGia`, `NgayNhap`, `MaSoThue_DoiTac`, `MaNhanVien`, `MaLenhDieuDong`, `MaDonViVanChuyen`, `GhiChu`) VALUES
-('PN001', 'KHO001', 'Số 1, Đường ABC, TP. HCM', 'VT001', 100, 15000.00, '2025-04-20', '0201234567', 'NV001', 'LD001', 'DVC001', 'Phiếu nhập đợt 1'),
+('PN001', 'KHO001', 'HP', 'VT003', 8, 800000.00, '2025-05-10', '0201234567', 'NV001', 'LD001', 'DVC001', ''),
 ('PN002', 'KHO002', 'Số 2, Đường XYZ, TP. Hà Nội', 'VT002', 50, 30000.00, '2025-04-21', '0201234567', 'NV002', 'LD002', 'DVC002', 'Phiếu nhập đợt 2'),
-('PN003', 'KHO003', 'Số 3, Đường DEF, TP. Đà Nẵng', 'VT003', 200, 10000.00, '2025-04-22', '0201234567', 'NV003', 'LD003', 'DVC003', 'Phiếu nhập hàng tồn kho');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `phieudonkho`
---
-
-CREATE TABLE `phieudonkho` (
-  `MaPhieuDonKho` varchar(20) NOT NULL,
-  `NgayDonKho` date NOT NULL DEFAULT current_timestamp(),
-  `MaKhoNguon` varchar(10) NOT NULL,
-  `MaKhoDich` varchar(10) NOT NULL,
-  `MaVatTu` varchar(20) NOT NULL,
-  `SoLuong` int(11) NOT NULL,
-  `NgayTao` date NOT NULL DEFAULT current_timestamp(),
-  `MaNhanVien` varchar(20) NOT NULL,
-  `MaVanChuyen` varchar(20) DEFAULT NULL,
-  `MaLenhDieuDong` varchar(20) DEFAULT NULL,
-  `TrangThai` enum('Chờ duyệt','Đã duyệt','Đang thực hiện','Hoàn thành','Hủy') NOT NULL DEFAULT 'Chờ duyệt',
-  `GhiChu` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Đang đổ dữ liệu cho bảng `phieudonkho`
---
-
-INSERT INTO `phieudonkho` (`MaPhieuDonKho`, `NgayDonKho`, `MaKhoNguon`, `MaKhoDich`, `MaVatTu`, `SoLuong`, `NgayTao`, `MaNhanVien`, `MaVanChuyen`, `MaLenhDieuDong`, `TrangThai`, `GhiChu`) VALUES
-('DK001', '2025-05-05', 'KHO001', 'KHO002', 'VT001', 100, '2025-05-05', 'NV001', 'DVC001', 'LD001', 'Hoàn thành', 'Dồn hàng tồn kho quý 1'),
-('DK002', '2025-05-04', 'KHO002', 'KHO003', 'VT002', 50, '2025-05-04', 'NV002', 'DVC002', 'LD001', 'Đang thực hiện', 'Điều chuyển sang kho mới'),
-('DK003', '2025-05-03', 'KHO003', 'KHO001', 'VT003', 75, '2025-05-03', 'NV003', 'DVC002', 'LD003', 'Chờ duyệt', 'Chờ phê duyệt kế hoạch dồn kho');
+('PN003', 'KHO003', 'Số 3, Đường DEF, TP. Đà Nẵng', 'VT003', 200, 10000.00, '2025-04-22', '0201234567', 'NV003', 'LD003', 'DVC003', 'Phiếu nhập hàng tồn kho'),
+('PN004', 'KHO003', 'HP NA', 'VT001', 20, 3000000.00, '2025-05-12', '0201234567', 'NV002', 'LD003', 'DVC001', 'KO');
 
 -- --------------------------------------------------------
 
@@ -317,45 +288,23 @@ CREATE TABLE `phieukiemke` (
   `MaKho` varchar(10) NOT NULL,
   `NgayKiemKe` date NOT NULL,
   `MaNhanVien` varchar(20) NOT NULL,
-  `TrangThai` enum('Chờ duyệt','Hoàn thành','Hủy') NOT NULL DEFAULT 'Chờ duyệt',
+  `TrangThai` enum('Chờ Duyệt','Đã Kiểm Kê','Đã Hủy') NOT NULL DEFAULT 'Chờ Duyệt',
   `MaVatTu` varchar(20) NOT NULL,
   `SoLuongThucTe` int(11) NOT NULL,
-  `SoLuongHeThong` int(11) NOT NULL,
-  `TinhTrang` enum('Còn tốt 100%','Kém chất lượng','Mất chất lượng') NOT NULL,
+  `SoLuongTon` int(11) NOT NULL,
+  `TinhTrang` enum('Còn tốt 100%','Kém chất lượng','Hỏng','Hết','Thất Lạc') NOT NULL,
   `MaLenhDieuDong` varchar(20) DEFAULT NULL,
-  `GhiChu` text DEFAULT NULL,
-  `ChenhLech` int(11) GENERATED ALWAYS AS (`SoLuongThucTe` - `SoLuongHeThong`) STORED
+  `GhiChu` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `phieukiemke`
 --
 
-INSERT INTO `phieukiemke` (`MaPhieuKiemKe`, `MaKho`, `NgayKiemKe`, `MaNhanVien`, `TrangThai`, `MaVatTu`, `SoLuongThucTe`, `SoLuongHeThong`, `TinhTrang`, `MaLenhDieuDong`, `GhiChu`) VALUES
-('PKK001', 'KHO001', '2025-05-05', 'NV001', 'Hoàn thành', 'VT001', 100, 100, 'Còn tốt 100%', 'LD001', 'Kiểm kê định kỳ quý 1'),
-('PKK002', 'KHO002', '2025-05-04', 'NV002', 'Chờ duyệt', 'VT002', 45, 50, 'Kém chất lượng', 'LD003', 'Sai lệch do bảo quản'),
-('PKK003', 'KHO003', '2025-05-03', 'NV003', 'Hoàn thành', 'VT003', 30, 35, 'Mất chất lượng', 'LD002', 'Mất mát trong quá trình vận chuyển');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `phieuluanchuyenkho`
---
-
-CREATE TABLE `phieuluanchuyenkho` (
-  `MaPhieuLuanChuyen` varchar(20) NOT NULL,
-  `MaKhoXuat` varchar(10) NOT NULL,
-  `MaKhoNhap` varchar(10) NOT NULL,
-  `MaVatTu` varchar(20) NOT NULL,
-  `SoLuong` int(11) NOT NULL,
-  `DonGia` decimal(18,2) NOT NULL,
-  `MaVanChuyen` varchar(20) DEFAULT NULL,
-  `MaLenhDieuDong` varchar(20) DEFAULT NULL,
-  `NgayLuanChuyen` date NOT NULL DEFAULT current_timestamp(),
-  `MaNhanVien` varchar(20) NOT NULL,
-  `TrangThai` enum('Chờ duyệt','Đã duyệt','Đang vận chuyển','Hoàn thành','Hủy') NOT NULL DEFAULT 'Chờ duyệt',
-  `GhiChu` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `phieukiemke` (`MaPhieuKiemKe`, `MaKho`, `NgayKiemKe`, `MaNhanVien`, `TrangThai`, `MaVatTu`, `SoLuongThucTe`, `SoLuongTon`, `TinhTrang`, `MaLenhDieuDong`, `GhiChu`) VALUES
+('PKK001', 'KHO001', '2025-05-14', 'NV001', 'Đã Hủy', 'VT001', 10, 100, 'Còn tốt 100%', 'LD001', 'Kiểm kê định kỳ quý 1'),
+('PKK002', 'KHO002', '2025-05-14', 'NV002', 'Chờ Duyệt', 'VT002', 45, 50, 'Kém chất lượng', 'LD003', 'Sai lệch do bảo quản'),
+('PKK003', 'KHO003', '2025-05-08', 'NV003', 'Đã Kiểm Kê', 'VT003', 22, 35, 'Còn tốt 100%', 'LD002', 'Mất mát trong quá trình vận chuyển');
 
 -- --------------------------------------------------------
 
@@ -399,7 +348,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('qZn9HvcRR1R4MaVzwzbMg7Yo7NUM1FW104PLytRz', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTWxlN1F3aXFJS2pFVkRPcVZ2WnBOa2ZsR21vZ1lJVllwVVFFS04wQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1746458029);
+('IfnhU9CQ4ukbVBw3LH2oy1xKoUPXMPr27CSOnaCC', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTzZveUtpTEdyWDlsc2xpRkhlYkx0UGI2bUNsem84aXhuUndFUVhYdyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC92YXR0dS9WVDAwOCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1747202774);
 
 -- --------------------------------------------------------
 
@@ -412,25 +361,24 @@ CREATE TABLE `thanhlykho` (
   `MaKho` varchar(10) NOT NULL,
   `NgayLap` date NOT NULL,
   `MaNhanVien` varchar(20) NOT NULL,
-  `TrangThai` enum('Đề xuất','Đã duyệt','Đã thanh lý','Đã hủy') NOT NULL,
+  `TrangThai` enum('Đã hủy','Chờ duyệt','Đã thanh lý') NOT NULL,
   `LyDoThanhLy` text DEFAULT NULL,
   `MaVatTu` varchar(20) NOT NULL,
   `SoLuong` int(11) NOT NULL,
   `DonGia` decimal(18,2) NOT NULL,
   `BienPhapThanhLy` enum('Bán thanh lý','Chuyển đổi sử dụng','Tiêu hủy') NOT NULL DEFAULT 'Bán thanh lý',
-  `MaLenhDieuDong` varchar(20) DEFAULT NULL,
-  `GhiChu` text DEFAULT NULL
+  `MaLenhDieuDong` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `thanhlykho`
 --
 
-INSERT INTO `thanhlykho` (`MaPhieuThanhLy`, `MaKho`, `NgayLap`, `MaNhanVien`, `TrangThai`, `LyDoThanhLy`, `MaVatTu`, `SoLuong`, `DonGia`, `BienPhapThanhLy`, `MaLenhDieuDong`, `GhiChu`) VALUES
-('PTL001', 'KHO001', '2025-05-01', 'NV001', 'Đã duyệt', 'Hư hỏng do sử dụng lâu ngày', 'VT001', 10, 50000.00, 'Tiêu hủy', 'LD001', 'Đã kiểm kê và xác nhận'),
-('PTL002', 'KHO002', '2025-05-02', 'NV002', 'Đề xuất', 'Không còn sử dụng trong sản xuất', 'VT002', 20, 70000.00, 'Chuyển đổi sử dụng', 'LD002', 'Đang chờ duyệt'),
-('PTL004', 'KHO001', '2025-05-04', 'NV004', 'Đã hủy', 'Lỗi đề xuất không chính xác', 'VT004', 8, 45000.00, 'Tiêu hủy', 'LD003', 'Phiếu bị hủy do sai mã vật tư'),
-('TL003', 'KHO003', '2025-05-03', 'NV003', 'Đã thanh lý', 'Thanh lý định kỳ quý 1', 'VT003', 5, 150000.00, 'Bán thanh lý', 'LD003', 'Đã thực hiện bán cho đối tác ABC');
+INSERT INTO `thanhlykho` (`MaPhieuThanhLy`, `MaKho`, `NgayLap`, `MaNhanVien`, `TrangThai`, `LyDoThanhLy`, `MaVatTu`, `SoLuong`, `DonGia`, `BienPhapThanhLy`, `MaLenhDieuDong`) VALUES
+('PTL001', 'KHO001', '2025-05-01', 'NV001', 'Đã thanh lý', 'Hư hỏng do sử dụng lâu ngày', 'VT001', 10, 50000.00, 'Tiêu hủy', 'LD001'),
+('PTL002', 'KHO002', '2025-05-02', 'NV002', 'Chờ duyệt', 'Không còn sử dụng trong sản xuất', 'VT002', 3, 70000.00, 'Chuyển đổi sử dụng', 'LD002'),
+('PTL004', 'KHO001', '2025-05-04', 'NV004', 'Đã hủy', 'Lỗi đề xuất không chính xác', 'VT004', 8, 45000.00, 'Tiêu hủy', 'LD003'),
+('TL003', 'KHO003', '2025-05-03', 'NV003', 'Đã thanh lý', 'Thanh lý định kỳ quý 1', 'VT003', 5, 150000.00, 'Bán thanh lý', 'LD003');
 
 -- --------------------------------------------------------
 
@@ -479,42 +427,42 @@ CREATE TABLE `vattu` (
 --
 
 INSERT INTO `vattu` (`MaVatTu`, `MaLoaiVatTu`, `TenVatTu`, `MaDonViTinh`, `GiaNhap`, `DonViTienTe`, `SoLuongTon`, `MaSoThue_DoiTac`, `NgayNhap`, `HanSuDung`, `GhiChu`, `AnhVatTu`, `TinhTrang`) VALUES
-('VT001', 'LVT002', 'Chip xử lý LG Alpha', 'DVT001', 3000000.00, 'VND', 11, '0505678901', '2025-04-05', '2025-05-02', 'nhy21', 'LVT002\\download (1).jpg', 'Còn hàng'),
-('VT002', 'LVT005', 'Bo mạch chủ LG Main X1', 'DVT001', 1500000.00, 'VND', 10, '0505678901', '2025-04-05', '2025-05-17', 'NHYYY', 'LVT005\\download.jpg', 'Còn hàng'),
-('VT003', 'LVT003', 'RAM LG DDR4 8GB', 'DVT001', 800000.00,  'VND', 15, '0505678901', '2025-04-05', NULL, NULL, 'LVT003\\download (1).jpg', 'Còn hàng'),
-('VT004', 'LVT008', 'Nguồn LG PSU 500W', 'DVT001', 1200000.00,  'VND', 6, '0505678901', '2025-04-05', NULL, NULL, 'LVT008\\cu.jpg', 'Còn hàng'),
+('VT001', 'LVT002', 'Chip xử lý LG Alpha', 'DVT001', 3000000.00, 'VND', 2, '0505678901', '2025-04-05', '2025-05-02', 'nhy21', 'LVT002\\download (1).jpg', 'Còn hàng'),
+('VT002', 'LVT005', 'Bo mạch chủ LG Main X1', 'DVT001', 1500000.00, 'VND', 22, '0505678901', '2025-04-05', '2025-05-17', 'NHYYY', 'LVT005\\download.jpg', 'Còn hàng'),
+('VT003', 'LVT003', 'RAM LG DDR4 8GB', 'DVT001', 800000.00, 'VND', 1, '0505678901', '2025-04-05', NULL, NULL, 'LVT003\\download (1).jpg', 'Còn hàng'),
+('VT004', 'LVT008', 'Nguồn LG PSU 500W', 'DVT001', 1200000.00, 'VND', 6, '0505678901', '2025-04-05', NULL, NULL, 'LVT008\\cu.jpg', 'Còn hàng'),
 ('VT005', 'LVT006', 'Cảm biến LG Sensor Pro', 'DVT001', 1000000.00, 'VND', 5, '0505678901', '2025-04-05', NULL, NULL, 'LVT006\\download (1).jpg', 'Sắp hết'),
 ('VT006', 'LVT001', 'Keo dán tản nhiệt', 'DVT001', 50000.00, 'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\download.jpg', 'Còn hàng'),
-('VT007', 'LVT001', 'Keo silicone', 'DVT001', 45000.00,  'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\download (7).jpg', 'Còn hàng'),
-('VT008', 'LVT001', 'Keo AB', 'DVT001', 60000.00,  'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\VT001.jpg', 'Còn hàng'),
+('VT007', 'LVT001', 'Keo silicone', 'DVT001', 45000.00, 'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\download (7).jpg', 'Còn hàng'),
+('VT008', 'LVT001', 'Keo AB', 'DVT001', 60000.00, 'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\VT001.jpg', 'Còn hàng'),
 ('VT009', 'LVT001', 'Dây điện lõi đồng LG 2.5mm', 'DVT001', 10000.00, 'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\download (8).jpg', 'Còn hàng'),
 ('VT010', 'LVT001', 'Dây cáp tín hiệu LG 3m', 'DVT001', 20000.00, 'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\download21.jpg', 'Còn hàng'),
 ('VT011', 'LVT001', 'Dây nguồn LG 220V', 'DVT001', 15000.00, 'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\download (1).jpg', 'Còn hàng'),
 ('VT012', 'LVT001', 'Ốc vít LG M4x10mm', 'DVT001', 500.00, 'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\download (4).jpg', 'Còn hàng'),
-('VT013', 'LVT001', 'Đinh tán nhôm 3mm', 'DVT001', 700.00,  'VND', 1, '0505678901', '2025-04-20', NULL, NULL, '\r\nLVT001\\download (2).jpg', 'Còn hàng'),
-('VT014', 'LVT001', 'Băng dính cách điện 3M', 'DVT001', 8000.00,  'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\images (3).jpg', 'Còn hàng'),
+('VT013', 'LVT001', 'Đinh tán nhôm 3mm', 'DVT001', 700.00, 'VND', 1, '0505678901', '2025-04-20', NULL, NULL, '\r\nLVT001\\download (2).jpg', 'Còn hàng'),
+('VT014', 'LVT001', 'Băng dính cách điện 3M', 'DVT001', 8000.00, 'VND', 1, '0505678901', '2025-04-20', NULL, NULL, 'LVT001\\images (3).jpg', 'Còn hàng'),
 ('VT017', 'LVT002', 'IC nguồn LG 1117-3.3V', 'DVT001', 4000.00, 'VND', 1, '0601234567', '2025-04-20', NULL, NULL, 'LVT002\\download (11).jpg', 'Còn hàng'),
-('VT018', 'LVT002', 'IC điều khiển ATmega328P', 'DVT001', 30000.00,  'VND', 1, '0601234567', '2025-04-20', NULL, NULL, 'LVT002\\download (5).jpg', 'Còn hàng'),
-('VT019', 'LVT003', 'Điện trở 10KΩ 1/4W', 'DVT001', 100.00,  'VND', 1, '0201234567', '2025-04-20', NULL, NULL, 'LVT003\\images (2).jpg', 'Còn hàng'),
-('VT020', 'LVT003', 'Tụ điện gốm 100nF 50V', 'DVT001', 150.00,  'VND', 1, '0201234567', '2025-04-20', NULL, NULL, 'LVT003\\images (3).jpg', 'Còn hàng'),
+('VT018', 'LVT002', 'IC điều khiển ATmega328P', 'DVT001', 30000.00, 'VND', 1, '0601234567', '2025-04-20', NULL, NULL, 'LVT002\\download (5).jpg', 'Còn hàng'),
+('VT019', 'LVT003', 'Điện trở 10KΩ 1/4W', 'DVT001', 100.00, 'VND', 1, '0201234567', '2025-04-20', NULL, NULL, 'LVT003\\images (2).jpg', 'Còn hàng'),
+('VT020', 'LVT003', 'Tụ điện gốm 100nF 50V', 'DVT001', 150.00, 'VND', 1, '0201234567', '2025-04-20', NULL, NULL, 'LVT003\\images (3).jpg', 'Còn hàng'),
 ('VT021', 'LVT003', 'Điện trở 10kΩ', 'DVT001', 100.00, 'VND', 1000, '0601234567', '2025-04-23', NULL, NULL, 'LVT003\\images (1).jpg', 'Còn hàng'),
-('VT022', 'LVT003', 'Tụ gốm 10nF', 'DVT001', 200.00,  'VND', 800, '0601234567', '2025-04-23', NULL, NULL, 'LVT003\\download (8).jpg', 'Còn hàng'),
-('VT023', 'LVT003', 'Cuộn cảm 33uH', 'DVT001', 1200.00,  'VND', 300, '0601234567', '2025-04-23', NULL, NULL, 'LVT003\\download (3).jpg', 'Còn hàng'),
+('VT022', 'LVT003', 'Tụ gốm 10nF', 'DVT001', 200.00, 'VND', 800, '0601234567', '2025-04-23', NULL, NULL, 'LVT003\\download (8).jpg', 'Còn hàng'),
+('VT023', 'LVT003', 'Cuộn cảm 33uH', 'DVT001', 1200.00, 'VND', 300, '0601234567', '2025-04-23', NULL, NULL, 'LVT003\\download (3).jpg', 'Còn hàng'),
 ('VT024', 'LVT005', 'Biến áp xung 12V', 'DVT001', 25000.00, 'VND', 150, '0601234567', '2025-04-23', NULL, NULL, 'LVT005\\download (2).jpg', 'Còn hàng'),
-('VT025', 'LVT004', 'OLED Panel 5.5 inch', 'DVT001', 450000.00,  'VND', 120, '0601234567', '2025-04-23', NULL, NULL, 'LVT004\\download (9).jpg', 'Còn hàng'),
+('VT025', 'LVT004', 'OLED Panel 5.5 inch', 'DVT001', 450000.00, 'VND', 120, '0601234567', '2025-04-23', NULL, NULL, 'LVT004\\download (9).jpg', 'Còn hàng'),
 ('VT026', 'LVT004', 'Còi báo động 12V', 'DVT001', 18000.00, 'VND', 250, '0601234567', '2025-04-23', NULL, NULL, 'LVT004\\download.jpg', 'Còn hàng'),
 ('VT027', 'LVT004', 'Màn hình cảm ứng 7 inch', 'DVT001', 750000.00, 'VND', 90, '0601234567', '2025-04-23', NULL, NULL, 'LVT004\\download (1).jpg', 'Còn hàng'),
-('VT028', 'LVT007', 'Quạt tản nhiệt 12V 80mm', 'DVT001', 30000.00,'VND', 500, '0601234567', '2025-04-23', NULL, NULL, 'LVT005\\download (1).jpg', 'Còn hàng'),
+('VT028', 'LVT007', 'Quạt tản nhiệt 12V 80mm', 'DVT001', 30000.00, 'VND', 500, '0601234567', '2025-04-23', NULL, NULL, 'LVT005\\download (1).jpg', 'Còn hàng'),
 ('VT029', 'LVT005', 'Mainboard điều khiển trung tâm', 'DVT001', 1200000.00, 'VND', 60, '0601234567', '2025-04-23', NULL, NULL, 'LVT005\\download (3).jpg', 'Còn hàng'),
-('VT030', 'LVT005', 'PCB mạch nguồn 2 lớp', 'DVT001', 25000.00,  'VND', 300, '0601234567', '2025-04-23', NULL, NULL, 'LVT005\\download (4).jpg', 'Còn hàng'),
+('VT030', 'LVT005', 'PCB mạch nguồn 2 lớp', 'DVT001', 25000.00, 'VND', 300, '0601234567', '2025-04-23', NULL, NULL, 'LVT005\\download (4).jpg', 'Còn hàng'),
 ('VT031', 'LVT005', 'Module WiFi ESP8266', 'DVT001', 45000.00, 'VND', 200, '0601234567', '2025-04-23', NULL, NULL, 'LVT005\\download (5).jpg', 'Còn hàng'),
-('VT032', 'LVT006', 'Cụm cảm biến ánh sáng và cử động', 'DVT001', 110000.00,  'VND', 150, '0601234567', '2025-04-23', NULL, NULL, 'LVT005\\download (6).jpg', 'Còn hàng'),
+('VT032', 'LVT006', 'Cụm cảm biến ánh sáng và cử động', 'DVT001', 110000.00, 'VND', 150, '0601234567', '2025-04-23', NULL, NULL, 'LVT005\\download (6).jpg', 'Còn hàng'),
 ('VT033', 'LVT006', 'Cảm biến nhiệt độ & độ ẩm DHT22', 'DVT001', 40000.00, 'VND', 300, '0601234567', '2025-04-23', NULL, NULL, 'LVT006\\download (7).jpg', 'Còn hàng'),
-('VT034', 'LVT006', 'Cảm biến tiệm cận điện dung LJC18A3-H-Z/BX', 'DVT001', 50000.00,  'VND', 180, '0601234567', '2025-04-23', NULL, NULL, 'LVT006\\download.jpg', 'Còn hàng'),
+('VT034', 'LVT006', 'Cảm biến tiệm cận điện dung LJC18A3-H-Z/BX', 'DVT001', 50000.00, 'VND', 180, '0601234567', '2025-04-23', NULL, NULL, 'LVT006\\download.jpg', 'Còn hàng'),
 ('VT035', 'LVT006', 'Cảm biến áp suất BMP280', 'DVT001', 65000.00, 'VND', 200, '0601234567', '2025-04-23', NULL, NULL, 'LVT006\\download (2).jpg', 'Còn hàng'),
 ('VT036', 'LVT006', 'Thiết bị đo dòng & áp ACS712 30A', 'DVT001', 55000.00, 'VND', 220, '0601234567', '2025-04-23', NULL, NULL, 'LVT006\\download (3).jpg', 'Còn hàng'),
 ('VT037', 'LVT007', 'Relay 5V 10A SPDT', 'DVT001', 15000.00, 'VND', 500, '0601234567', '2025-04-23', NULL, NULL, 'LVT007\\download (3).jpg', 'Còn hàng'),
-('VT038', 'LVT007', 'Động cơ servo SG90 9g', 'DVT001', 45000.00,  'VND', 300, '0601234567', '2025-04-23', NULL, NULL, 'LVT007\\download.jpg', 'Còn hàng'),
+('VT038', 'LVT007', 'Động cơ servo SG90 9g', 'DVT001', 45000.00, 'VND', 300, '0601234567', '2025-04-23', NULL, NULL, 'LVT007\\download.jpg', 'Còn hàng'),
 ('VT039', 'LVT007', 'Bộ truyền động tuyến tính mini 12V', 'DVT001', 180000.00, 'VND', 100, '0601234567', '2025-04-23', NULL, NULL, 'LVT007\\download (1).jpg', 'Còn hàng'),
 ('VT040', 'LVT007', 'Công tắc nhấn tắt/mở 2 chân', 'DVT001', 5000.00, 'VND', 1000, '0601234567', '2025-04-23', NULL, NULL, 'LVT007\\download (2).jpg', 'Còn hàng'),
 ('VT041', 'LVT008', 'Adapter 12V 2A', 'DVT001', 55000.00, 'VND', 300, '0601234567', '2025-04-23', NULL, NULL, 'LVT008\\download (4).jpg', 'Còn hàng'),
@@ -604,7 +552,7 @@ ALTER TABLE `migrations`
 -- Chỉ mục cho bảng `nguoidung`
 --
 ALTER TABLE `nguoidung`
-  ADD PRIMARY KEY (`taikhoan`),
+  ADD PRIMARY KEY (`TaiKhoan`),
   ADD UNIQUE KEY `nguoidung_email_unique` (`Email`);
 
 --
@@ -622,22 +570,10 @@ ALTER TABLE `nhapkho`
   ADD PRIMARY KEY (`MaPhieuNhap`);
 
 --
--- Chỉ mục cho bảng `phieudonkho`
---
-ALTER TABLE `phieudonkho`
-  ADD PRIMARY KEY (`MaPhieuDonKho`);
-
---
 -- Chỉ mục cho bảng `phieukiemke`
 --
 ALTER TABLE `phieukiemke`
   ADD PRIMARY KEY (`MaPhieuKiemKe`);
-
---
--- Chỉ mục cho bảng `phieuluanchuyenkho`
---
-ALTER TABLE `phieuluanchuyenkho`
-  ADD PRIMARY KEY (`MaPhieuLuanChuyen`);
 
 --
 -- Chỉ mục cho bảng `phongban`

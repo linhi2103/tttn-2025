@@ -7,6 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="icon" href="https://tongkhodieuhoalg.com/wp-content/uploads/2023/10/favicon-dieu-hoa-lg-100x100.png" sizes="32x32">
 </head>
 <body>
 @livewire('container')

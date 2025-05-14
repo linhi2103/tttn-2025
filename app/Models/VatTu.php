@@ -70,6 +70,8 @@ class VatTu extends Model
         return $this->hasMany(ThanhLyKho::class, 'MaVatTu', 'MaVatTu');
     }
 
-    
-
+    public function chitietvattu()
+    {
+        return $this->hasOne(ChiTietVatTu::class, 'MaVatTu', 'MaVatTu');
+    }
 }
