@@ -25,7 +25,6 @@ class ThanhLyKho extends Model
         'NgayLap',
         'TrangThai',
         'DonGia',
-        'GhiChu',
         'LyDoThanhLy',
         'BienPhapThanhLy',
         'MaLenhDieuDong',

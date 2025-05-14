@@ -196,7 +196,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" wire:click="closeModal">Hủy</button>
-                        <button class="btn btn-primary" wire:click="{{ $isAdd ? 'save' : 'update' }}">Lưu</button>
+                        <button class="btn btn-lg-red" wire:click="{{ $isAdd ? 'save' : 'update' }}">Lưu</button>
                     </div>
                 </div>
             </div>

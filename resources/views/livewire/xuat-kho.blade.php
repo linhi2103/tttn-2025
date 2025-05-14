@@ -63,11 +63,11 @@
                     @foreach ($xuatkhos as $item)
                         <tr>
                             <td>{{ $item->MaPhieuXuat }}</td>
-                            <td>{{ $item->kho->TenKho ?? 'N/A' }}</td>
+                            <td>{{ $item->MaKho ?? 'N/A' }}</td>
                             <td>{{ date('d/m/Y', strtotime($item->NgayXuat)) }}</td>
                             <td>{{ $item->nhanvien->MaNhanVien ?? 'N/A' }}</td>
                             <td>{{ $item->nhanvien->TenNhanVien ?? 'N/A' }}</td>
-                            <td>{{ $item->donvivanchuyen->TenDonViVanChuyen ?? 'N/A' }}</td>
+                            <td>{{ $item->donViVanChuyen->TenDonViVanChuyen ?? 'N/A' }}</td>
                             
                             <td>{{ $item->doitac->MaSoThue_DoiTac ?? 'N/A' }}</td>
                             <td>{{ $item->doitac->TenDoiTac ?? 'N/A' }}</td>
@@ -121,7 +121,7 @@
                                 <label>Tên Kho</label>
                                 <select class="form-control @error('MaKho') is-invalid @enderror" wire:model="MaKho" required>
                                     <option value="">-- Chọn Kho --</option>
-                                    @foreach ($danhmuckhos as $kho)
+                                    @foreach ($khos as $kho)
                                         <option value="{{ $kho->MaKho }}">{{ $kho->TenKho }}</option>
                                     @endforeach
                                 </select>
@@ -149,7 +149,7 @@
                                 <select class="form-control @error('MaDonViVanChuyen') is-invalid @enderror" 
                                         wire:model="MaDonViVanChuyen" required>
                                     <option value="">-- Chọn ĐVVC --</option>
-                                    @foreach ($donViVanChuyens as $dvvc)
+                                    @foreach ($donViVanChuyen as $dvvc)
                                         <option value="{{ $dvvc->MaDonViVanChuyen }}">{{ $dvvc->TenDonViVanChuyen }}</option>
                                     @endforeach
                                 </select>
@@ -160,7 +160,7 @@
                                 <select class="form-control @error('MaSoThue_DoiTac') is-invalid @enderror" 
                                         wire:model="MaSoThue_DoiTac" required>
                                     <option value="">-- Chọn Đối Tác --</option>
-                                    @foreach ($doiTacs as $doitac)
+                                    @foreach ($doitacs as $doitac)
                                         <option value="{{ $doitac->MaSoThue_DoiTac }}">{{ $doitac->TenDoiTac }}</option>
                                     @endforeach
                                 </select>
@@ -240,7 +240,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="closeModal">Hủy</button>
-                        <button type="submit" class="btn btn-danger">Lưu</button>
+                        <button type="submit" class="btn btn-lg-red">Lưu</button>
                     </div>
                 </form>
             </div>

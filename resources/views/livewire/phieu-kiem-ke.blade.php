@@ -11,14 +11,12 @@
                 </div>
             </div>
 
-            <!-- Success Message -->
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-            <!-- Error Message -->
             @if(session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ session('error') }}
@@ -30,20 +28,21 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                        <th>Mã Phiếu Kiểm Kê</th>
-                        <th>Mã Vật Tư</th>
-                        <th>Tên Vật Tư</th>
-                        <th>Mã Kho</th>
-                        <th>Mã Nhân Viên</th>
-                        <th>Tên Nhân Viên</th>
-                        <th>Chênh Lệch</th>
-                        <th>Ngày Kiểm Kê</th>
-                        <th>Trạng Thái</th>
-                        <th>Mã Lệnh Điều Động</th>
-                        <th>Số Lượng Thực Tế</th>
-                        <th>Số Lượng Hệ Thống</th>
-                        <th>Tình Trạng</th>
-                        <th>Ghi Chú</th>
+                            <th>Mã Phiếu Kiểm Kê</th>
+                            <th>Mã Vật Tư</th>
+                            <th>Tên Vật Tư</th>
+                            <th>Mã Kho</th>
+                            <th>Mã Nhân Viên</th>
+                            <th>Tên Nhân Viên</th>
+                            <th>Chênh Lệch</th>
+                            <th>Ngày Kiểm Kê</th>
+                            <th>Trạng Thái</th>
+                            <th>Mã Lệnh Điều Động</th>
+                            <th>Số Lượng Thực Tế</th>
+                            <th>Số Lượng Hệ Thống</th>
+                            <th>Tình Trạng</th>
+                            <th>Ghi Chú</th>
+                            <th>Hành Động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,16 +50,24 @@
                             <tr>
                                 <td>{{ $item->MaPhieuKiemKe }}</td>
                                 <td>{{ $item->MaVatTu }}</td>
-                                <td>{{ $item->vattu->TenVatTu ?? 'N/A' }}</td>
+                                <td>{{ $item->vatTu->TenVatTu ?? 'N/A' }}</td>
                                 <td>{{ $item->MaKho }}</td>
                                 <td>{{ $item->nhanvien->MaNhanVien ?? 'N/A' }}</td>
                                 <td>{{ $item->nhanvien->TenNhanVien ?? 'N/A' }}</td>
-                                <td>{{ $item->ChenhLech }}</td>
+                                <td>{{ abs($item->SoLuongThucTe - $item->vatTu->SoLuongTon) }}</td>
                                 <td>{{ $item->NgayKiemKe }}</td>
-                                <td>{{ $item->TrangThai ?? 'N/A' }}</td>
+                                <td>
+                                    <span class="badge rounded-pill 
+                                        {{ 
+                                            $item->TrangThai == 'Đã Kiểm Kê' ? 'bg-success' : 
+                                            ($item->TrangThai == 'Chờ Duyệt' ? 'bg-warning text-dark' : 'bg-danger') 
+                                        }}">
+                                        {{$item->TrangThai}}
+                                    </span>
+                                </td>
                                 <td>{{ $item->lenhDieuDong->MaLenhDieuDong ?? 'N/A' }}</td>
                                 <td>{{ $item->SoLuongThucTe }}</td>
-                                <td>{{ $item->SoLuongHeThong }}</td>
+                                <td>{{ $item->vatTu->SoLuongTon }}</td>
                                 <td>{{ $item->TinhTrang ?? 'N/A' }}</td>
                                 <td>{{ $item->GhiChu ?? 'N/A' }}</td>
                                 <td>
@@ -83,7 +90,7 @@
         </div>
 
         @if ($isAdd || $isEdit)
-        <div class="modal fade show" style="display: block; background-color: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -95,13 +102,14 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label>Mã Phiếu Kiểm Kê</label>
-                                    <input type="text" class="form-control @error('MaPhieuKiemKe') is-invalid @enderror" 
-                                           wire:model="MaPhieuKiemKe" {{ $isEdit ? 'readonly' : '' }} required>
+                                    <input type="text" class="form-control @error('MaPhieuKiemKe') is-invalid @enderror"
+                                        wire:model="MaPhieuKiemKe" @if($isEdit) readonly @endif required>
                                     @error('MaPhieuKiemKe') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
+
                                 <div class="col-md-6 mb-3">
                                     <label>Tên Vật Tư</label>
-                                    <select class="form-control @error('MaVatTu') is-invalid @enderror" wire:model="MaVatTu" required>
+                                    <select class="form-control @error('MaVatTu') is-invalid @enderror" wire:model.live="MaVatTu" required>
                                         <option value="">-- Chọn Vật Tư --</option>
                                         @foreach ($vattus as $vattu)
                                             <option value="{{ $vattu->MaVatTu }}">{{ $vattu->TenVatTu }}</option>
@@ -109,6 +117,7 @@
                                     </select>
                                     @error('MaVatTu') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
+
                                 <div class="col-md-6 mb-3">
                                     <label>Mã Kho</label>
                                     <select class="form-control @error('MaKho') is-invalid @enderror" wire:model="MaKho" required>
@@ -119,10 +128,10 @@
                                     </select>
                                     @error('MaKho') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
+
                                 <div class="col-md-6 mb-3">
                                     <label>Mã Nhân Viên</label>
-                                    <select class="form-control @error('MaNhanVien') is-invalid @enderror" 
-                                            wire:model="MaNhanVien" required>
+                                    <select class="form-control @error('MaNhanVien') is-invalid @enderror" wire:model="MaNhanVien" required>
                                         <option value="">-- Chọn Nhân Viên --</option>
                                         @foreach ($nhanViens as $nhanvien)
                                             <option value="{{ $nhanvien->MaNhanVien }}">{{ $nhanvien->MaNhanVien }}</option>
@@ -130,16 +139,12 @@
                                     </select>
                                     @error('MaNhanVien') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label>Chênh Lệch</label>
-                                    <input type="number" class="form-control @error('ChenhLech') is-invalid @enderror" 
-                                           wire:model="ChenhLech" min="1" required>
-                                    @error('ChenhLech') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                </div>
+
+
                                 <div class="col-md-6 mb-3">
                                     <label>Ngày Kiểm Kê</label>
-                                    <input type="date" class="form-control @error('NgayKiemKe') is-invalid @enderror" 
-                                           wire:model="NgayKiemKe" required>
+                                    <input type="date" class="form-control @error('NgayKiemKe') is-invalid @enderror"
+                                        wire:model="NgayKiemKe" required>
                                     @error('NgayKiemKe') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
@@ -147,46 +152,52 @@
                                     <select class="form-control @error('TrangThai') is-invalid @enderror" 
                                             wire:model="TrangThai" required>
                                         <option value="">-- Chọn Trạng Thái --</option>
-                                        <option value="1">Đã Kiểm Kê</option>
-                                        <option value="0">Chưa Kiểm Kê</option>
+                                        <option value="Đã Kiểm Kê">Đã Kiểm Kê</option>
+                                        <option value="Chờ Duyệt">Chờ Duyệt</option>
+                                        <option value="Đã Hủy">Đã Hủy</option>
                                     </select>
                                     @error('TrangThai') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Lệnh Điều Động (nếu có)</label>
-                                    <select class="form-control @error('MaLenhDieuDong') is-invalid @enderror" 
+                                    <select class="form-control @error('MaLenhDieuDong') is-invalid @enderror"
                                             wire:model="MaLenhDieuDong">
                                         <option value="">-- Chọn Lệnh Điều Động --</option>
                                         @foreach($lenhDieuDongs as $ldd)
                                             <option value="{{ $ldd->MaLenhDieuDong }}">{{ $ldd->MaLenhDieuDong }}</option>
                                         @endforeach
                                     </select>
+                                    @error('MaLenhDieuDong') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
-                                
-                                
+
                                 <div class="col-md-6 mb-3">
                                     <label>Số Lượng Thực Tế</label>
-                                    <input type="number" class="form-control @error('SoLuongThucTe') is-invalid @enderror" 
-                                           wire:model="SoLuongThucTe" min="0" required>
+                                    <input type="number" class="form-control @error('SoLuongThucTe') is-invalid @enderror"
+                                        wire:model="SoLuongThucTe" min="0" required>
                                     @error('SoLuongThucTe') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
+
                                 <div class="col-md-6 mb-3">
                                     <label>Số Lượng Hệ Thống</label>
-                                    <input type="number" class="form-control @error('SoLuongHeThong') is-invalid @enderror" 
-                                           wire:model="SoLuongHeThong" min="0" required>
-                                    @error('SoLuongHeThong') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    <input type="number" class="form-control @error('SoLuongTon') is-invalid @enderror"
+                                        wire:model="SoLuongTon" required readonly>
+                                    @error('SoLuongTon') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
+
                                 <div class="col-md-6 mb-3">
                                     <label>Tình Trạng</label>
-                                    <select class="form-control @error('TinhTrang') is-invalid @enderror" 
+                                    <select class="form-control @error('TinhTrang') is-invalid @enderror"
                                             wire:model="TinhTrang" required>
                                         <option value="">-- Chọn Tình Trạng --</option>
-                                        <option value="1">Đã Kiểm Kê</option>
-                                        <option value="0">Chưa Kiểm Kê</option>
+                                        <option value="Còn tốt 100%">Còn tốt 100%</option>
+                                        <option value="Kém chất lượng">Kém chất lượng</option>
+                                        <option value="Hỏng">Hỏng</option>
+                                        <option value="Hết">Hết</option>
+                                        <option value="Thất Lạc">Thất Lạc</option>
                                     </select>
                                     @error('TinhTrang') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
-                                
+
                                 <div class="col-md-12 mb-3">
                                     <label>Ghi Chú</label>
                                     <textarea class="form-control" wire:model="GhiChu"></textarea>
@@ -196,7 +207,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" wire:click="closeModal">Hủy</button>
-                        <button class="btn btn-primary" wire:click="{{ $isAdd ? 'save' : 'update' }}">Lưu</button>
+                        <button class="btn btn-danger" wire:click="{{ $isAdd ? 'save' : 'update' }}">Lưu</button>
                     </div>
                 </div>
             </div>
@@ -204,7 +215,7 @@
         @endif
 
         @if ($isDelete)
-        <div class="modal fade show" style="display: block; background-color: rgba(0,0,0,0.5);"  tabindex="-1">
+        <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -216,11 +227,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="closeModal">Hủy</button>
-                        <button type="button" class="btn btn-lg-red" wire:click="delete">Xóa</button>
+                        <button type="button" class="btn btn-danger" wire:click="delete">Xóa</button>
                     </div>
                 </div>
             </div>
         </div>
         @endif
+
     </div>
 </div>

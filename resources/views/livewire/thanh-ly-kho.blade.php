@@ -38,12 +38,11 @@
                         <th>Tên Nhân Viên</th>
                         <th>Số Lượng</th>
                         <th>Ngày Lập</th>
-                        <th>Trạng Thái</th>
                         <th>Lệnh Điều Động</th>
                         <th>Đơn Giá</th>
                         <th>Lý Do Thanh Lý</th>
                         <th>Biện Pháp Thanh Lý</th>
-                        <th>Ghi Chú</th>
+                        <th>Trạng Thái</th>
                         <th>Thao tác</th>
                         </tr>
                     </thead>
@@ -58,12 +57,19 @@
                                 <td>{{ $item->nhanvien->TenNhanVien ?? 'N/A' }}</td>
                                 <td>{{ $item->SoLuong }}</td>
                                 <td>{{ $item->NgayLap }}</td>
-                                <td>{{ $item->TrangThai ?? 'N/A' }}</td>
                                 <td>{{ $item->lenhDieuDong->MaLenhDieuDong ?? 'N/A' }}</td>
                                 <td>{{ $item->DonGia }}</td>
                                 <td>{{ $item->LyDoThanhLy ?? 'N/A' }}</td>
                                 <td>{{ $item->BienPhapThanhLy ?? 'N/A' }}</td>
-                                <td>{{ $item->GhiChu ?? 'N/A' }}</td>
+                                <td>
+                                    <span class="badge rounded-pill 
+                                        {{ 
+                                            $item->TrangThai == 'Đã thanh lý' ? 'bg-success' : 
+                                            ($item->TrangThai == 'Chờ duyệt' ? 'bg-warning text-dark' : 'bg-danger') 
+                                        }}">
+                                        {{$item->TrangThai}}
+                                    </span>
+                                </td>
                                 <td>
                                     <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $item->MaPhieuThanhLy }}')">
                                         <i class="fas fa-edit"></i>
@@ -150,7 +156,7 @@
                                         <option value="">-- Chọn Trạng Thái --</option>
                                         <option value="Đã Thanh Lý">Đã Thanh Lý</option>
                                         <option value="Chờ duyệt">Chờ duyệt</option>
-                                        <option value="Chưa Thanh Lý">Chưa Thanh Lý</option>
+                                        <option value="Đã Hủy">Đã Hủy</option>
                                     </select>
                                     @error('TrangThai') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
@@ -184,20 +190,12 @@
                                     </select>
                                     @error('MaLenhDieuDong') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label>Tình Trạng</label>
-                                    <input type="text" class="form-control" wire:model="TinhTrang">
-                                </div>
-                                <div class="col-md-12 mb-3">
-                                    <label>Ghi Chú</label>
-                                    <textarea class="form-control" wire:model="GhiChu"></textarea>
-                                </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" wire:click="closeModal">Hủy</button>
-                        <button class="btn btn-primary" wire:click="{{ $isAdd ? 'save' : 'update' }}">Lưu</button>
+                        <button class="btn btn-lg-red" wire:click="{{ $isAdd ? 'save' : 'update' }}">Lưu</button>
                     </div>
                 </div>
             </div>

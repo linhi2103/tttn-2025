@@ -77,7 +77,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" wire:click="closeModal">Hủy</button>
-                    <button type="button" class="btn btn-danger" wire:click="{{ $isEdit ? 'update' : 'save' }}">Lưu</button>
+                    <button type="button" class="btn btn-lg-red" wire:click="{{ $isEdit ? 'update' : 'save' }}">Lưu</button>
                 </div>
             </div>
         </div>

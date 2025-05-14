@@ -11,40 +11,18 @@
 </head>
 <body>
     <header class="header">
-        <div class="top-bar">
-            <span><i class="fas fa-dollar-sign"></i> Cam kết giá tốt nhất</span>
-            <span><i class="fas fa-truck"></i> Miễn phí vận chuyển</span>
-            <span><i class="fas fa-handshake"></i> Thanh toán khi nhận hàng</span>
-            <span><i class="fas fa-undo"></i> Bảo hành tận nơi</span>
-        </div>
-        <div class="top-header bg-danger text-white py-2">
-            <div class="container d-flex justify-content-between">
-                <span>
-                    <i class="fas fa-phone-alt"></i> Hotline: 0123.456.789
-                </span>
-                <span>
-                    <i class="fas fa-envelope"></i> Email: contact@tongkholg.com
-                </span>
-            </div>
-        </div>
         <div class="main-header py-3 bg-white shadow-sm">
             <div class="container d-flex align-items-center justify-content-between">
                 <a href="index.php" class="logo">
                     <img src="{{ asset('images/download.png') }}" alt="Logo" class="img-fluid" style="height: 60px;">
-                </a>
+                </a> 
                 <form class="search-form d-flex">
                     <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm...">
                     <button class="btn btn-danger">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
-                <div class="header-contact d-flex align-items-center">
-                    <i class="fas fa-headset fs-3 text-danger"></i>
-                    <div class="contact-info ms-2">
-                        <span>Tư vấn 24/7</span>
-                        <strong>0123.456.789</strong>
-                    </div>
-                </div>
+
             </div>
         </div>
     </header>   
@@ -127,36 +105,7 @@
     @endforelse
     
     <footer class="footer bg-dark text-light py-4">
-        <div class="column">
-            <h3>TỔNG KHO LG</h3>
-            <p><i class="fas fa-map-marker-alt"></i> Địa chỉ: 286 Nguyễn Xiển, Thanh Xuân, Hà Nội</p>
-            <p><i class="fas fa-phone"></i> Hotline: 0966.954.166</p>
-            <p><i class="fas fa-envelope"></i> Email: tongkholg@gmail.com</p>
-        </div>
-        <div class="column">
-            <h3>Chính sách</h3>
-            <a href="#">Chính sách đổi trả hàng</a>
-            <a href="#">Chính sách bảo hành</a>
-            <a href="#">Hướng dẫn mua hàng</a>
-            <a href="#">Chính sách đại lý</a>
-        </div>
-        <div class="column">
-            <h3>Fanpage</h3>
-            <div class="fb-page" 
-                 data-href="https://www.facebook.com/LGInformationDisplay" 
-                 data-tabs="timeline" 
-                 data-width="250" 
-                 data-height="150" 
-                 data-small-header="true" 
-                 data-adapt-container-width="true" 
-                 data-hide-cover="false" 
-                 data-show-facepile="true">
-            </div>
-        </div>
-        <div class="column">
-            <h3>Google Maps</h3>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.6532106779823!2d105.79934241493275!3d21.006555993870627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135abccb5c6b9b5%3A0xa1b5c81bb7f1a9a5!2zMjg2IE5ndXnhu4VuIFhpw6puLCBUaGFuaCBYdcOibiwgSMOgIE7hu5lp!5e0!3m2!1svi!2s!4v1648207637478!5m2!1svi!2s" width="250" height="150" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-        </div>
+
     </footer>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

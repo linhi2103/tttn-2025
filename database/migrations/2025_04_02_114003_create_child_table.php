@@ -57,10 +57,10 @@ return new class extends Migration
             $table->string('MaKho', 10);
             $table->date('NgayKiemKe');
             $table->string('MaNhanVien', 20);
-            $table->enum('TrangThai', ['Chờ duyệt', 'Hoàn thành', 'Hủy'])->default('Chờ duyệt');
+            $table->enum('TrangThai', ['Chờ Duyệt', 'Đã Kiểm Kê', 'Đã Hủy'])->default('Chờ Duyệt');
             $table->string('MaVatTu', 20);
             $table->integer('SoLuongThucTe');
-            $table->integer('SoLuongHeThong');
+            $table->integer('SoLuongTon');
             $table->enum('TinhTrang', ['Còn tốt 100%', 'Kém chất lượng', 'Mất chất lượng']);
             $table->string('MaLenhDieuDong', 20)->nullable();
             $table->text('GhiChu')->nullable();
@@ -75,14 +75,13 @@ return new class extends Migration
             $table->string('MaKho', 10);
             $table->date('NgayLap');
             $table->string('MaNhanVien', 20);
-            $table->enum('TrangThai', ['Đề xuất', 'Đã duyệt', 'Đã thanh lý', 'Đã hủy']);
+            $table->enum('TrangThai', ['Chờ duyệt', 'Đã thanh lý', 'Đã hủy']);
             $table->text('LyDoThanhLy')->nullable();
             $table->string('MaVatTu', 20);
             $table->integer('SoLuong');
             $table->decimal('DonGia', 18, 2);
             $table->enum('BienPhapThanhLy', ['Bán thanh lý', 'Chuyển đổi sử dụng', 'Tiêu hủy'])->default('Bán thanh lý');
             $table->string('MaLenhDieuDong', 20)->nullable();
-            $table->text('GhiChu')->nullable();
         });
     }
 

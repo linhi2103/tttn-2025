@@ -6,7 +6,6 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 use Livewire\Attributes\On;
-use Livewire\WithFileUploads;
 use App\Models\VatTu;
 use App\Models\NhapKho;
 use App\Models\DonViTinh;
@@ -18,7 +17,6 @@ use App\Models\Doitac;
 
 class NhapKhoComponent extends Component
 {
-    use WithFileUploads;
     use WithPagination;
     
     public $search = '';

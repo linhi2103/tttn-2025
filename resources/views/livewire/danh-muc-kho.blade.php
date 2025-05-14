@@ -135,7 +135,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" wire:click="closeModal">Hủy</button>
-                    <button type="button" class="btn btn-danger" wire:click="delete">Xóa</button>
+                    <button type="button" class="btn btn-lg-red" wire:click="delete">Xóa</button>
                 </div>
             </div>
         </div>
