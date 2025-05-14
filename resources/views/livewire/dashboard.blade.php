@@ -157,11 +157,11 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Ngày Nhập</label>
-                                <input type="date" class="form-control" wire:model="NgayNhap" value="{{ $NgayNhap ? new DateTime($NgayNhap)->format('Y-m-d') : '' }}" required>
+                                <input type="date" class="form-control" wire:model="NgayNhap" required>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Ghi Chú</label>
-                                <textarea class="form-control" wire:model="GhiChu" rows="3">{{ $GhiChu || '' }}</textarea>
+                                <textarea class="form-control" wire:model="GhiChu" rows="5">{{ $GhiChu || '' }}</textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Ảnh Vật Tư</label>
