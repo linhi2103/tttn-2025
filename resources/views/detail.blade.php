@@ -57,6 +57,11 @@
                         <span class="spec-label">Xuất xứ:</span>
                         <span class="spec-value">{{ $vatTu->chitietvattu->XuatXu ?? 'Không có thông tin' }}</span>
                     </div>
+                    <div class="spec-item">
+                        <i class="fas fa-box"></i>
+                        <span class="spec-label">Số lượng tồn:</span>
+                        <span class="spec-value">{{ $vatTu->SoLuongTon ?? 'Không có thông tin' }}</span>
+                    </div>
                 </div>
             </div>
         </div>

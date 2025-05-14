@@ -113,7 +113,7 @@ class PhieuKiemKeComponent extends Component
     public function save()
     {
         $this->validate([
-            'MaPhieuKiemKe' => 'required|unique:phieu_kiem_ke,MaPhieuKiemKe',
+            'MaPhieuKiemKe' => 'required|unique:phieukiemke,MaPhieuKiemKe',
             'MaVatTu' => 'required',
             'MaKho' => 'required',
             'MaNhanVien' => 'required',
@@ -133,10 +133,6 @@ class PhieuKiemKeComponent extends Component
         }
 
         if ($this->TrangThai === 'Đã Kiểm Kê') {
-            if ($vatTu->SoLuongTon < $this->SoLuongThucTe) {
-                session()->flash('error', 'Số lượng tồn kho không đủ!');
-                return;
-            }
             $vatTu->decrement('SoLuongTon', $this->SoLuongThucTe);
         }
 
@@ -190,10 +186,6 @@ class PhieuKiemKeComponent extends Component
 
         if ($oldTrangThai !== $this->TrangThai) {
             if ($this->TrangThai === 'Đã Kiểm Kê') {
-                if ($vatTu->SoLuongTon < $this->SoLuongThucTe) {
-                    session()->flash('error', 'Số lượng tồn kho không đủ!');
-                    return;
-                }
                 $vatTu->decrement('SoLuongTon', $this->SoLuongThucTe);
             }
 

@@ -24,7 +24,7 @@ class PhieuKiemKe extends Model
         'TrangThai',
         'MaVatTu',
         'SoLuongThucTe',
-        'SoLuongHeThong',
+        'SoLuongTon',
         'TinhTrang',
         'MaLenhDieuDong',
         'GhiChu'
@@ -33,7 +33,7 @@ class PhieuKiemKe extends Model
     protected $casts = [
         'NgayKiemKe' => 'date',
         'SoLuongThucTe' => 'integer',
-        'SoLuongHeThong' => 'integer',
+        'SoLuongTon' => 'integer',
         'ChenhLech' => 'integer'
     ];
 
@@ -41,7 +41,7 @@ class PhieuKiemKe extends Model
         'TrangThai' => 'Chờ duyệt',
         'TinhTrang' => 'Còn tốt 100%',
         'SoLuongThucTe' => 0,
-        'SoLuongHeThong' => 0
+        'SoLuongTon' => 0
     ];
 
     public function vatTu()

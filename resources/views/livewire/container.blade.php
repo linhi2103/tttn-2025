@@ -1,7 +1,7 @@
 <div>
 <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ url('/dashboard') }}">
                 <img src="	https://tuyendunglginnotek.vn/Data/images/banner/logo.png" alt="LG Logo" class="img-fluid" style="height: 60px;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
