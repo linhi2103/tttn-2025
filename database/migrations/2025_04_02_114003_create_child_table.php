@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('MaVatTu', 20);
             $table->integer('SoLuong');
             $table->decimal('DonGia', 18, 2);
-            $table->date('NgayNhap')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->date('NgayNhap')->default(now());
             $table->string('MaSoThue_DoiTac', 20);
             $table->string('MaNhanVien', 20);
             $table->string('MaLenhDieuDong', 20)->nullable();
@@ -65,9 +65,6 @@ return new class extends Migration
             $table->string('MaLenhDieuDong', 20)->nullable();
             $table->text('GhiChu')->nullable();
         });
-
-        // Add generated column for ChenhLech in phieukiemke
-        DB::statement("ALTER TABLE phieukiemke ADD COLUMN ChenhLech integer GENERATED ALWAYS AS (SoLuongThucTe - SoLuongHeThong) STORED");
 
         // Create thanhlykho table
         Schema::create('thanhlykho', function (Blueprint $table) {
