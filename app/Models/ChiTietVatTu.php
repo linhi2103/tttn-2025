@@ -19,4 +19,5 @@ class ChiTietVatTu extends Model
     {
         return $this->belongsTo(VatTu::class, 'MaVatTu');
     }
+    
 }

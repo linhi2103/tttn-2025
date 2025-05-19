@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tổng Kho LG</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="https://tongkhodieuhoalg.com/wp-content/uploads/2023/10/favicon-dieu-hoa-lg-100x100.png" sizes="32x32">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -23,7 +25,22 @@
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
-
+                <!-- Phần Dropdown Người dùng -->
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i> {{ Auth::user()->TaiKhoan }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Hồ sơ</a></li>
+                        @if(Auth::user()->TaiKhoan == 'admin')
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-plus"></i> Thêm người dùng</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-list"></i> Danh sách người dùng</a></li>
+                        @endif
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>   
@@ -91,7 +108,7 @@
                         <div class="card-body d-flex flex-column">
                             <h6 class="card-title fw-bold text-center">{{ $vatTu->TenVatTu }}</h6>
                             <p class="card-text"><strong class="text-success">Còn lại: {{ $vatTu->SoLuongTon }} cái</strong></p>
-                            <a href="{{ url($vatTu->MaVatTu) }}" class="btn btn-outline-danger mt-auto mx-auto w-75">Xem Chi Tiết</a>
+                            <a href="{{ url('product/' . $vatTu->MaVatTu) }}" class="btn btn-outline-danger mt-auto mx-auto w-75">Xem Chi Tiết</a>
                         </div>
                     </div>
                 </div>
@@ -108,7 +125,7 @@
     <footer class="footer py-4 bg-dark text-white">
         <p>&copy; 2025 Tổng Kho Điều Hòa LG. All rights reserved.</p>
     </footer>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 </body>
 </html>

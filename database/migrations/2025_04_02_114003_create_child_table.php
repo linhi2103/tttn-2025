@@ -39,7 +39,7 @@ return new class extends Migration
             $table->date('NgayXuat');
             $table->string('MaNhanVien', 20);
             $table->string('MaDonViVanChuyen', 20);
-            $table->string('MaSoThue_DoiTac', 20);
+            $table->string('DiaDiemXuat', 255);
             $table->string('DiaChi', 255);
             $table->string('DonViTienTe', 50);
             $table->string('MaVatTu', 20);

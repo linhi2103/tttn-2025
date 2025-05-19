@@ -20,8 +20,8 @@ return new class extends Migration
             $table->bigInteger('SDT')->unique();
             $table->bigInteger('CCCD')->unique();
             $table->string('MaPhongBan', 20);
-            $table->integer('MaVaiTro', false, true);
-            
+            $table->string('Anh', 255);
+            $table->string('TrangThai', 20);
         });
     }
 

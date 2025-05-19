@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\NguoiDung;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,9 +15,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        NguoiDung::create([
+            'TaiKhoan' => 'admin',
+            'MatKhau' => Hash::make('123456'),
+            'Email' => 'nhixinhgai2110@gmail.com',
+            'MaNhanVien' => '2110',
+            'MaVaiTro' => '0',
         ]);
     }
 }

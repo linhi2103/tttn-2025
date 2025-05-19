@@ -13,10 +13,14 @@ return new class extends Migration
     {
         // Create nguoidung table
         Schema::create('nguoidung', function (Blueprint $table) {
-            $table->string('TaiKhoan', 20)->primary();
+            $table->id();
+            $table->string('TaiKhoan', 20)->unique();
             $table->string('MatKhau', 255);
             $table->string('Email', 100)->unique();
-            $table->string('manhanvien', 20)->nullable();
+            $table->string('MaNhanVien', 20)->nullable();
+            $table->string('MaVaiTro', 20)->nullable();
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
     

@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url('/dashboard') }}">
-                <img src="	https://tuyendunglginnotek.vn/Data/images/banner/logo.png" alt="LG Logo" class="img-fluid" style="height: 60px;">
+                <img src="	https://tuyendunglginnotek.vn/Data/images/banner/logo.png" alt="LG Logo" class="img-fluid" style="height: 50px;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -43,13 +43,17 @@
                 <div class="d-flex">
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-1"></i> Admin
+                            <i class="fas fa-user-circle me-1"></i> {{ Auth::user()->TaiKhoan }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Hồ sơ</a></li>
+                            @if(Auth::user()->TaiKhoan == 'admin')
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-plus"></i> Thêm người dùng</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-list"></i> Danh sách người dùng</a></li>
+                            @endif
                             <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
                         </ul>
                     </div>
                 </div>

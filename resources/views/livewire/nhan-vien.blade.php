@@ -25,6 +25,7 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th>Ảnh</th>
                         <th>Mã nhân viên</th>
                         <th>Tên nhân viên</th>
                         <th>Giới tính</th>
@@ -33,20 +34,29 @@
                         <th>Phòng ban</th>
                         <th>Vai trò</th>
                         <th>CCCD</th> 
+                        <th>Tên Phòng Ban</th>
+                        <th>Trạng thái</th>
                         <th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($nhanviens as $nhanvien)
                         <tr>
+                            <td><img src="{{ asset('storage/' . $nhanvien->Anh) }}" alt="Ảnh Nhân viên" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"></td>
                             <td>{{ $nhanvien->MaNhanVien }}</td>
                             <td>{{ $nhanvien->TenNhanVien }}</td>
                             <td>{{ $nhanvien->GioiTinh }}</td>
                             <td>{{ $nhanvien->SDT }}</td>
                             <td>{{ $nhanvien->DiaChi }}</td>
                             <td>{{ $nhanvien->phongban->TenPhongBan }}</td>
-                            <td>{{ $nhanvien->vaitro->TenVaiTro }}</td>
                             <td>{{ $nhanvien->CCCD }}</td>
+                            <td>
+                                @if ($nhanvien->TrangThai == 1)
+                                    <span class="badge bg-success">Đang làm</span>
+                                @else
+                                    <span class="badge bg-danger">Đã nghỉ</span>
+                                @endif
+                            </td>
                             <td>
                                 <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $nhanvien->MaNhanVien }}')">
                                     <i class="fas fa-edit"></i>
@@ -110,17 +120,23 @@
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Vai trò</label>
-                                <select class="form-select" wire:model="MaVaiTro">
-                                    <option value="">--Chọn Vai trò--</option>
-                                    @foreach ($vaitros as $vaitro)
-                                        <option value="{{ $vaitro->MaVaiTro }}">{{ $vaitro->TenVaiTro }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
                                 <label class="form-label">CCCD</label>
                                 <input type="text" class="form-control" wire:model="CCCD" value="{{ $CCCD || '' }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Trạng thái</label>
+                                <select wire:model="TrangThai" class="form-select">
+                                    <option value="">-- Chọn trạng thái --</option>
+                                    <option value="1">Đang làm</option>
+                                    <option value="0">Đã nghỉ</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Ảnh</label>
+                                <input type="file" class="form-control" wire:model="Anh">
+                                <div class="mt-2">
+                                    <img src="{{ asset('images/nhanvien/' . $Anh) }}" alt="Ảnh xem trước" style="max-width: 200px; max-height: 200px; object-fit: cover;">
+                                </div>
                             </div>
                         </div>
                     </form>

@@ -22,7 +22,8 @@ class NhanVien extends Model
         'SDT',
         'CCCD',
         'MaPhongBan',
-        'MaVaiTro'
+        'Anh',
+        'TrangThai'
     ];
 
     const GIOI_TINH_VALUES = ['Nam', 'Nữ'];
@@ -30,7 +31,6 @@ class NhanVien extends Model
     protected $casts = [
         'SDT' => 'integer',
         'CCCD' => 'integer',
-        'MaVaiTro' => 'integer'
     ];
 
     protected $attributes = [
@@ -40,11 +40,6 @@ class NhanVien extends Model
     public function phongban()
     {
         return $this->belongsTo(PhongBan::class, 'MaPhongBan', 'MaPhongBan');
-    }
-
-    public function vaitro()
-    {
-        return $this->belongsTo(VaiTro::class, 'MaVaiTro', 'MaVaiTro');
     }
 
     public function nhapkho()

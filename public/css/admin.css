@@ -15,6 +15,11 @@ ul {
     margin: 0;
 }
 
+.dropdown-item:active {
+    color: #fff;
+    background: #dc3545;
+}
+
 .navbar-brand img {
     height: 40px;
 }

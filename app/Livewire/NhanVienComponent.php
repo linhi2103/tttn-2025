@@ -24,7 +24,8 @@ class NhanVienComponent extends Component
     public $DiaChi;
     public $GioiTinh = 'Nam'; // Gán giá trị mặc định
     public $MaPhongBan;
-    public $MaVaiTro;
+    public $Anh;
+    public $TrangThai;
 
     // Modal status
     public $isEdit = false;
@@ -48,7 +49,8 @@ class NhanVienComponent extends Component
         $this->DiaChi = $nhanvien->DiaChi;
         $this->GioiTinh = $nhanvien->GioiTinh;
         $this->MaPhongBan = $nhanvien->MaPhongBan;
-        $this->MaVaiTro = $nhanvien->MaVaiTro;
+        $this->Anh = $nhanvien->Anh;
+        $this->TrangThai = $nhanvien->TrangThai;
         $this->isEdit = true;
     }
     
@@ -75,7 +77,8 @@ class NhanVienComponent extends Component
         $this->DiaChi = null;
         $this->GioiTinh = 'Nam'; // Reset về giá trị mặc định
         $this->MaPhongBan = null;
-        $this->MaVaiTro = null;
+        $this->Anh = null;
+        $this->TrangThai = null;
     }
     
     public function save()
@@ -89,7 +92,8 @@ class NhanVienComponent extends Component
                 'SDT' => 'required|numeric',
                 'CCCD' => 'required|numeric',
                 'MaPhongBan' => 'required',
-                'MaVaiTro' => 'required|integer',
+                'Anh' => 'required',
+                'TrangThai' => 'required|integer',
             ]);
             
             $nhanvien = new NhanVien();
@@ -100,7 +104,8 @@ class NhanVienComponent extends Component
             $nhanvien->SDT = $this->SDT;
             $nhanvien->CCCD = $this->CCCD;
             $nhanvien->MaPhongBan = $this->MaPhongBan;
-            $nhanvien->MaVaiTro = $this->MaVaiTro;
+            $nhanvien->Anh = $this->Anh;
+            $nhanvien->TrangThai = $this->TrangThai;
             $nhanvien->save();
             
             $this->closeModal();
@@ -120,7 +125,8 @@ class NhanVienComponent extends Component
                 'SDT' => 'required|numeric',
                 'CCCD' => 'required|numeric',
                 'MaPhongBan' => 'required',
-                'MaVaiTro' => 'required|integer',
+                'Anh' => 'required',
+                'TrangThai' => 'required|integer',
             ]);
             
             $nhanvien = NhanVien::where('MaNhanVien', $this->MaNhanVien)->first();
@@ -131,7 +137,8 @@ class NhanVienComponent extends Component
                 $nhanvien->SDT = $this->SDT;
                 $nhanvien->CCCD = $this->CCCD;
                 $nhanvien->MaPhongBan = $this->MaPhongBan;
-                $nhanvien->MaVaiTro = $this->MaVaiTro;
+                $nhanvien->Anh = $this->Anh;
+                $nhanvien->TrangThai = $this->TrangThai;
                 $nhanvien->save();
                 
                 $this->closeModal();
@@ -155,8 +162,7 @@ class NhanVienComponent extends Component
                 $nhanvien->donvivanchuyen()->exists() || 
                 $nhanvien->xuatkho()->exists() || 
                 $nhanvien->phieukiemke()->exists() || 
-                $nhanvien->thanhlykho()->exists() || 
-                $nhanvien->thongkethuchi()->exists()) {
+                $nhanvien->thanhlykho()->exists()) {
                 
                 session()->flash('error', 'Không thể xóa Nhân viên này vì đang được sử dụng trong các bảng khác.');
                 $this->closeModal();
@@ -186,12 +192,10 @@ class NhanVienComponent extends Component
             ->paginate(10);
 
         $phongbans = PhongBan::all();
-        $vaitros = VaiTro::all();
 
         return view('livewire.nhan-vien', [
             'nhanviens' => $nhanviens,
-            'phongbans' => $phongbans,
-            'vaitros' => $vaitros
+            'phongbans' => $phongbans
         ]);
     }
 
