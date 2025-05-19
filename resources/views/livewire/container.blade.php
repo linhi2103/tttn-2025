@@ -10,11 +10,6 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" wire:click.prevent="setActiveComponent('dashboard')">
-                            <i class="fas fa-home"></i> Trang chủ
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('dashboard')">
                             <i class="fas fa-box"></i> Hàng hóa
                         </a>

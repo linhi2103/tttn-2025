@@ -16,7 +16,6 @@ class DoiTacComponent extends Component
     public $search = '';
     
     // Modal fields
-    public $id;
     public $MaSoThue_DoiTac;
     public $TenDoiTac;
     public $Email;
@@ -33,11 +32,10 @@ class DoiTacComponent extends Component
         $this->isAdd = true;
     }
     
-    public function showModalEdit($id)
+    public function showModalEdit($MaSoThue_DoiTac)
     {
-        $this->id = $id;
-        $this->MaSoThue_DoiTac = $MaSoThue_DoiTac;
-        $doitac = Doitac::where('id', $id)->first();
+        $doitac = Doitac::where('MaSoThue_DoiTac', $MaSoThue_DoiTac)->first();
+        $this->MaSoThue_DoiTac = $doitac->MaSoThue_DoiTac;
         $this->TenDoiTac = $doitac->TenDoiTac;
         $this->Email = $doitac->Email;
         $this->Sdt = $doitac->Sdt;
@@ -61,7 +59,6 @@ class DoiTacComponent extends Component
     
     public function resetModal()
     {
-        $this->id = null;
         $this->MaSoThue_DoiTac = null;
         $this->TenDoiTac = null;
         $this->Email = null;
@@ -73,7 +70,6 @@ class DoiTacComponent extends Component
     {
         try {
             $this->validate([
-                'id' => 'nullable',
                 'MaSoThue_DoiTac' => 'required',
                 'TenDoiTac' => 'required',
                 'Email' => 'nullable|email',
@@ -82,9 +78,6 @@ class DoiTacComponent extends Component
             ]);
             
             $doitac = new Doitac();
-            if ($this->id) {
-                $doitac = Doitac::where('id', $this->id)->first();
-            }
             $doitac->MaSoThue_DoiTac = $this->MaSoThue_DoiTac;
             $doitac->TenDoiTac = $this->TenDoiTac;
             $doitac->Email = $this->Email;
@@ -104,14 +97,13 @@ class DoiTacComponent extends Component
     {
         try {
             $this->validate([
-                'id' => 'required',
+                'MaSoThue_DoiTac' => 'required',
                 'TenDoiTac' => 'required',
                 'Email' => 'nullable|email',
                 'Sdt' => 'nullable',
                 'DiaChi' => 'nullable',
             ]);
             
-            $doitac = Doitac::where('id', $this->id)->first();
             $doitac->MaSoThue_DoiTac = $this->MaSoThue_DoiTac;
             $doitac->TenDoiTac = $this->TenDoiTac;
             $doitac->Email = $this->Email;
