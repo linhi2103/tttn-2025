@@ -136,11 +136,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Xóa Vật Tư</h5>
+                    <h5 class="modal-title">Xóa Chi tiết Vật Tư</h5>
                     <button type="button" class="btn-close" wire:click="closeModal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Bạn có chắc chắn muốn xóa Vật Tư này không?</p>
+                    <p>Bạn có chắc chắn muốn xóa Chi tiết Vật Tư này không?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" wire:click="closeModal">Hủy</button>
