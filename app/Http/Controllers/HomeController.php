@@ -19,7 +19,7 @@ class HomeController extends Controller
     public function show($MaVatTu)
     {
         $vatTu = VatTu::findOrFail($MaVatTu);
-        return view('livewire.vattu-detail', compact('vatTu'));
+        return view('livewire.chitietvattu', compact('vatTu'));
     }
 
 }

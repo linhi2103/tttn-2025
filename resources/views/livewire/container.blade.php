@@ -10,8 +10,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('chitietvattu')">
+                            <i class="fas fa-box"></i> Chi tiết vật tư
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('dashboard')">
-                            <i class="fas fa-box"></i> Hàng hóa
+                            <i class="fas fa-box"></i> Vật Tư
                         </a>
                     </li>
                     <li class="nav-item">
@@ -117,6 +122,8 @@
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4" id="mainContent">
                 @if ($activeComponent === 'dashboard')
                     @livewire('dashboard')
+                @elseif ($activeComponent === 'chitietvattu')
+                    @livewire('ChiTietVatTuComponent')
                 @elseif ($activeComponent === 'nhapkho')
                     @livewire('NhapKhoComponent')
                 @elseif ($activeComponent === 'xuatkho')

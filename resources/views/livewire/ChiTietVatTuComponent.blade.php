@@ -5,7 +5,7 @@
             <div class="d-flex" style="height: 60px;">
                 <input type="text" wire:model.live="search" class="form-control me-2" placeholder="Tìm kiếm Vật Tư">
                 <button class="btn btn-lg-red ms-2" wire:click="showModalAdd" style="white-space: nowrap;">
-                    <i class="fas fa-plus me-2"></i>Thêm Vật Tư
+                    <i class="fas fa-plus me-2"></i>Thêm chi tiết Vật Tư
                 </button>
             </div>
         </div>
@@ -27,11 +27,12 @@
             </div>
         @endif
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover table-light table-bordered">
                 <thead>
                     <tr>
                         <th>Ảnh Vật Tư</th>
                         <th>Mã Vật Tư</th>
+                        <th>Tên Vật Tư</th>
                         <th>Loại Vật Tư</th>
                         <th>Thương Hiệu</th>
                         <th>Kích Thước</th>
@@ -41,20 +42,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($vatTus as $vatTu)
+                    @foreach ($chitietvatTus as $chitietvatTu)
                         <tr>
-                            <td><img src="{{ asset('images/' . $vatTu->AnhVatTu) }}" alt="{{ $vatTu->TenVatTu }}" width="120" height="120"></td>
-                            <td>{{ $vatTu->MaVatTu }}</td>
-                            <td>{{ $vatTu->loaivattu->TenLoaiVatTu }}</td>
-                            <td>{{ $vatTu->ThuongHieu }}</td>
-                            <td>{{ $vatTu->KichThuoc }}</td>
-                            <td>{{ $vatTu->XuatXu }}</td>
-                            <td>{{ $vatTu->MoTa }}</td>
                             <td>
-                                <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $vatTu->MaVatTu }}')">
+                                @if ($chitietvatTu->vatTu)
+                                    <img src="{{ asset('images/' . $chitietvatTu->vatTu->AnhVatTu) }}" alt="{{ $chitietvatTu->vatTu->TenVatTu }}" width="120" height="120">
+                                @else
+                                    <span>Không có ảnh</span>
+                                @endif
+                            </td>
+                            <td>{{ $chitietvatTu?->vatTu?->MaVatTu ?? 'N/A' }}</td>
+                            <td>{{ $chitietvatTu?->vatTu?->TenVatTu ?? 'N/A' }}</td>
+                            <td>{{ $chitietvatTu?->vatTu?->loaivattu?->TenLoaiVatTu ?? 'N/A' }}</td>
+                            <td>{{ $chitietvatTu?->ThuongHieu ?? 'N/A' }}</td>
+                            <td>{{ $chitietvatTu?->KichThuoc ?? 'N/A' }}</td>
+                            <td>{{ $chitietvatTu?->XuatXu ?? 'N/A' }}</td>
+                            <td>{{ $chitietvatTu?->MoTa ?? 'N/A' }}</td>
+                            <td>
+                                <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $chitietvatTu->MaVatTu }}')">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn bg-danger ms-2" title="Xóa" wire:click="showModalDelete('{{ $vatTu->MaVatTu }}')">
+                                <button class="btn bg-danger ms-2" title="Xóa" wire:click="showModalDelete('{{ $chitietvatTu->MaVatTu }}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -63,8 +71,8 @@
                 </tbody>
             </table>
             <div class="d-flex justify-content-between align-items-center">
-                Hiển thị từ {{ $chitietvattu->firstItem() }} đến {{ $chitietvattu->lastItem() }} trong tổng số {{ $chitietvattu->total() }} vật tư
-                {{ $chitietvattu->links('pagination') }}
+                Hiển thị từ {{ $chitietvatTus->firstItem() }} đến {{ $chitietvatTus->lastItem() }} trong tổng số {{ $chitietvatTus->total() }} vật tư
+                {{ $chitietvatTus->links('pagination') }}
             </div>
         </div>
     </div>
@@ -82,10 +90,6 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Mã Vật Tư</label>
                                 <input type="text" class="form-control" wire:model="MaVatTu" {{ $isEdit ? 'readonly' : '' }} required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Tên Vật Tư</label>
-                                <input type="text" class="form-control" wire:model="TenVatTu" value="{{ $TenVatTu || '' }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Loại Vật Tư</label>

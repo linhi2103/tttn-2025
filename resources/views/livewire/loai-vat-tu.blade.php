@@ -20,9 +20,9 @@
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @endif
+        @endifs
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover table-light table-bordered">
                 <thead>
                     <tr>
                         <th>Mã loại vật tư</th>

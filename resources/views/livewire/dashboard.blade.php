@@ -31,7 +31,7 @@
             </div>
         @endif
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover table-light table-bordered">
                 <thead>
                     <tr>
                         <th>Ảnh Vật Tư</th>
