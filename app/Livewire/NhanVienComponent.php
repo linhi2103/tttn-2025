@@ -107,6 +107,13 @@ class NhanVienComponent extends Component
             $nhanvien->MaChucVu = $this->MaChucVu;
             $nhanvien->Anh = $this->Anh;
             $nhanvien->TrangThai = $this->TrangThai;
+
+            if($this->Anh && !is_string($this->Anh)) {
+                $filename = $this->MaNhanVien . '.jpg';
+                $this->Anh->storeAs('images/nhanvien', $filename, 'public_path');
+                $nhanvien->Anh = 'images/nhanvien/' . $filename;
+            }
+
             $nhanvien->save();
             
             $this->closeModal();
@@ -140,7 +147,14 @@ class NhanVienComponent extends Component
                 $nhanvien->MaChucVu = $this->MaChucVu;
                 $nhanvien->Anh = $this->Anh;
                 $nhanvien->TrangThai = $this->TrangThai;
-                $nhanvien->save();
+
+                if($this->Anh && !is_string($this->Anh)) {
+                    $filename = $this->MaNhanVien . '.jpg';
+                    $this->Anh->storeAs('images/nhanvien', $filename, 'public_path');
+                    $nhanvien->Anh = 'images/nhanvien/' . $filename;
+                }
+
+                $nhanvien->update();
                 
                 $this->closeModal();
                 session()->flash('success', 'Nhân viên đã được cập nhật thành công');

@@ -60,9 +60,13 @@
                             <td>{{ $vatTu->GiaNhap }}</td>
                             <td>{{ $vatTu->SoLuongTon }}</td>
                             <td>
-                                <span class="badge rounded-pill {{ $vatTu->TinhTrang == 'Còn hàng' ? 'bg-success' : ($vatTu->TinhTrang == 'Gần hết' ? 'bg-warning' : 'bg-danger') }}">
-                                    {{ $vatTu->TinhTrang }}
-                                </span>
+                                @if($vatTu->SoLuongTon > 15)
+                                    <span class="badge bg-success">Còn hàng</span>
+                                @elseif($vatTu->SoLuongTon < 15 && $vatTu->SoLuongTon > 0)
+                                    <span class="badge bg-warning">Sắp hết</span>
+                                @elseif($vatTu->SoLuongTon == 0)
+                                    <span class="badge bg-danger">Hết hàng</span>
+                                @endif
                             </td>
                             <td>{{ $vatTu->doitac->MaSoThue_DoiTac }}</td>
                             <td>{{ $vatTu->NgayNhap }}</td>
@@ -139,15 +143,6 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Hạn Sử Dụng</label>
                                 <input type="date" class="form-control" wire:model="HanSuDung" value="{{ $HanSuDung || '' }}" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Tình Trạng</label>
-                                <select class="form-select" wire:model="TinhTrang" required>
-                                    <option value="">-- Chọn Tình Trạng --</option>
-                                    <option value="Còn hàng">Còn hàng</option>
-                                    <option value="Sắp hết">Sắp hết</option>
-                                    <option value="Hết hàng">Hết hàng</option>
-                                </select>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Đối Tác</label>

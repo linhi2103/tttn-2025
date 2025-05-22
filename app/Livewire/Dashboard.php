@@ -32,7 +32,6 @@ class Dashboard extends Component
     public $GiaXuat;
     public $DonViTienTe;
     public $SoLuongTon;
-    public $TinhTrang;
     public $MaSoThue_DoiTac;
     public $NgayNhap;
     public $HanSuDung;
@@ -55,7 +54,6 @@ class Dashboard extends Component
         $this->GiaXuat = $vattu->GiaXuat;
         $this->DonViTienTe = $vattu->DonViTienTe;
         $this->SoLuongTon = $vattu->SoLuongTon;
-        $this->TinhTrang = $vattu->TinhTrang;
         $this->MaSoThue_DoiTac = $vattu->MaSoThue_DoiTac;
         $this->NgayNhap = $vattu->NgayNhap;
         $this->HanSuDung = $vattu->HanSuDung;
@@ -83,7 +81,6 @@ class Dashboard extends Component
         $this->GiaXuat = null;
         $this->DonViTienTe = null;
         $this->SoLuongTon = null;
-        $this->TinhTrang = null;
         $this->MaSoThue_DoiTac = null;
         $this->NgayNhap = null;
         $this->HanSuDung = null;
@@ -101,7 +98,6 @@ class Dashboard extends Component
                 'GiaNhap' => 'required',
                 'DonViTienTe' => 'required',
                 'SoLuongTon' => 'required',
-                'TinhTrang' => 'required',
                 'MaSoThue_DoiTac' => 'required',
                 'NgayNhap' => 'required',
                 'HanSuDung' => 'required',
@@ -117,17 +113,16 @@ class Dashboard extends Component
             $vatTu->GiaNhap = $this->GiaNhap;
             $vatTu->DonViTienTe = $this->DonViTienTe;
             $vatTu->SoLuongTon = $this->SoLuongTon;
-            $vatTu->TinhTrang = $this->TinhTrang;
             $vatTu->MaSoThue_DoiTac = $this->MaSoThue_DoiTac;
             $vatTu->NgayNhap = $this->NgayNhap;
             $vatTu->HanSuDung = $this->HanSuDung;
             $vatTu->GhiChu = $this->GhiChu;
             
-            // Kiểm tra nếu AnhVatTu là một UploadedFile object
             if ($this->AnhVatTu && !is_string($this->AnhVatTu)) {
-                $imageName = time() . '.' . $this->AnhVatTu->extension();
-                $this->AnhVatTu->storeAs('public/images', $imageName);
-                $vatTu->AnhVatTu = $imageName;
+                $file = $this->AnhVatTu;
+                $imageName = $this->MaVatTu.'.jpg';
+                $file->storeAs('images/'.$this->MaLoaiVatTu, $imageName, 'public_path');
+                $vatTu->AnhVatTu = $this->MaLoaiVatTu . '/' . $imageName;
             } else {
                 $vatTu->AnhVatTu = $this->AnhVatTu;
             }
@@ -150,7 +145,6 @@ class Dashboard extends Component
                 'GiaNhap' => 'required',
                 'DonViTienTe' => 'required',
                 'SoLuongTon' => 'required',
-                'TinhTrang' => 'required',
                 'MaSoThue_DoiTac' => 'required',
                 'NgayNhap' => 'required',
                 'HanSuDung' => 'required',
@@ -164,17 +158,18 @@ class Dashboard extends Component
             $vatTu->GiaNhap = $this->GiaNhap;
             $vatTu->DonViTienTe = $this->DonViTienTe;
             $vatTu->SoLuongTon = $this->SoLuongTon;
-            $vatTu->TinhTrang = $this->TinhTrang;
             $vatTu->MaSoThue_DoiTac = $this->MaSoThue_DoiTac;
             $vatTu->NgayNhap = $this->NgayNhap;
             $vatTu->HanSuDung = $this->HanSuDung;
             $vatTu->GhiChu = $this->GhiChu;
             
-            // Kiểm tra nếu AnhVatTu là một UploadedFile object hoặc đã thay đổi
             if ($this->AnhVatTu && !is_string($this->AnhVatTu)) {
-                $imageName = time() . '.' . $this->AnhVatTu->extension();
-                $this->AnhVatTu->storeAs('public/images', $imageName);
-                $vatTu->AnhVatTu = $imageName;
+                $file = $this->AnhVatTu;
+                $imageName = $this->MaVatTu.'.jpg';
+                $file->storeAs('images/'.$this->MaLoaiVatTu, $imageName, 'public_path');
+                $vatTu->AnhVatTu = $this->MaLoaiVatTu . '/' . $imageName;
+            } else {
+                $vatTu->AnhVatTu = $this->AnhVatTu;
             }
             
             $vatTu->update();

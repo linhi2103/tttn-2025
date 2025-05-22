@@ -24,8 +24,7 @@ return new class extends Migration
             $table->date('NgayNhap');
             $table->date('HanSuDung')->nullable();
             $table->text('GhiChu')->nullable();
-            $table->string('AnhVatTu', 255)->nullable();
-            $table->enum('TinhTrang', ['Còn hàng', 'Hết hàng', 'Sắp hết'])->default('Còn hàng');
+            $table->string('AnhVatTu', 255)->nullable();    
         });
     }
 

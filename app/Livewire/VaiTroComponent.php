@@ -19,6 +19,7 @@ class VaiTroComponent extends Component
 
     public $MaVaiTro;
     public $TenVaiTro;
+    public $QuyenHan;
 
     public function showModalAdd()
     {
@@ -29,6 +30,7 @@ class VaiTroComponent extends Component
         $this->MaVaiTro = $MaVaiTro;
         $vaitro = VaiTro::where('MaVaiTro', $MaVaiTro)->first();
         $this->TenVaiTro = $vaitro->TenVaiTro;
+        $this->QuyenHan = $vaitro->QuyenHan;
         $this->isEdit = true;
     }
     public function showModalDelete($MaVaiTro)
@@ -55,6 +57,7 @@ class VaiTroComponent extends Component
             $vaitro = new VaiTro();
             $vaitro->MaVaiTro = $this->MaVaiTro;
             $vaitro->TenVaiTro = $this->TenVaiTro;
+            $vaitro->QuyenHan = $this->QuyenHan;
             
             $vaitro->save();
             $this->closeModal();
@@ -72,6 +75,7 @@ class VaiTroComponent extends Component
             
             $vaitro = VaiTro::where('MaVaiTro', $this->MaVaiTro)->first();
             $vaitro->TenVaiTro = $this->TenVaiTro;
+            $vaitro->QuyenHan = $this->QuyenHan;
             
             $vaitro->update();
             $this->closeModal();

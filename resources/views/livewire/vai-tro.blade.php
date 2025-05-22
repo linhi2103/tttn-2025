@@ -27,6 +27,7 @@
                     <tr>
                         <th>Mã Vai Trò</th>
                         <th>Tên Vai Trò</th>
+                        <th>Quyền Hạn</th>
                         <th>Thao tác</th>
                     </tr>
                 </thead>
@@ -35,6 +36,7 @@
                         <tr>
                             <td>{{ $vaitro->MaVaiTro }}</td>
                             <td>{{ $vaitro->TenVaiTro }}</td>
+                            <td>{{ $vaitro->QuyenHan }}</td>
                             <td>
                                 <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $vaitro->MaVaiTro }}')">
                                     <i class="fas fa-edit"></i>
@@ -71,6 +73,15 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Tên Vai Trò</label>
                                 <input type="text" class="form-control" wire:model="TenVaiTro" value="{{ $TenVaiTro || '' }}" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Quyền Hạn</label>
+                                <select class="form-select" wire:model="QuyenHan" required>
+                                    <option value="">-- Chọn Quyền Hạn --</option>
+                                    <option value="Admin">Quản trị viên</option>
+                                    <option value="User">Người dùng</option>
+                                </select>
+                                @error('QuyenHan') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </form>
