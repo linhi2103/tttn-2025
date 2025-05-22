@@ -102,25 +102,6 @@ INSERT INTO `loaivattu` (`MaLoaiVatTu`, `TenLoaiVatTu`) VALUES
 -- Đang đổ dữ liệu cho bảng `migrations`
 --
 
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2025_04_02_110342_create_parent_table', 1),
-(2, '2025_04_02_112343_create_staff_table', 1),
-(3, '2025_04_02_113047_create_user_table', 1),
-(4, '2025_04_02_114000_create_supplier_table', 1),
-(5, '2025_04_02_114001_create_supplies_table', 1),
-(6, '2025_04_02_114002_create_transport_commands_table', 1),
-(7, '2025_04_02_114003_create_child_table', 1),
-(8, '2025_05_14_063014_create_table_vat_tu_detail', 1),
-(9, '2025_05_18_114331_create_cache_table', 1),
-(10, '2025_05_18_114416_create_password_reset_token_table', 1);
-
---
--- Đang đổ dữ liệu cho bảng `nguoidung`
---
-
-INSERT INTO `nguoidung` (`id`, `TaiKhoan`, `MatKhau`, `Email`, `MaNhanVien`, `MaVaiTro`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '$2y$12$GfCg21DOFzq4g5Mth31OSekItwi.T25UXP1BJrJLtl9iTukChUKKK', 'nhixinhgai2110@gmail.com', '2110', '0', NULL, '2025-05-21 10:04:14', '2025-05-21 10:04:14'),
-(2, 'user1', '$2y$12$uGJfU6dVwvj6UOewS8EMUOJ5AP/0FXr3MpL4UvxZB4SnUNpH8gh7G', 'user1@example.com', '2201', '1', NULL, '2025-05-22 11:43:57', '2025-05-22 11:43:57');
 
 --
 -- Đang đổ dữ liệu cho bảng `nhanvien`
@@ -184,9 +165,9 @@ INSERT INTO `thanhlykho` (`MaPhieuThanhLy`, `MaKho`, `NgayLap`, `MaNhanVien`, `T
 -- Đang đổ dữ liệu cho bảng `vaitro`
 --
 
-INSERT INTO `vaitro` (`MaVaiTro`, `TenVaiTro`) VALUES
-(0, 'admin'),
-(1, 'user');
+INSERT INTO `vaitro` (`MaVaiTro`, `TenVaiTro`, `QuyenHan`) VALUES
+(0, 'admin', 'Admin'),
+(1, 'user', 'User');
 
 --
 -- Đang đổ dữ liệu cho bảng `vattu`
