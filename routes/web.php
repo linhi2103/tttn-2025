@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Livewire\Dashboard;
 use App\Http\Controllers\Auth\CreateAccountController;
+use App\Http\Controllers\ProfileController;
 
 
 Route::get('/', [HomeController::class, 'index'])->middleware('auth');
@@ -28,5 +29,6 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPasswor
 Route::get('/reset/{token}', [ForgotPasswordController::class, 'resetPassword'])->name('reset');
 Route::post('/reset/{token}', [ForgotPasswordController::class, 'resetPasswordSubmit']);
 
-
+Route::get('/profile', [ProfileController::class, 'index'])->middleware('auth')->name('profile');
+Route::post('/profile', [ProfileController::class, 'update'])->middleware('auth')->name('profile.update');
 

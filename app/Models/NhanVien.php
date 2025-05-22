@@ -21,7 +21,7 @@ class NhanVien extends Model
         'GioiTinh',
         'SDT',
         'CCCD',
-        'MaPhongBan',
+        'MaChucVu',
         'Anh',
         'TrangThai'
     ];
@@ -37,9 +37,9 @@ class NhanVien extends Model
         'GioiTinh' => 'Nam'
     ];
 
-    public function phongban()
+    public function chucvu()
     {
-        return $this->belongsTo(PhongBan::class, 'MaPhongBan', 'MaPhongBan');
+        return $this->belongsTo(ChucVu::class, 'MaChucVu', 'MaChucVu');
     }
 
     public function nhapkho()

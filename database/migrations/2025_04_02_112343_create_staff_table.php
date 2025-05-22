@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('TenNhanVien', 255);
             $table->string('DiaChi', 255);
             $table->enum('GioiTinh', ['Nam', 'Nữ']);
+            $table->date('NgaySinh');
             $table->bigInteger('SDT')->unique();
             $table->bigInteger('CCCD')->unique();
-            $table->string('MaPhongBan', 20);
+            $table->string('MaChucVu', 20);
             $table->string('Anh', 255);
             $table->string('TrangThai', 20);
         });

@@ -9,6 +9,7 @@ use Livewire\Features\SupportFileUploads\WithFileUploads;
 use App\Models\NhanVien;
 use App\Models\PhongBan;
 use App\Models\VaiTro;
+use App\Models\ChucVu;
 
 class NhanVienComponent extends Component
 {
@@ -23,7 +24,7 @@ class NhanVienComponent extends Component
     public $CCCD;
     public $DiaChi;
     public $GioiTinh = 'Nam'; // Gán giá trị mặc định
-    public $MaPhongBan;
+    public $MaChucVu;
     public $Anh;
     public $TrangThai;
 
@@ -48,7 +49,7 @@ class NhanVienComponent extends Component
         $this->CCCD = $nhanvien->CCCD;
         $this->DiaChi = $nhanvien->DiaChi;
         $this->GioiTinh = $nhanvien->GioiTinh;
-        $this->MaPhongBan = $nhanvien->MaPhongBan;
+        $this->MaChucVu = $nhanvien->MaChucVu;
         $this->Anh = $nhanvien->Anh;
         $this->TrangThai = $nhanvien->TrangThai;
         $this->isEdit = true;
@@ -76,7 +77,7 @@ class NhanVienComponent extends Component
         $this->CCCD = null;
         $this->DiaChi = null;
         $this->GioiTinh = 'Nam'; // Reset về giá trị mặc định
-        $this->MaPhongBan = null;
+        $this->MaChucVu = null;
         $this->Anh = null;
         $this->TrangThai = null;
     }
@@ -91,9 +92,9 @@ class NhanVienComponent extends Component
                 'GioiTinh' => 'required|in:Nam,Nữ',
                 'SDT' => 'required|numeric',
                 'CCCD' => 'required|numeric',
-                'MaPhongBan' => 'required',
+                'MaChucVu' => 'required',
                 'Anh' => 'required',
-                'TrangThai' => 'required|integer',
+                'TrangThai' => 'required',
             ]);
             
             $nhanvien = new NhanVien();
@@ -103,7 +104,7 @@ class NhanVienComponent extends Component
             $nhanvien->GioiTinh = $this->GioiTinh;
             $nhanvien->SDT = $this->SDT;
             $nhanvien->CCCD = $this->CCCD;
-            $nhanvien->MaPhongBan = $this->MaPhongBan;
+            $nhanvien->MaChucVu = $this->MaChucVu;
             $nhanvien->Anh = $this->Anh;
             $nhanvien->TrangThai = $this->TrangThai;
             $nhanvien->save();
@@ -124,9 +125,9 @@ class NhanVienComponent extends Component
                 'GioiTinh' => 'required|in:Nam,Nữ',
                 'SDT' => 'required|numeric',
                 'CCCD' => 'required|numeric',
-                'MaPhongBan' => 'required',
+                'MaChucVu' => 'required',
                 'Anh' => 'required',
-                'TrangThai' => 'required|integer',
+                'TrangThai' => 'required',
             ]);
             
             $nhanvien = NhanVien::where('MaNhanVien', $this->MaNhanVien)->first();
@@ -136,7 +137,7 @@ class NhanVienComponent extends Component
                 $nhanvien->GioiTinh = $this->GioiTinh;
                 $nhanvien->SDT = $this->SDT;
                 $nhanvien->CCCD = $this->CCCD;
-                $nhanvien->MaPhongBan = $this->MaPhongBan;
+                $nhanvien->MaChucVu = $this->MaChucVu;
                 $nhanvien->Anh = $this->Anh;
                 $nhanvien->TrangThai = $this->TrangThai;
                 $nhanvien->save();
@@ -149,6 +150,7 @@ class NhanVienComponent extends Component
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+            $this->closeModal();
         }
     }
     
@@ -191,11 +193,11 @@ class NhanVienComponent extends Component
             ->orderBy('MaNhanVien', 'asc')
             ->paginate(10);
 
-        $phongbans = PhongBan::all();
+        $chucvu = ChucVu::all();
 
         return view('livewire.nhan-vien', [
             'nhanviens' => $nhanviens,
-            'phongbans' => $phongbans
+            'chucvus' => $chucvu,
         ]);
     }
 

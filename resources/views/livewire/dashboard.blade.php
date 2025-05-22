@@ -142,7 +142,12 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Tình Trạng</label>
-                                <input type="text" class="form-control" wire:model="TinhTrang" value="{{ $TinhTrang || 'Còn hàng' }}" required>
+                                <select class="form-select" wire:model="TinhTrang" required>
+                                    <option value="">-- Chọn Tình Trạng --</option>
+                                    <option value="Còn hàng">Còn hàng</option>
+                                    <option value="Sắp hết">Sắp hết</option>
+                                    <option value="Hết hàng">Hết hàng</option>
+                                </select>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Đối Tác</label>

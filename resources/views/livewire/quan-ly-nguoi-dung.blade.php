@@ -47,7 +47,7 @@
                                 <td>{{ $user->Email }}</td>
                                 <td>{{ $user->MaNhanVien }}</td>
                                 <td>{{ $user->nhanvien->TenNhanVien ?? 'N/A' }}</td>
-                                <td>{{ $user->QuyenHan }}</td>
+                                <td>{{ $user->vaitro->QuyenHan }}</td>
                                 <td>
                                     <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit({{ $user->id }})">
                                         <i class="fas fa-edit"></i>

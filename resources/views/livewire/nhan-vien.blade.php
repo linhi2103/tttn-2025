@@ -31,10 +31,8 @@
                         <th>Giới tính</th>
                         <th>SĐT</th>
                         <th>Địa chỉ</th>
-                        <th>Phòng ban</th>
-                        <th>Vai trò</th>
-                        <th>CCCD</th> 
-                        <th>Tên Phòng Ban</th>
+                        <th>Chức vụ</th>
+                        <th>CCCD</th>
                         <th>Trạng thái</th>
                         <th>Thao tác</th>
                     </tr>
@@ -42,16 +40,16 @@
                 <tbody>
                     @foreach ($nhanviens as $nhanvien)
                         <tr>
-                            <td><img src="{{ asset('storage/' . $nhanvien->Anh) }}" alt="Ảnh Nhân viên" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"></td>
+                            <td><img src="{{ asset($nhanvien->Anh) }}" alt="Ảnh Nhân viên" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"></td>
                             <td>{{ $nhanvien->MaNhanVien }}</td>
                             <td>{{ $nhanvien->TenNhanVien }}</td>
                             <td>{{ $nhanvien->GioiTinh }}</td>
                             <td>{{ $nhanvien->SDT }}</td>
                             <td>{{ $nhanvien->DiaChi }}</td>
-                            <td>{{ $nhanvien->phongban->TenPhongBan }}</td>
+                            <td>{{ $nhanvien->chucvu->TenChucVu ?? 'N/A' }}</td>
                             <td>{{ $nhanvien->CCCD }}</td>
                             <td>
-                                @if ($nhanvien->TrangThai == 1)
+                                @if ($nhanvien->TrangThai == 'Đang làm')
                                     <span class="badge bg-success">Đang làm</span>
                                 @else
                                     <span class="badge bg-danger">Đã nghỉ</span>
@@ -111,11 +109,11 @@
                                 <input type="text" class="form-control" wire:model="DiaChi" value="{{ $DiaChi || '' }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Phòng ban</label>
-                                <select class="form-select" wire:model="MaPhongBan">
-                                    <option value="">--Chọn Phòng ban--</option>
-                                    @foreach ($phongbans as $phongban)
-                                        <option value="{{ $phongban->MaPhongBan }}">{{ $phongban->TenPhongBan }}</option>
+                                <label class="form-label">Chức Vụ</label>
+                                <select class="form-select" wire:model="MaChucVu">
+                                    <option value="">--Chọn Chức Vụ--</option>
+                                    @foreach ($chucvus as $chucvu)
+                                        <option value="{{ $chucvu->MaChucVu }}">{{ $chucvu->TenChucVu }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -127,8 +125,8 @@
                                 <label class="form-label">Trạng thái</label>
                                 <select wire:model="TrangThai" class="form-select">
                                     <option value="">-- Chọn trạng thái --</option>
-                                    <option value="1">Đang làm</option>
-                                    <option value="0">Đã nghỉ</option>
+                                    <option value="Đang làm">Đang làm</option>
+                                    <option value="Đã nghỉ">Đã nghỉ</option>
                                 </select>
                             </div>
                             <div class="col-md-12 mb-3">
