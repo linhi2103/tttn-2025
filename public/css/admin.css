@@ -9,6 +9,10 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.nav-link {
+    cursor: pointer;
+}
+
 ul {
     list-style-type: none;
     padding: 0;

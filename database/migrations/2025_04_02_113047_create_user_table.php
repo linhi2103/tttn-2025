@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('TaiKhoan', 20)->unique();
             $table->string('MatKhau', 255);
-            $table->string('Email', 100)->unique();
+            $table->string('Email', 100)->unique()->nullable();
             $table->string('MaNhanVien', 20)->nullable();
             $table->string('MaVaiTro', 20)->nullable();
             $table->rememberToken();

@@ -22,6 +22,7 @@ return new class extends Migration
         Schema::create('vaitro', function (Blueprint $table) {
             $table->integer('MaVaiTro', false, true)->primary();
             $table->string('TenVaiTro', 255);
+            $table->enum('QuyenHan', ['Admin', 'User'])->default('User');
         });
 
         // Create danhmuckho table

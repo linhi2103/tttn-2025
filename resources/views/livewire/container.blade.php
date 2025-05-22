@@ -47,10 +47,6 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Hồ sơ</a></li>
-                            @if(Auth::user()->TaiKhoan == 'admin')
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-plus"></i> Thêm người dùng</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-list"></i> Danh sách người dùng</a></li>
-                            @endif
                             <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
@@ -76,6 +72,13 @@
                                 <i class="fa-brands fa-codepen"></i> Quản lý đơn vị vận chuyển
                             </a>
                         </li>
+                        @if(Auth::user()->vaitro->QuyenHan == 'Admin')
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activeComponent == 'nguoidung' ? 'active' : '' }}" wire:click.prevent="setActiveComponent('nguoidung')">
+                                <i class="fas fa-user"></i> Quản lý người dùng
+                            </a>
+                        </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link {{ $activeComponent == 'nhanvien' ? 'active' : '' }}" wire:click.prevent="setActiveComponent('nhanvien')">
                                 <i class="fas fa-users"></i> Quản lý nhân viên
@@ -150,6 +153,8 @@
                     @livewire('PhieuKiemKeComponent')
                 @elseif ($activeComponent === 'thanhlykho')
                     @livewire('ThanhLyKhoComponent')
+                @elseif ($activeComponent === 'nguoidung')
+                    @livewire('QuanLyNguoiDung')
                 @endif
             </main>
         </div>

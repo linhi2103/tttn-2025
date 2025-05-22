@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tổng Kho LG</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="https://tongkhodieuhoalg.com/wp-content/uploads/2023/10/favicon-dieu-hoa-lg-100x100.png" sizes="32x32">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -32,10 +28,6 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i> Hồ sơ</a></li>
-                        @if(Auth::user()->TaiKhoan == 'admin')
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-plus"></i> Thêm người dùng</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-list"></i> Danh sách người dùng</a></li>
-                        @endif
                         <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Cài đặt</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
@@ -125,7 +117,5 @@
     <footer class="footer py-4 bg-dark text-white">
         <p>&copy; 2025 Tổng Kho Điều Hòa LG. All rights reserved.</p>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 </body>
 </html>

@@ -8,12 +8,13 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Livewire\Dashboard;
+use App\Http\Controllers\Auth\CreateAccountController;
 
 
 Route::get('/', [HomeController::class, 'index'])->middleware('auth');
 Route::get('/dashboard', function () {
     return view('livewire.app');
-})->name('dashboard')->middleware('auth');
+})->name('dashboard')->middleware('auth')->middleware('IsAdmin');
 Route::get('/product/{MaVatTu}', [DetailController::class, 'index'])->middleware('auth');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -26,7 +27,6 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPasswor
 
 Route::get('/reset/{token}', [ForgotPasswordController::class, 'resetPassword'])->name('reset');
 Route::post('/reset/{token}', [ForgotPasswordController::class, 'resetPasswordSubmit']);
-
 
 
 
