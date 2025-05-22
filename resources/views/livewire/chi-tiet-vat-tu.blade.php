@@ -59,10 +59,10 @@
                             <td>{{ $chitietvatTu?->XuatXu ?? 'N/A' }}</td>
                             <td>{{ $chitietvatTu?->MoTa ?? 'N/A' }}</td>
                             <td>
-                                <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $chitietvatTu->MaVatTu }}')">
+                                <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $chitietvatTu->vatTu->MaVatTu }}')">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn bg-danger ms-2" title="Xóa" wire:click="showModalDelete('{{ $chitietvatTu->MaVatTu }}')">
+                                <button class="btn bg-danger ms-2" title="Xóa" wire:click="showModalDelete('{{ $chitietvatTu->vatTu->MaVatTu }}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -116,12 +116,9 @@
                                 <label class="form-label">Mô Tả</label>
                                 <input type="text" class="form-control" wire:model="MoTa" value="{{ $MoTa || 'Không có mô tả' }}" required>
                             </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Ảnh Vật Tư</label>
-                                <input type="file" class="form-control" wire:model="AnhVatTu">
-                                <div class="mt-2">
-                                    <img src="{{ asset('images/' . $AnhVatTu) }}" alt="Ảnh xem trước" style="max-width: 200px; max-height: 200px; object-fit: cover;">
-                                </div>
+                            <input type="file" class="form-control" wire:model="AnhVatTu">
+                            <div class="mt-2">
+                                <img src="{{ asset('images/' . $AnhVatTu) }}" alt="Ảnh xem trước" style="max-width: 200px; max-height: 200px; object-fit: cover;">
                             </div>
                         </div>
                     </form>

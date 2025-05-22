@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 14, 2025 lúc 08:09 AM
+-- Thời gian đã tạo: Th5 21, 2025 lúc 10:49 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -23,7 +23,55 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
---S
+--
+-- Cấu trúc bảng cho bảng `cache`
+--
+
+CREATE TABLE `cache` (
+  `key` varchar(255) NOT NULL,
+  `value` mediumtext NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `cache_locks`
+--
+
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) NOT NULL,
+  `owner` varchar(255) NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `chitietvattu`
+--
+
+CREATE TABLE `chitietvattu` (
+  `MaVatTu` varchar(20) NOT NULL,
+  `ThuongHieu` varchar(100) DEFAULT NULL,
+  `KichThuoc` varchar(50) DEFAULT NULL,
+  `XuatXu` varchar(100) DEFAULT NULL,
+  `MoTa` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `chitietvattu`
+--
+
+INSERT INTO `chitietvattu` (`MaVatTu`, `ThuongHieu`, `KichThuoc`, `XuatXu`, `MoTa`, `created_at`, `updated_at`) VALUES
+('VT001', 'LG', NULL, 'Trung Quốc', 'Bộ xử lý AI α7 Gen4 tự động nhận dạng thể loại nội dung và điều kiện ánh sáng xung quanh bạn, rồi tối ưu hóa thiết lập màn hình cho phù hợp. Mỗi điều chỉnh tự động đều mang lại hình ảnh chất lượng cao và sắc nét, đảm bảo cải thiện trải nghiệm xem TV.', NULL, NULL),
+('VT002', 'LG', '9,6 inch (30,5 x 24,4 cm)', 'Trung Quốc', NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `danhmuckho`
 --
 
@@ -132,7 +180,7 @@ CREATE TABLE `lenhdieudong` (
   `TenLenhDieuDong` varchar(255) NOT NULL,
   `LyDo` text NOT NULL,
   `MaNhanVien` varchar(20) NOT NULL,
-  `NgayLapDon` date NOT NULL DEFAULT current_timestamp(),
+  `NgayLapDon` date NOT NULL DEFAULT '2025-05-21',
   `TrangThai` enum('Chờ duyệt','Đã duyệt','Đang vận chuyển','Hoàn thành','Hủy') NOT NULL DEFAULT 'Chờ duyệt',
   `GhiChu` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -194,7 +242,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (4, '2025_04_02_114000_create_supplier_table', 1),
 (5, '2025_04_02_114001_create_supplies_table', 1),
 (6, '2025_04_02_114002_create_transport_commands_table', 1),
-(7, '2025_04_02_114003_create_child_table', 1);
+(7, '2025_04_02_114003_create_child_table', 1),
+(8, '2025_05_14_063014_create_table_vat_tu_detail', 1),
+(9, '2025_05_18_114331_create_cache_table', 1),
+(10, '2025_05_18_114416_create_password_reset_token_table', 1);
 
 -- --------------------------------------------------------
 
@@ -203,20 +254,23 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `nguoidung` (
+  `id` bigint(20) UNSIGNED NOT NULL,
   `TaiKhoan` varchar(20) NOT NULL,
   `MatKhau` varchar(255) NOT NULL,
   `Email` varchar(100) NOT NULL,
-  `manhanvien` varchar(20) DEFAULT NULL
+  `MaNhanVien` varchar(20) DEFAULT NULL,
+  `MaVaiTro` varchar(20) DEFAULT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `nguoidung`
 --
 
-INSERT INTO `nguoidung` (`TaiKhoan`, `MatKhau`, `Email`, `manhanvien`) VALUES
-('admin01', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHeFx4Ex4e0GeqZoTRpBqTfP4yx.mxy5eW', 'admin01@lg.com', 'NV001'),
-('nhansu1', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHeFx4Ex4e0GeqZoTRpBqTfP4yx.mxy5eW', 'nhansu01@lg.com', 'NV003'),
-('quanlykho1', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHeFx4Ex4e0GeqZoTRpBqTfP4yx.mxy5eW', 'kho01@lg.com', 'NV002');
+INSERT INTO `nguoidung` (`id`, `TaiKhoan`, `MatKhau`, `Email`, `MaNhanVien`, `MaVaiTro`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'admin', '$2y$12$GfCg21DOFzq4g5Mth31OSekItwi.T25UXP1BJrJLtl9iTukChUKKK', 'nhixinhgai2110@gmail.com', '2110', '0', NULL, '2025-05-21 10:04:14', '2025-05-21 10:04:14');
 
 -- --------------------------------------------------------
 
@@ -232,18 +286,20 @@ CREATE TABLE `nhanvien` (
   `SDT` bigint(20) NOT NULL,
   `CCCD` bigint(20) NOT NULL,
   `MaPhongBan` varchar(20) NOT NULL,
-  `MaVaiTro` int(10) UNSIGNED NOT NULL
+  `Anh` varchar(255) NOT NULL,
+  `TrangThai` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `nhanvien`
 --
 
-INSERT INTO `nhanvien` (`MaNhanVien`, `TenNhanVien`, `DiaChi`, `GioiTinh`, `SDT`, `CCCD`, `MaPhongBan`, `MaVaiTro`) VALUES
-('NV001', 'Nguyễn Văn AN', '123 Đường ABC, Hà Nội', 'Nam', 9750521874, 34300307412, 'PB001', 1),
-('NV002', 'Trần Thị B', '456 Đường XYZ, Hà Nội', 'Nữ', 2345678901, 234567890123, 'PB002', 0),
-('NV003', 'Lê Minh C', '789 Đường LMN, Hà Nội', 'Nam', 3456789012, 345678901234, 'PB001', 0),
-('NV004', 'Phạm Văn An', 'Đông Hưng, Thái Bình', 'Nam', 9650456310, 321353567632, 'PB005', 1);
+INSERT INTO `nhanvien` (`MaNhanVien`, `TenNhanVien`, `DiaChi`, `GioiTinh`, `SDT`, `CCCD`, `MaPhongBan`, `Anh`, `TrangThai`) VALUES
+('NV001', 'Nguyễn Văn A', 'Hà Nội', 'Nam', 912345678, 1122334455, 'PB001', 'avatar1.jpg', 'Đang làm'),
+('NV002', 'Trần Thị B', 'Hải Phòng', 'Nữ', 923456789, 2233445566, 'PB002', 'avatar2.jpg', 'Đang làm'),
+('NV003', 'Lê Văn C', 'Đà Nẵng', 'Nam', 934567890, 3344556677, 'PB001', 'avatar3.jpg', 'Nghỉ việc'),
+('NV004', 'Phạm Thị D', 'TP.HCM', 'Nữ', 945678901, 4455667788, 'PB003', 'avatar4.jpg', 'Đang làm'),
+('NV005', 'Hoàng Văn E', 'Cần Thơ', 'Nam', 956789012, 5566778899, 'PB002', 'avatar5.jpg', 'Đang làm');
 
 -- --------------------------------------------------------
 
@@ -258,7 +314,7 @@ CREATE TABLE `nhapkho` (
   `MaVatTu` varchar(20) NOT NULL,
   `SoLuong` int(11) NOT NULL,
   `DonGia` decimal(18,2) NOT NULL,
-  `NgayNhap` date NOT NULL DEFAULT current_timestamp(),
+  `NgayNhap` date NOT NULL DEFAULT '2025-05-21',
   `MaSoThue_DoiTac` varchar(20) NOT NULL,
   `MaNhanVien` varchar(20) NOT NULL,
   `MaLenhDieuDong` varchar(20) DEFAULT NULL,
@@ -280,6 +336,19 @@ INSERT INTO `nhapkho` (`MaPhieuNhap`, `MaKho`, `DiaChi`, `MaVatTu`, `SoLuong`, `
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `password_reset_tokens`
+--
+
+CREATE TABLE `password_reset_tokens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `phieukiemke`
 --
 
@@ -292,7 +361,7 @@ CREATE TABLE `phieukiemke` (
   `MaVatTu` varchar(20) NOT NULL,
   `SoLuongThucTe` int(11) NOT NULL,
   `SoLuongTon` int(11) NOT NULL,
-  `TinhTrang` enum('Còn tốt 100%','Kém chất lượng','Hỏng','Hết','Thất Lạc') NOT NULL,
+  `TinhTrang` enum('Còn tốt 100%','Kém chất lượng','Mất chất lượng') NOT NULL,
   `MaLenhDieuDong` varchar(20) DEFAULT NULL,
   `GhiChu` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -348,7 +417,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('IfnhU9CQ4ukbVBw3LH2oy1xKoUPXMPr27CSOnaCC', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTzZveUtpTEdyWDlsc2xpRkhlYkx0UGI2bUNsem84aXhuUndFUVhYdyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC92YXR0dS9WVDAwOCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1747202774);
+('Lr8q4Y7PO8E5MvYGj3THfbzy4dWzTNvNCSVVT5l3', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiWWIwSnZ5ZkttMTZ3SWZXUjM1cVp0Tjgwb3pqVDlYQlhHYU9uOHVqSCI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1747847139);
 
 -- --------------------------------------------------------
 
@@ -361,7 +430,7 @@ CREATE TABLE `thanhlykho` (
   `MaKho` varchar(10) NOT NULL,
   `NgayLap` date NOT NULL,
   `MaNhanVien` varchar(20) NOT NULL,
-  `TrangThai` enum('Đã hủy','Chờ duyệt','Đã thanh lý') NOT NULL,
+  `TrangThai` enum('Chờ duyệt','Đã thanh lý','Đã hủy') NOT NULL,
   `LyDoThanhLy` text DEFAULT NULL,
   `MaVatTu` varchar(20) NOT NULL,
   `SoLuong` int(11) NOT NULL,
@@ -396,9 +465,8 @@ CREATE TABLE `vaitro` (
 --
 
 INSERT INTO `vaitro` (`MaVaiTro`, `TenVaiTro`) VALUES
-(0, 'user1'),
-(1, 'admin'),
-(2, 'user2');
+(0, 'admin'),
+(1, 'user');
 
 -- --------------------------------------------------------
 
@@ -481,7 +549,7 @@ CREATE TABLE `xuatkho` (
   `NgayXuat` date NOT NULL,
   `MaNhanVien` varchar(20) NOT NULL,
   `MaDonViVanChuyen` varchar(20) NOT NULL,
-  `MaSoThue_DoiTac` varchar(20) NOT NULL,
+  `DiaDiemXuat` varchar(255) NOT NULL,
   `DiaChi` varchar(255) NOT NULL,
   `DonViTienTe` varchar(50) NOT NULL,
   `MaVatTu` varchar(20) NOT NULL,
@@ -497,14 +565,32 @@ CREATE TABLE `xuatkho` (
 -- Đang đổ dữ liệu cho bảng `xuatkho`
 --
 
-INSERT INTO `xuatkho` (`MaPhieuXuat`, `MaKho`, `NgayXuat`, `MaNhanVien`, `MaDonViVanChuyen`, `MaSoThue_DoiTac`, `DiaChi`, `DonViTienTe`, `MaVatTu`, `SoLuong`, `DonGia`, `ThanhTien`, `MaLenhDieuDong`, `TrangThai`, `GhiChu`) VALUES
-('PX1001', 'KHO001', '2025-05-05', 'NV001', 'DVC001', '0201234567', '12 Nguyễn Trãi, Hà Nội', 'VND', 'VT001', 10, 120000.00, 1200000.00, 'LD001', 'Đã duyệt', 'Xuất cho công trình A'),
-('PX1002', 'KHO002', '2025-05-04', 'NV002', 'DVC002', '0209988776', '89 Trần Hưng Đạo, Hải Phòng', 'VND', 'VT002', 5, 230000.00, 1150000.00, 'LD002', 'Chờ duyệt', 'Xuất phục vụ bảo trì thiết bị'),
-('PX1003', 'KHO003', '2025-05-03', 'NV003', 'DVC003', '0505678901', '45 Lý Thường Kiệt, Đà Nẵng', 'VND', 'VT003', 20, 85000.00, 1700000.00, 'LD003', 'Hoàn thành', 'Xuất nội bộ kho dự án B');
+INSERT INTO `xuatkho` (`MaPhieuXuat`, `MaKho`, `NgayXuat`, `MaNhanVien`, `MaDonViVanChuyen`, `DiaDiemXuat`, `DiaChi`, `DonViTienTe`, `MaVatTu`, `SoLuong`, `DonGia`, `ThanhTien`, `MaLenhDieuDong`, `TrangThai`, `GhiChu`) VALUES
+('PX1001', 'KHO001', '2025-05-05', 'NV001', 'DVC001', '12 Nguyễn Trãi, Hà Nội', '', 'VND', 'VT001', 10, 120000.00, 1200000.00, 'LD001', 'Đã duyệt', 'Xuất cho công trình A'),
+('PX1002', 'KHO002', '2025-05-04', 'NV002', 'DVC002', '89 Trần Hưng Đạo, Hải Phòng', '', 'VND', 'VT002', 5, 230000.00, 1150000.00, 'LD002', 'Chờ duyệt', 'Xuất phục vụ bảo trì thiết bị'),
+('PX1003', 'KHO003', '2025-05-03', 'NV003', 'DVC003', '45 Lý Thường Kiệt, Đà Nẵng', '', 'VND', 'VT003', 20, 85000.00, 1700000.00, 'LD003', 'Hoàn thành', 'Xuất nội bộ kho dự án B');
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
+
+--
+-- Chỉ mục cho bảng `cache`
+--
+ALTER TABLE `cache`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Chỉ mục cho bảng `cache_locks`
+--
+ALTER TABLE `cache_locks`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Chỉ mục cho bảng `chitietvattu`
+--
+ALTER TABLE `chitietvattu`
+  ADD PRIMARY KEY (`MaVatTu`);
 
 --
 -- Chỉ mục cho bảng `danhmuckho`
@@ -552,7 +638,8 @@ ALTER TABLE `migrations`
 -- Chỉ mục cho bảng `nguoidung`
 --
 ALTER TABLE `nguoidung`
-  ADD PRIMARY KEY (`TaiKhoan`),
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `nguoidung_taikhoan_unique` (`TaiKhoan`),
   ADD UNIQUE KEY `nguoidung_email_unique` (`Email`);
 
 --
@@ -568,6 +655,13 @@ ALTER TABLE `nhanvien`
 --
 ALTER TABLE `nhapkho`
   ADD PRIMARY KEY (`MaPhieuNhap`);
+
+--
+-- Chỉ mục cho bảng `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `password_reset_tokens_email_index` (`email`);
 
 --
 -- Chỉ mục cho bảng `phieukiemke`
@@ -621,7 +715,19 @@ ALTER TABLE `xuatkho`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT cho bảng `nguoidung`
+--
+ALTER TABLE `nguoidung`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT cho bảng `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
