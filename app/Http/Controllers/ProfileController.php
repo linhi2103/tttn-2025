@@ -11,7 +11,10 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $user = Auth::user()->with('nhanvien')->first();
+        $user = NguoiDung::with('nhanvien')->where('TaiKhoan', Auth::user()->TaiKhoan)->first();
+        if(!$user){
+            return redirect()->back();
+        }
         return view('profile',
             [
                 'user' => $user,
@@ -50,13 +53,18 @@ class ProfileController extends Controller
                     'Anh' => $request->input('avatar'),
                     'SDT' => $request->input('phone'),
                     'DiaChi' => $request->input('location'),
+                ]);
+
+                $nguoidung = NguoiDung::where('MaNhanVien', Auth::user()->MaNhanVien)->first();
+                $nguoidung->update([
                     'Email' => $request->input('email'),
                 ]);
+                
                 session()->flash('success', 'Cập nhật thông tin thành công');
                 return redirect()->back();
             }catch (\Exception $e) {
                 session()->flash('error', 'Cập nhật thông tin thất bại: ' . $e->getMessage());
-                return redirect('dashboard');
+                return redirect()->back();
             } 
         }
     }

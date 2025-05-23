@@ -37,7 +37,7 @@
                             <td>{{ $nguoidungs->find($lichsuthaydoi->causer_id)?->TaiKhoan }}</td>
                             <td>{{ $lichsuthaydoi->created_at }}</td>
                             <td>
-                                <button class="btn bg-primary ms-2" title="Xem chi tiết" wire:click="showModalDetail('{{ $lichsuthaydoi->MaLichSu }}')">
+                                <button class="btn bg-primary ms-2" title="Xem chi tiết" wire:click="openModalDetail({{ $lichsuthaydoi->id }})">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </td>
@@ -51,4 +51,47 @@
             </div>
         </div>
     </div>
+
+    @if($showModalDetail)
+    <div class="modal fade show" style="display: block; background-color: rgba(0,0,0,0.5);"  tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chi tiết thay đổi</h5>
+                    <button type="button" class="btn-close" wire:click="closeModalDetail"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        @if($lstd->description == 'Tạo mới' || $lstd->description == 'Xóa')
+                        @foreach ($properties['attributes'] as $property => $value)
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ $propertiesName[$property] ?? $property }}</label>
+                                <input type="text" class="form-control" value="{{ $value }}" readonly>
+                            </div>
+                        @endforeach
+                        @elseif($lstd->description == 'Cập nhật')
+                        <h3>Giá trị cũ</h3>
+                        @foreach ($properties['old_values'] as $property => $value)
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ $propertiesName[$property] ?? $property }}</label>
+                                <input type="text" class="form-control" value="{{ $value }}" readonly>
+                            </div>
+                        @endforeach
+                        <h3>Giá trị mới</h3>
+                        @foreach ($properties['new_values'] as $property => $value)
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">{{ $propertiesName[$property] ?? $property }}</label>
+                                <input type="text" class="form-control" value="{{ $value }}" readonly>
+                            </div>
+                        @endforeach
+                        @endif
+                    </div>    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" wire:click="closeModalDetail">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>

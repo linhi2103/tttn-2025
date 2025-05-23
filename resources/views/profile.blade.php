@@ -273,13 +273,13 @@
                             <label class="field-label" for="empIdEdit">Mã Nhân Viên</label>
                             <input type="text" class="form-control" id="empIdEdit" name="emp_id" value="{{ $user->nhanvien->MaNhanVien }}" readonly>
                         </div>
-                        <div class="info-field>
+                        <div class="info-field">
                             <label class="field-label" for="positionEdit">Chức Vụ</label>
-                            <input type="text" class="form-control" id="positionEdit" name="position" value="{{ $user->nhanvien->chucvu->TenChucVu }}" readonly>
+                            <input type="text" class="form-control" id="positionEdit" name="position" value="{{ $user->nhanvien->chucvu->TenChucVu ?? 'Chưa có chức vụ' }}" readonly>
                         </div>
                         <div class="info-field">
                             <label class="field-label" for="departmentEdit">Phòng Ban</label>
-                            <input type="text" class="form-control" id="departmentEdit" name="department" value="{{ $user->nhanvien->chucvu->phongban->TenPhongBan }}" readonly>
+                            <input type="text" class="form-control" id="departmentEdit" name="department" value="{{ $user->nhanvien->chucvu->phongban->TenPhongBan ?? 'Chưa có phòng ban' }}" readonly>
                         </div>
                     </div>
                 </div>
@@ -324,7 +324,7 @@
                 </div>
 
                 <div class="action-buttons">
-                    <a href="{{ route('dashboard') }}" class="btn btn-lg-outline">
+                    <a href="/" class="btn btn-lg-outline">
                         <i class="fas fa-times me-2"></i>
                         Hủy Bỏ
                     </a>

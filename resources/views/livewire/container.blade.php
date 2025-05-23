@@ -114,6 +114,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {{ $activeComponent == 'chucvu' ? 'active' : '' }}" wire:click.prevent="setActiveComponent('chucvu')">
+                                <i class="fa-brands fa-building"></i> Quản lý Chức vụ
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {{ $activeComponent == 'lenhDieuDong' ? 'active' : '' }}" wire:click.prevent="setActiveComponent('lenhDieuDong')">
                                 <i class="fas fa-exchange-alt"></i> Quản lý Lệnh Điều Động
                             </a>
@@ -149,6 +154,8 @@
                     @livewire('VaiTroComponent')
                 @elseif ($activeComponent === 'phongban')
                     @livewire('PhongBanComponent')
+                @elseif ($activeComponent === 'chucvu')
+                    @livewire('ChucVuComponent')
                 @elseif ($activeComponent === 'doitac')
                     @livewire('DoiTacComponent')
                 @elseif ($activeComponent === 'lenhDieuDong')
