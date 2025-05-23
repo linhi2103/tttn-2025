@@ -118,6 +118,11 @@
                                 <i class="fas fa-exchange-alt"></i> Quản lý Lệnh Điều Động
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activeComponent == 'lichsu' ? 'active' : '' }}" wire:click.prevent="setActiveComponent('lichsu')">
+                                <i class="fas fa-history"></i> Lịch sử thay đổi
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -154,6 +159,12 @@
                     @livewire('ThanhLyKhoComponent')
                 @elseif ($activeComponent === 'nguoidung')
                     @livewire('QuanLyNguoiDung')
+                @elseif ($activeComponent === 'lichsu')
+                    @livewire('lich-su-thay-doi')
+                @else
+                    <div class="alert alert-danger" role="alert">
+                        Không tìm thấy component tương ứng!
+                    </div>
                 @endif
             </main>
         </div>
