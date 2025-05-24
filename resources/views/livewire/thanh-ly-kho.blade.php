@@ -84,14 +84,26 @@
                         <h5 class="modal-title">{{ $isAdd ? 'Thêm Thanh Lý Kho' : 'Chỉnh sửa Thanh Lý Kho' }}</h5>
                         <button type="button" class="btn-close" wire:click="closeModal"></button>
                     </div>
-                    <div class="modal-body">
-                        <form>
+                    <form wire:submit.prevent="{{ $isAdd ? 'save' : 'update' }}">
+                        <div class="modal-body">
+                            @if (session()->has('message'))
+                                <div class="alert alert-{{ session('message.type') }}">
+                                    {{ session('message.content') }}
+                                </div>
+                            @endif
+
                             <div class="row">
+                                <!-- Mã Phiếu Thanh Lý -->
                                 <div class="col-md-6 mb-3">
                                     <label>Mã Phiếu Thanh Lý</label>
-                                    <input type="text" class="form-control @error('MaPhieuThanhLy') is-invalid @enderror" 
-                                           wire:model="MaPhieuThanhLy" {{ $isEdit ? 'readonly' : '' }} required>
-                                    @error('MaPhieuThanhLy') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    <input type="text" 
+                                        class="form-control @error('MaPhieuThanhLy') is-invalid @enderror" 
+                                        wire:model="MaPhieuThanhLy" 
+                                        {{ $isEdit ? 'readonly' : '' }} 
+                                        required>
+                                    @error('MaPhieuThanhLy') 
+                                        <div class="invalid-feedback">{{ $message }}</div> 
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Mã Kho</label>
@@ -128,7 +140,7 @@
                                 <div class="col-md-12 mb-3">
                                     <div class="d-flex justify-content-between">
                                         <label>Danh sách vật tư</label>
-                                        <button role="button" class="btn btn-danger" wire:click="addVatTu">Thêm vật tư</button>
+                                        <button type="button" class="btn btn-danger" wire:click="addVatTu">Thêm vật tư</button>
                                     </div>
                                     <br>
                                     <div>
@@ -136,13 +148,15 @@
                                             <thead>
                                                 <tr>
                                                     <th style="width: 5%;">STT</th>
-                                                    <th style="width: 12%;">Mã Vật Tư</th>
-                                                    <th style="width: 25%;">Tên Vật Tư</th>
-                                                    <th style="width: 10%;">Số Lượng</th>
+                                                    <th style="width: 10%;">Mã Vật Tư</th>
+                                                    <th style="width: 30%;">Tên Vật Tư</th>
+                                                    <th style="width: 3%;">Số Lượng</th>
                                                     <th style="width: 8%;">Đơn Vị</th>
-                                                    <th style="width: 15%;">Đơn giá</th>
-                                                    <th style="width: 15%;">Thành Tiền</th>
-                                                    <th style="width: 10%;">Thao tác</th>
+                                                    <th style="width: 10%;">Đơn giá</th>
+                                                    <th style="width: 10%;">Thành Tiền</th>
+                                                    <th style="width: 15%;">Nguyên nhân thanh lý</th>
+                                                    <th style="width: 15%;">Biện pháp thanh lý</th>
+                                                    <th style="width: 5%;">Thao tác</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -165,6 +179,18 @@
                                                         <td>{{ $item['DonGia'] }}</td>
                                                         <td>{{ $item['ThanhTien'] }}</td>
                                                         <td>
+                                                            <input type="text" class="form-control @error('ChiTietThanhLy.{{ $stt }}.NguyenNhanThanhLy') is-invalid @enderror" wire:model.live="ChiTietThanhLy.{{ $stt }}.NguyenNhanThanhLy" required>
+                                                        </td>
+                                                        <td>
+                                                            <select class="form-control @error('ChiTietThanhLy.{{ $stt }}.BienPhapThanhLy') is-invalid @enderror" wire:model.live="ChiTietThanhLy.{{ $stt }}.BienPhapThanhLy" required>
+                                                                <option value="">-- Chọn Biện Pháp --</option>
+                                                                <option value="Xuất trả nhà cung cấp">Xuất trả nhà cung cấp</option>
+                                                                <option value="Chuyển nội bộ">Chuyển nội bộ</option>
+                                                                <option value="Bán thanh lý">Bán thanh lý</option>
+                                                                <option value="Tiêu hủy">Tiêu hủy</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
                                                             <button class="btn btn-danger" wire:click="removeVatTu({{ $stt }})"><i class="fas fa-trash"></i></button>
                                                         </td>
                                                     </tr>
@@ -174,12 +200,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" wire:click="closeModal">Hủy</button>
-                        <button class="btn btn-lg-red" wire:click="{{ $isAdd ? 'save' : 'update' }}">Lưu</button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" wire:click="closeModal">Hủy</button>
+                            <button type="submit" class="btn btn-lg-red">Lưu</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -218,12 +244,14 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%;">STT</th>
-                                    <th style="width: 12%;">Mã Vật Tư</th>
+                                    <th style="width: 10%;">Mã Vật Tư</th>
                                     <th style="width: 25%;">Tên Vật Tư</th>
-                                    <th style="width: 10%;">Số Lượng</th>
+                                    <th style="width: 5%;">Số Lượng</th>
                                     <th style="width: 8%;">Đơn Vị</th>
-                                    <th style="width: 15%;">Đơn giá</th>
-                                    <th style="width: 15%;">Thành Tiền</th>
+                                    <th style="width: 10%;">Đơn giá</th>
+                                    <th style="width: 10%;">Thành Tiền</th>
+                                    <th style="width: 12%;">Nguyên nhân thanh lý</th>
+                                    <th style="width: 10%;">Biện pháp thanh lý</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -236,6 +264,8 @@
                                         <td>{{ $item['DonVi'] }}</td>
                                         <td>{{ $item['DonGia'] }}</td>
                                         <td>{{ $item['ThanhTien'] }}</td>
+                                        <td>{{ $item['NguyenNhanThanhLy'] ?? '' }}</td>
+                                        <td>{{ $item['BienPhapThanhLy'] ?? '' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

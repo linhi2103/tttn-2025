@@ -5,9 +5,11 @@ namespace App\Livewire;
 use Livewire\Component;
 use Spatie\Activitylog\Models\Activity as ActivityLog;
 use App\Models\NguoiDung;
+use Livewire\WithPagination;
 
 class LichSuThayDoi extends Component
 {
+    use WithPagination;
     public $propertiesName = [
         'id' => 'ID',
         // NguoiDung model fields

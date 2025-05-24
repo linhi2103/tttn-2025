@@ -13,6 +13,7 @@ use App\Models\LenhDieuDong;
 use App\Models\ThanhLyKho;
 use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class ThanhLyKhoComponent extends Component
 {
@@ -135,14 +136,14 @@ class ThanhLyKhoComponent extends Component
                 'MaPhieuThanhLy' => $this->MaPhieuThanhLy,
                 'MaLenhDieuDong' => $this->MaLenhDieuDong,
                 'MaKho' => $this->MaKho,
-                'ChiTietThanhLy' => json_encode($this->ChiTietThanhLy)
+                'ChiTietThanhLy' => json_encode($this->ChiTietThanhLy),
             ]);
 
             $this->resetForm();
             $this->isAdd = false;
             session()->flash('success', 'Thanh lý kho đã được tạo thành công!');
-        } catch (\Throwable $th) {
-            session()->flash('error', 'Lỗi! Vui lòng thực hiện lại.');
+        } catch (Exception $e) {
+            session()->flash('error', 'Lỗi! Vui lòng thực hiện lại. ' . $e->getMessage());
         }
     }
 
@@ -160,6 +161,15 @@ class ThanhLyKhoComponent extends Component
         if (!$phieuthanhly) {
             session()->flash('error', 'Không tìm thấy phiếu thanh lý!');
             return;
+        }
+
+        if($this->TrangThai == 'Đã thanh lý'){
+            foreach ($this->ChiTietThanhLy as $index => $value) {
+                $vatTu = VatTu::where('MaVatTu', $value['MaVatTu'])->first();
+                $vatTu->update([
+                    'SoLuongTon' => $vatTu->SoLuongTon - $value['SoLuong']
+                ]);
+            }
         }
 
         $phieuthanhly->update([
@@ -205,7 +215,9 @@ class ThanhLyKhoComponent extends Component
             'SoLuong' => '',
             'DonVi' => '',
             'DonGia' => '',
-            'ThanhTien' => ''
+            'ThanhTien' => '',
+            'NguyenNhanThanhLy' => '',
+            'BienPhapThanhLy' => '',
         ];
     }
 
@@ -278,6 +290,8 @@ class ThanhLyKhoComponent extends Component
             $chiTiet = json_decode($phieuthanhly->ChiTietThanhLy, true);
             
             foreach ($chiTiet as $item) {
+                $sheet->insertNewRowBefore($row, 1);
+                
                 $sheet->setCellValue('C' . $row, $stt);
                 $sheet->setCellValue('E' . $row, $item['MaVatTu'] ?? '');
                 $sheet->setCellValue('D' . $row, $item['TenVatTu'] ?? '');
@@ -285,9 +299,33 @@ class ThanhLyKhoComponent extends Component
                 $sheet->setCellValue('G' . $row, $item['SoLuong'] ?? 0);
                 $sheet->setCellValue('H' . $row, $item['DonGia'] ?? 0);
                 $sheet->setCellValue('I' . $row, $item['ThanhTien'] ?? 0);
+                
+                $sheet->setCellValue('J' . $row, $item['NguyenNhanThanhLy'] ?? '');
+                $sheet->mergeCells('J' . $row . ':K' . $row);
+                
+                $sheet->setCellValue('L' . $row, $item['BienPhapThanhLy'] ?? '');
+                $sheet->mergeCells('L' . $row . ':M' . $row);
+                
+                $style = $sheet->getStyle('C' . $row . ':M' . $row);
+                $style->getFont()->setBold(false);
+                $style->getAlignment()->setHorizontal('center');
+                $style->getAlignment()->setVertical('center');
+                
                 $row++;
                 $stt++;
             }
+
+            $totalRow = $row;
+            $sheet->setCellValue('C' . $totalRow, 'Tổng');
+            
+            $sheet->setCellValue('G' . $totalRow, '=SUM(G13:G' . ($row) . ')');
+            
+            $sheet->setCellValue('I' . $totalRow, '=SUM(I13:I' . ($row) . ')');
+            
+            $totalStyle = $sheet->getStyle('C' . $totalRow . ':I' . $totalRow);
+
+            $totalStyle->getAlignment()->setHorizontal('center');
+            $totalStyle->getAlignment()->setVertical('center');
 
             $directory = storage_path('app/public/exports');
             if (!file_exists($directory)) {
@@ -305,6 +343,10 @@ class ThanhLyKhoComponent extends Component
                     'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
                 ])->deleteFileAfterSend(true);
             }
+
+            session()->flash('success', 'Xuất file thành công!');
+            $this->closeModal();
+            $this->resetForm();
             
         } catch (\Exception $e) {
             session()->flash('error', 'Lỗi khi xuất file: ' . $e->getMessage());
