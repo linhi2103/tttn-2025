@@ -52,6 +52,7 @@ class ChiTietVatTuComponent extends Component
         $this->isDelete = true;
         $this->MaVatTu = $MaVatTu;
     }
+    
     public function closeModal(){
         $this->isEdit = false;
         $this->isAdd = false;

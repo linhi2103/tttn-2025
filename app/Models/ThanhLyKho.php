@@ -14,35 +14,18 @@ class ThanhLyKho extends Model
     protected $primaryKey = 'MaPhieuThanhLy';
     protected $keyType = 'string';
     public $incrementing = false;
-    public $timestamps = false;
 
     protected $fillable = [
         'MaPhieuThanhLy',
-        'MaVatTu',
         'MaKho',
-        'MaNhanVien',
-        'SoLuong',
-        'NgayLap',
-        'TrangThai',
-        'DonGia',
-        'LyDoThanhLy',
-        'BienPhapThanhLy',
         'MaLenhDieuDong',
+        'TrangThai',
+        'ChiTietThanhLy'
     ];
 
-    public function vatTu()
-    {
-        return $this->belongsTo(VatTu::class, 'MaVatTu', 'MaVatTu');
-    }
-    
     public function lenhDieuDong()
     {
         return $this->belongsTo(LenhDieuDong::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
-    }
-    
-    public function nhanVien()
-    {
-        return $this->belongsTo(NhanVien::class, 'MaNhanVien', 'MaNhanVien');
     }
     
     public function kho()

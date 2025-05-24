@@ -100,8 +100,6 @@ class Dashboard extends Component
                 'SoLuongTon' => 'required',
                 'MaSoThue_DoiTac' => 'required',
                 'NgayNhap' => 'required',
-                'HanSuDung' => 'required',
-                'GhiChu' => 'required',
                 'AnhVatTu' => 'required',
             ]);
             
@@ -146,9 +144,7 @@ class Dashboard extends Component
                 'DonViTienTe' => 'required',
                 'SoLuongTon' => 'required',
                 'MaSoThue_DoiTac' => 'required',
-                'NgayNhap' => 'required',
-                'HanSuDung' => 'required',
-                'GhiChu' => 'required',
+                'NgayNhap' => 'required'
             ]);
             
             $vatTu = VatTu::where('MaVatTu', $this->MaVatTu)->first();

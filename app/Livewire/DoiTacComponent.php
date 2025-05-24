@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\Attributes\On;
-use App\Models\Doitac;
+use App\Models\DoiTac;
 
 class DoiTacComponent extends Component
 {
@@ -34,11 +34,11 @@ class DoiTacComponent extends Component
     
     public function showModalEdit($MaSoThue_DoiTac)
     {
-        $doitac = Doitac::where('MaSoThue_DoiTac', $MaSoThue_DoiTac)->first();
+        $doitac = DoiTac::where('MaSoThue_DoiTac', $MaSoThue_DoiTac)->first();
         $this->MaSoThue_DoiTac = $doitac->MaSoThue_DoiTac;
         $this->TenDoiTac = $doitac->TenDoiTac;
         $this->Email = $doitac->Email;
-        $this->Sdt = $doitac->Sdt;
+        $this->Sdt = $doitac->SDT;
         $this->DiaChi = $doitac->DiaChi;
         $this->isEdit = true;
     }
@@ -77,11 +77,11 @@ class DoiTacComponent extends Component
                 'DiaChi' => 'nullable',
             ]);
             
-            $doitac = new Doitac();
+            $doitac = new DoiTac();
             $doitac->MaSoThue_DoiTac = $this->MaSoThue_DoiTac;
             $doitac->TenDoiTac = $this->TenDoiTac;
             $doitac->Email = $this->Email;
-            $doitac->Sdt = $this->Sdt;
+            $doitac->SDT = $this->Sdt;
             $doitac->DiaChi = $this->DiaChi;
             $doitac->save();
             
@@ -97,17 +97,16 @@ class DoiTacComponent extends Component
     {
         try {
             $this->validate([
-                'MaSoThue_DoiTac' => 'required',
                 'TenDoiTac' => 'required',
                 'Email' => 'nullable|email',
                 'Sdt' => 'nullable',
                 'DiaChi' => 'nullable',
             ]);
             
-            $doitac->MaSoThue_DoiTac = $this->MaSoThue_DoiTac;
+            $doitac = DoiTac::where('MaSoThue_DoiTac', $this->MaSoThue_DoiTac)->first();
             $doitac->TenDoiTac = $this->TenDoiTac;
             $doitac->Email = $this->Email;
-            $doitac->Sdt = $this->Sdt;
+            $doitac->SDT = $this->Sdt;
             $doitac->DiaChi = $this->DiaChi;
             $doitac->save();
             
@@ -122,7 +121,7 @@ class DoiTacComponent extends Component
     public function delete()
     {
         try {
-            $doitac = Doitac::where('id', $this->id)->first();
+            $doitac = DoiTac::where('id', $this->id)->first();
             // Check if there are any related records in vattu table
             if ($doitac->vattu()->exists()) {
                 session()->flash('error', 'Không thể xóa Đối Tác này vì nó đang được sử dụng trong các Vật Tư.');
@@ -141,7 +140,7 @@ class DoiTacComponent extends Component
     
     public function render()
     {
-        $doitacs = Doitac::query()
+        $doitacs = DoiTac::query()
             ->where('TenDoiTac', 'like', "%{$this->search}%")
             ->orWhere('MaSoThue_DoiTac', 'like', "%{$this->search}%")
             ->orderBy('TenDoiTac', 'asc')

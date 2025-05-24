@@ -39,7 +39,7 @@
                             <td>{{ $doitac->MaSoThue_DoiTac }}</td>
                             <td>{{ $doitac->TenDoiTac }}</td>
                             <td>{{ $doitac->Email }}</td>
-                            <td>{{ $doitac->Sdt }}</td>
+                            <td>{{ $doitac->SDT }}</td>
                             <td>{{ $doitac->DiaChi }}</td>
                             <td>
                                 <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $doitac->MaSoThue_DoiTac }}')">

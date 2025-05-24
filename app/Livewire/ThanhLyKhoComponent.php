@@ -11,6 +11,8 @@ use App\Models\DanhMucKho;
 use App\Models\NhanVien;
 use App\Models\LenhDieuDong;
 use App\Models\ThanhLyKho;
+use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ThanhLyKhoComponent extends Component
 {
@@ -22,18 +24,17 @@ class ThanhLyKhoComponent extends Component
     public $isEdit = false;
     public $isAdd = false;
     public $isDelete = false;
+    public $isDetail = false;
 
     public $MaPhieuThanhLy;
-    public $MaVatTu;
-    public $MaKho;
-    public $MaNhanVien;
-    public $SoLuong;
-    public $NgayLap;
-    public $TrangThai;
-    public $DonGia;
-    public $LyDoThanhLy;
-    public $BienPhapThanhLy;
     public $MaLenhDieuDong;
+    public $MaKho;
+    public $TrangThai;
+
+    
+    
+    public $ChiTietThanhLy = [];
+    
     
     public function render()
     {
@@ -42,24 +43,20 @@ class ThanhLyKhoComponent extends Component
             'phieuthanhlys' => ThanhLyKho::query()
             ->where(function($query) {
                 $query->where('MaPhieuThanhLy', 'like', "%{$this->search}%")
-                    ->orWhere('MaVatTu', 'like', "%{$this->search}%")
                     ->orWhere('MaKho', 'like', "%{$this->search}%")
-                    ->orWhere('MaNhanVien', 'like', "%{$this->search}%")
                     ->orWhere('MaLenhDieuDong', 'like', "%{$this->search}%");
             })
             ->orderBy('MaPhieuThanhLy', 'asc')
             ->paginate(10),
             'vattus' => VatTu::all(),
             'danhmuckhos' => DanhMucKho::all(),
-            'nhanViens' => NhanVien::all(),
-            'lenhDieuDongs' => LenhDieuDong::all()
+            'lenhdieudongs' => LenhDieuDong::all()
         ]);
     }
 
     public function showModalAdd()
     {
-        $this->NgayLap = now()->format('Y-m-d');
-        $this->TrangThai = 'Chờ duyệt';
+        $this->addVatTu();
         $this->isAdd = true;
     }
 
@@ -68,9 +65,7 @@ class ThanhLyKhoComponent extends Component
         $this->MaPhieuThanhLy = $MaPhieuThanhLy;
         $phieuthanhly = ThanhLyKho::where('MaPhieuThanhLy', $MaPhieuThanhLy)
             ->with([
-                'vattu',
-                'nhanVien',
-                'lenhDieuDong',
+                'lenhdieudong',
                 'kho'
             ])
             ->first();
@@ -79,16 +74,11 @@ class ThanhLyKhoComponent extends Component
             return;
         }
 
-        $this->MaVatTu = $phieuthanhly->MaVatTu;
-        $this->MaKho = $phieuthanhly->MaKho;
-        $this->MaNhanVien = $phieuthanhly->MaNhanVien;
-        $this->NgayLap = $phieuthanhly->NgayLap;
-        $this->TrangThai = $phieuthanhly->TrangThai;
         $this->MaLenhDieuDong = $phieuthanhly->MaLenhDieuDong;
-        $this->SoLuong = $phieuthanhly->SoLuong;
-        $this->DonGia = $phieuthanhly->DonGia;
-        $this->LyDoThanhLy = $phieuthanhly->LyDoThanhLy;
-        $this->BienPhapThanhLy = $phieuthanhly->BienPhapThanhLy;
+        $this->MaKho = $phieuthanhly->MaKho;
+        $this->TrangThai = $phieuthanhly->TrangThai;
+        $this->ChiTietThanhLy = json_decode($phieuthanhly->ChiTietThanhLy, true);
+        Log::info($this->ChiTietThanhLy);
 
         $this->isEdit = true;
     }
@@ -98,162 +88,86 @@ class ThanhLyKhoComponent extends Component
         $this->isDelete = true;
         $this->MaPhieuThanhLy = $MaPhieuThanhLy;
     }
+
+    public function showModalDetail($MaPhieuThanhLy)
+    {
+        $this->MaPhieuThanhLy = $MaPhieuThanhLy;
+        $phieuthanhly = ThanhLyKho::where('MaPhieuThanhLy', $MaPhieuThanhLy)->first();
+        $this->ChiTietThanhLy = json_decode($phieuthanhly->ChiTietThanhLy, true);
+        $this->isDetail = true;
+    }
+    
     public function closeModal(){
         $this->isEdit = false;
         $this->isAdd = false;
         $this->isDelete = false;
+        $this->isDetail = false;
         $this->resetModal();
     }
 
     public function resetForm()
     {
         $this->reset([
-            'MaPhieuThanhLy', 'MaVatTu', 'MaKho', 'MaNhanVien',
-            'NgayLap', 'TrangThai', 'MaLenhDieuDong', 'SoLuong',
-            'DonGia', 'LyDoThanhLy', 'BienPhapThanhLy'
+            'MaPhieuThanhLy', 'MaLenhDieuDong', 'MaKho', 'TrangThai', 'ChiTietThanhLy'
         ]);
     }
 
     public function resetModal(){
         $this->MaPhieuThanhLy = null;
-        $this->MaVatTu = null;
-        $this->MaKho = null;
-        $this->MaNhanVien = null;
-        $this->NgayLap = null;
-        $this->TrangThai = null;
         $this->MaLenhDieuDong = null;
-        $this->SoLuong = null;
-        $this->DonGia = null;
-        $this->LyDoThanhLy = null;
-        $this->BienPhapThanhLy = null;
+        $this->MaKho = null;
+        $this->TrangThai = null;
+        $this->ChiTietThanhLy = [];
     }
 
     public function save()
     {
-        $this->validate([
-            'MaPhieuThanhLy' => 'required|unique:thanh-ly-kho,MaPhieuThanhLy',
-            'MaVatTu' => 'required',
-            'MaKho' => 'required',
-            'MaNhanVien' => 'required',
-            'NgayLap' => 'required',
-            'TrangThai' => 'required',
-            'SoLuong' => 'required|integer|min:1',
-            'DonGia' => 'required|numeric|min:0',
-            'LyDoThanhLy' => 'required',
-            'BienPhapThanhLy' => 'required'
-        ]);
 
-        $vatTu = VatTu::where('MaVatTu', $this->MaVatTu)->first();
-        if (!$vatTu) {
-            session()->flash('error', 'Vật tư không tồn tại!');
-            return;
+        try {
+            $this->validate([
+                'MaPhieuThanhLy' => 'required|unique:thanhlykho,MaPhieuThanhLy',
+                'MaLenhDieuDong' => 'required',
+                'MaKho' => 'required',
+                'ChiTietThanhLy' => 'required|array'
+            ]);
+
+            ThanhLyKho::create([
+                'MaPhieuThanhLy' => $this->MaPhieuThanhLy,
+                'MaLenhDieuDong' => $this->MaLenhDieuDong,
+                'MaKho' => $this->MaKho,
+                'ChiTietThanhLy' => json_encode($this->ChiTietThanhLy)
+            ]);
+
+            $this->resetForm();
+            $this->isAdd = false;
+            session()->flash('success', 'Thanh lý kho đã được tạo thành công!');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Lỗi! Vui lòng thực hiện lại.');
         }
-
-        if ($this->TrangThai === 'Đã Thanh Lý') {
-            if ($vatTu->SoLuongTon < $this->SoLuong) {
-                session()->flash('error', 'Số lượng tồn kho không đủ!');
-                return;
-            }
-            $vatTu->decrement('SoLuongTon', $this->SoLuong);
-        }
-
-        ThanhLyKho::create([
-            'MaPhieuThanhLy' => $this->MaPhieuThanhLy,
-            'MaVatTu' => $this->MaVatTu,
-            'MaKho' => $this->MaKho,
-            'MaNhanVien' => $this->MaNhanVien,
-            'NgayLap' => $this->NgayLap,
-            'TrangThai' => $this->TrangThai,
-            'MaLenhDieuDong' => $this->MaLenhDieuDong,
-            'SoLuong' => $this->SoLuong,
-            'DonGia' => $this->DonGia,
-            'LyDoThanhLy' => $this->LyDoThanhLy,
-            'BienPhapThanhLy' => $this->BienPhapThanhLy
-        ]);
-
-        $this->resetForm();
-        $this->isAdd = false;
-        session()->flash('success', 'Thanh lý kho đã được tạo thành công!');
     }
-
 
     public function update()
     {
         $this->validate([
             'MaPhieuThanhLy' => 'required',
-            'MaVatTu' => 'required',
+            'MaLenhDieuDong' => 'required',
             'MaKho' => 'required',
-            'MaNhanVien' => 'required',
-            'NgayLap' => 'required',
             'TrangThai' => 'required',
-            'SoLuong' => 'required|integer|min:1',
-            'DonGia' => 'required|numeric|min:0',
-            'LyDoThanhLy' => 'required',
-            'BienPhapThanhLy' => 'required'
+            'ChiTietThanhLy' => 'required'
         ]);
 
         $phieuthanhly = ThanhLyKho::where('MaPhieuThanhLy', $this->MaPhieuThanhLy)->first();
         if (!$phieuthanhly) {
-            session()->flash('error', 'Không tìm thấy phiếu thanh lý này!');
+            session()->flash('error', 'Không tìm thấy phiếu thanh lý!');
             return;
         }
 
-        $oldTrangThai = $phieuthanhly->TrangThai;
-        $oldSoLuong = $phieuthanhly->SoLuong;
-
-        // Nếu vật tư bị thay đổi
-        if ($this->MaVatTu !== $phieuthanhly->MaVatTu) {
-            $oldVatTu = VatTu::where('MaVatTu', $phieuthanhly->MaVatTu)->first();
-            $newVatTu = VatTu::where('MaVatTu', $this->MaVatTu)->first();
-
-            if (!$oldVatTu || !$newVatTu) {
-                session()->flash('error', 'Vật tư không tồn tại!');
-                return;
-            }
-
-            if ($oldTrangThai === 'Đã Thanh Lý') {
-                $oldVatTu->increment('SoLuongTon', $oldSoLuong);
-            }
-
-            if ($this->TrangThai === 'Đã Thanh Lý') {
-                if ($newVatTu->SoLuongTon < $this->SoLuong) {
-                    session()->flash('error', 'Số lượng tồn kho không đủ!');
-                    return;
-                }
-                $newVatTu->decrement('SoLuongTon', $this->SoLuong);
-            }
-
-        } else {
-            $vatTu = VatTu::where('MaVatTu', $this->MaVatTu)->first();
-            if (!$vatTu) {
-                session()->flash('error', 'Vật tư không tồn tại!');
-                return;
-            }
-
-            if ($oldTrangThai === 'Đã Thanh Lý') {
-                $vatTu->increment('SoLuongTon', $oldSoLuong);
-            }
-
-            if ($this->TrangThai === 'Đã Thanh Lý') {
-                if ($vatTu->SoLuongTon < $this->SoLuong) {
-                    session()->flash('error', 'Số lượng tồn kho không đủ!');
-                    return;
-                }
-                $vatTu->decrement('SoLuongTon', $this->SoLuong);
-            }
-        }
-
         $phieuthanhly->update([
-            'MaVatTu' => $this->MaVatTu,
-            'MaKho' => $this->MaKho,
-            'MaNhanVien' => $this->MaNhanVien,
-            'NgayLap' => $this->NgayLap,
-            'TrangThai' => $this->TrangThai,
+            'MaPhieuThanhLy' => $this->MaPhieuThanhLy,
             'MaLenhDieuDong' => $this->MaLenhDieuDong,
-            'SoLuong' => $this->SoLuong,
-            'DonGia' => $this->DonGia,
-            'LyDoThanhLy' => $this->LyDoThanhLy,
-            'BienPhapThanhLy' => $this->BienPhapThanhLy
+            'MaKho' => $this->MaKho,
+            'TrangThai' => $this->TrangThai,
+            'ChiTietThanhLy' => json_encode($this->ChiTietThanhLy)
         ]);
 
         $this->resetForm();
@@ -261,20 +175,140 @@ class ThanhLyKhoComponent extends Component
         session()->flash('success', 'Thanh lý kho đã được cập nhật thành công!');
     }
 
-    public function delete(){
+
+    public function delete()
+    {
         try {
             $phieuthanhly = ThanhLyKho::where('MaPhieuThanhLy', $this->MaPhieuThanhLy)->first();
-            
             if (!$phieuthanhly) {
-                throw new \Exception('Không tìm thấy phiếu thanh lý!');
+                session()->flash('error', 'Không tìm thấy phiếu thanh lý này!');
+                return;
+            }
+
+            $phieuthanhly->update([
+                'TrangThai' => 'Đã hủy'
+            ]);
+
+            $this->resetForm();
+            $this->isDelete = false;
+            session()->flash('success', 'Thanh lý kho đã được hủy thành công!');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Lỗi! Vui lòng thực hiện lại.');
+        }
+    }
+
+    public function addVatTu()
+    {
+        $this->ChiTietThanhLy[count($this->ChiTietThanhLy)] = [
+            'MaVatTu' => '',
+            'TenVatTu' => '',
+            'SoLuong' => '',
+            'DonVi' => '',
+            'DonGia' => '',
+            'ThanhTien' => ''
+        ];
+    }
+
+    public function removeVatTu($index)
+    {
+        unset($this->ChiTietThanhLy[$index]);
+        $this->ChiTietThanhLy = array_values($this->ChiTietThanhLy);
+        foreach($this->ChiTietThanhLy as $key => $value){
+            $key++;
+        }
+    }
+
+    public function updatedChiTietThanhLy($value, $key)
+    {
+        $index = intval(explode('.', $key)[0]);
+        $field = explode('.', $key)[1];
+        if($field == 'MaVatTu'){
+            $vatTu = VatTu::where('MaVatTu', $value)->first();
+            if (!$vatTu) {
+                session()->flash('error', 'Không tìm thấy vật tư!');
+                return;
+            }
+            if($this->ChiTietThanhLy[$index]['SoLuong'] != ''){
+                $this->ChiTietThanhLy[$index]['ThanhTien'] = $this->ChiTietThanhLy[$index]['SoLuong'] * $vatTu->GiaNhap;
+            }
+            $this->ChiTietThanhLy[$index]['TenVatTu'] = $vatTu->TenVatTu;
+            $this->ChiTietThanhLy[$index]['DonVi'] = $vatTu->donvitinh->TenDonViTinh;
+            $this->ChiTietThanhLy[$index]['DonGia'] = $vatTu->GiaNhap;
+        }
+        if($field == 'SoLuong'){
+            $vatTu = VatTu::where('MaVatTu', $this->ChiTietThanhLy[$index]['MaVatTu'])->first();
+            if (!$vatTu) {
+                return;
+            }
+            if($value == ''){
+                $this->ChiTietThanhLy[$index]['ThanhTien'] = 0;
+                return;
+            }
+            $this->ChiTietThanhLy[$index]['ThanhTien'] = $value * $vatTu->GiaNhap;
+        }
+    }
+
+    public function exportExcel()
+    {
+        try {
+            $phieuthanhly = ThanhLyKho::where('MaPhieuThanhLy', $this->MaPhieuThanhLy)
+                ->with(['kho', 'lenhdieudong'])
+                ->first();
+                
+            if (!$phieuthanhly) {
+                throw new \Exception('Không tìm thấy phiếu thanh lý');
+            }
+
+            $templatePath = storage_path('app/private/bieumau/phieuthanhly.xlsx');
+            if (!file_exists($templatePath)) {
+                throw new \Exception('Không tìm thấy file mẫu');
+            }
+
+            $spreadsheet = IOFactory::load($templatePath);
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $sheet->setCellValue('K4', 'Số (No.): ' . $phieuthanhly->MaPhieuThanhLy);
+            $sheet->setCellValue('F7', $phieuthanhly->kho->TenKho ?? '');
+            $sheet->setCellValue('F9', $phieuthanhly->kho->MaKho ?? '');
+            $sheet->setCellValue('E9', $phieuthanhly->kho->DiaChi ?? '');
+            $sheet->setCellValue('G10', $phieuthanhly->lenhdieudong->MaLenhDieuDong ?? '');
+            
+            $row = 13;
+            $stt = 1;
+            $chiTiet = json_decode($phieuthanhly->ChiTietThanhLy, true);
+            
+            foreach ($chiTiet as $item) {
+                $sheet->setCellValue('C' . $row, $stt);
+                $sheet->setCellValue('E' . $row, $item['MaVatTu'] ?? '');
+                $sheet->setCellValue('D' . $row, $item['TenVatTu'] ?? '');
+                $sheet->setCellValue('F' . $row, $item['DonVi'] ?? '');
+                $sheet->setCellValue('G' . $row, $item['SoLuong'] ?? 0);
+                $sheet->setCellValue('H' . $row, $item['DonGia'] ?? 0);
+                $sheet->setCellValue('I' . $row, $item['ThanhTien'] ?? 0);
+                $row++;
+                $stt++;
+            }
+
+            $directory = storage_path('app/public/exports');
+            if (!file_exists($directory)) {
+                mkdir($directory, 0777, true);
             }
             
-            $phieuthanhly->delete();
-            $this->closeModal();
-            session()->flash('success', 'Thanh lý kho đã được xóa thành công');
+            $fileName = 'PhieuThanhLy_' . $phieuthanhly->MaPhieuThanhLy . '.xlsx';
+            $filePath = $directory . '/' . $fileName;
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save($filePath);
+            
+            if (file_exists($filePath)) {
+                return response()->download($filePath, $fileName, [
+                    'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+                ])->deleteFileAfterSend(true);
+            }
+            
         } catch (\Exception $e) {
-            $this->closeModal();
-            session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+            session()->flash('error', 'Lỗi khi xuất file: ' . $e->getMessage());
+            return;
         }
     }
 }
