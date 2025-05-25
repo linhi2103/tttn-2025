@@ -144,19 +144,19 @@
                                     </div>
                                     <br>
                                     <div>
-                                        <table class="table table-hover table-light table-bordered table-responsive text-center">
+                                        <table class="table table-hover table-light table-bordered table-responsive text-center" style="table-layout: auto;">
                                             <thead>
                                                 <tr>
-                                                    <th style="width: 5%;">STT</th>
-                                                    <th style="width: 10%;">Mã Vật Tư</th>
-                                                    <th style="width: 30%;">Tên Vật Tư</th>
-                                                    <th style="width: 3%;">Số Lượng</th>
-                                                    <th style="width: 8%;">Đơn Vị</th>
-                                                    <th style="width: 10%;">Đơn giá</th>
-                                                    <th style="width: 10%;">Thành Tiền</th>
-                                                    <th style="width: 15%;">Nguyên nhân thanh lý</th>
-                                                    <th style="width: 15%;">Biện pháp thanh lý</th>
-                                                    <th style="width: 5%;">Thao tác</th>
+                                                    <th>STT</th>
+                                                    <th>Mã Vật Tư</th>
+                                                    <th>Tên Vật Tư</th>
+                                                    <th>Số Lượng</th>
+                                                    <th>Đơn Vị</th>
+                                                    <th>Đơn giá</th>
+                                                    <th>Thành Tiền</th>
+                                                    <th>Nguyên nhân thanh lý</th>
+                                                    <th>Biện pháp thanh lý</th>
+                                                    <th>Thao tác</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -240,7 +240,7 @@
                         <button type="button" class="btn-close" wire:click="closeModal"></button>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-hover table-light table-bordered table-responsive text-center">
+                        <table class="table table-hover table-light table-bordered table-responsive text-center" style="table-layout: auto;">
                             <thead>
                                 <tr>
                                     <th style="width: 5%;">STT</th>
