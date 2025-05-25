@@ -43,8 +43,7 @@ return new class extends Migration
         Schema::create('phieukiemke', function (Blueprint $table) {
             $table->string('MaPhieuKiemKe', 20)->primary();
             $table->string('MaKho', 10);
-            $table->string('MaLenhDieuDong', 20)->nullable();   
-            $table->date('NgayKiemKe');
+            $table->string('MaLenhDieuDong', 20)->nullable();
             $table->enum('TrangThai', ['Chờ Duyệt', 'Đã Kiểm Kê', 'Đã Hủy'])->default('Chờ Duyệt');
             $table->json('ChiTietKiemKe')->nullable();
             $table->timestamps();
