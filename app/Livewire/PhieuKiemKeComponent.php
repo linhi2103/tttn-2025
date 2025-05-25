@@ -83,7 +83,12 @@ class PhieuKiemKeComponent extends Component
     public function showModalDetail($MaPhieuKiemKe)
     {
         $phieukiemke = PhieuKiemKe::where('MaPhieuKiemKe', $MaPhieuKiemKe)->first();
+        if (!$phieukiemke) {
+            session()->flash('error', 'Không tìm thấy phiếu kiểm kê');
+            return;
+        }
         $this->isDetail = true;
+        $this->MaPhieuKiemKe = $phieukiemke->MaPhieuKiemKe;
         $this->ChiTietKiemKe = json_decode($phieukiemke->ChiTietKiemKe, true);
     }
 
@@ -251,24 +256,42 @@ class PhieuKiemKeComponent extends Component
 
             $sheet->setCellValue('K4', 'Số (No.): ' . $phieukiemke->MaPhieuKiemKe);
             $sheet->setCellValue('F7', $phieukiemke->kho->TenKho ?? '');
-            $sheet->setCellValue('F9', $phieukiemke->kho->MaKho ?? '');
+            $sheet->setCellValue('F8', $phieukiemke->kho->MaKho ?? '');
             $sheet->setCellValue('E9', $phieukiemke->kho->DiaChi ?? '');
             $sheet->setCellValue('G10', $phieukiemke->lenhDieuDong->MaLenhDieuDong ?? '');
 
-            $row = 13;
+            $row = 16;
             $stt = 1;
             $chiTiet = json_decode($phieukiemke->ChiTietKiemKe, true);
 
             foreach ($chiTiet as $item) {
                 $sheet->insertNewRowBefore($row, 1);
 
-                $sheet->setCellValue('C' . $row, $stt);
-                $sheet->setCellValue('D' . $row, $item['MaVatTu'] ?? '');
-                $sheet->setCellValue('E' . $row, $item['TenVatTu'] ?? '');
-                $sheet->setCellValue('F' . $row, $item['SoLuongTon'] ?? 0);
-                $sheet->setCellValue('G' . $row, $item['SoLuongThucTe'] ?? 0);
+                $sheet->setCellValue('B' . $row, $stt);
+                $sheet->setCellValue('C' . $row, $item['TenVatTu']);
+                $sheet->setCellValue('D' . $row, $item['MaVatTu']);
+                $sheet->setCellValue('E' . $row, $item['DonViTinh']);
+                $sheet->setCellValue('F' . $row, $item['DonGia']);
+                $sheet->setCellValue('G' . $row, $item['SoLuongTon']);
+                $sheet->setCellValue('H' . $row, $item['SoLuongTon'] * $item['DonGia']);
+                $sheet->setCellValue('I' . $row, $item['SoLuongThucTe']);
+                $sheet->setCellValue('J' . $row, $item['SoLuongThucTe'] * $item['DonGia']);
+                if($item['SoLuongThucTe'] > $item['SoLuongTon']) {
+                    $chenhlech = $item['SoLuongThucTe'] - $item['SoLuongTon'];
+                    $sheet->setCellValue('K' . $row, $chenhlech);
+                    $sheet->setCellValue('L' . $row, $chenhlech * $item['DonGia']);
+                }
+                if($item['SoLuongThucTe'] < $item['SoLuongTon']) {
+                    $chenhlech = $item['SoLuongTon'] - $item['SoLuongThucTe'];
+                    $sheet->setCellValue('M' . $row, $chenhlech);
+                    $sheet->setCellValue('N' . $row, $chenhlech * $item['DonGia']);
+                }
+                $sheet->setCellValue('O' . $row, $item['ConTot']);
+                $sheet->setCellValue('P' . $row, $item['KemChatLuong']);
+                $sheet->setCellValue('Q' . $row, $item['MatChatLuong']);
 
-                $style = $sheet->getStyle('C' . $row . ':G' . $row);
+
+                $style = $sheet->getStyle('B' . $row . ':Q' . $row);
                 $style->getFont()->setBold(false);
                 $style->getAlignment()->setHorizontal('center');
                 $style->getAlignment()->setVertical('center');
@@ -278,11 +301,11 @@ class PhieuKiemKeComponent extends Component
             }
 
             $totalRow = $row;
-            $sheet->setCellValue('C' . $totalRow, 'Tổng');
-            $sheet->setCellValue('F' . $totalRow, '=SUM(F13:F' . ($row - 1) . ')');
-            $sheet->setCellValue('G' . $totalRow, '=SUM(G13:G' . ($row - 1) . ')');
-
-            $totalStyle = $sheet->getStyle('C' . $totalRow . ':G' . $totalRow);
+            $sheet->setCellValue('C' . $totalRow, 'Tổng cộng (Total):');
+            foreach (range('G', 'Q') as $column) {
+                $sheet->setCellValue($column . $totalRow, '=SUM(' . $column . '16:' . $column . ($row - 1) . ')');
+            }
+            $totalStyle = $sheet->getStyle('C' . $totalRow . ':Q' . $totalRow);
             $totalStyle->getAlignment()->setHorizontal('center');
             $totalStyle->getAlignment()->setVertical('center');
 

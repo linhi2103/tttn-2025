@@ -245,15 +245,30 @@
                         <button type="button" class="btn-close" wire:click="closeModal"></button>
                     </div>
                     <div class="modal-body">
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
                         <table class="table table-hover table-light table-bordered table-responsive text-center" style="table-layout: auto;">
                             <thead>
                                 <tr>
                                     <th>STT</th>
                                     <th>Mã Vật Tư</th>
                                     <th>Tên Vật Tư</th>
+                                    <th>Đơn Vị</th>
+                                    <th>Đơn giá</th>
                                     <th>Số Lượng Tồn</th>
                                     <th>Số Lượng Thực Tế</th>
                                     <th>Chênh Lệch</th>
+                                    <th style="width: 10%;">Còn tốt 100%</th>
+                                    <th style="width: 10%;">Kém chất lượng</th>
+                                    <th style="width: 10%;">Mất chất lượng</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -262,9 +277,14 @@
                                         <td>{{ $stt + 1 }}</td>
                                         <td>{{ $item['MaVatTu'] }}</td>
                                         <td>{{ $item['TenVatTu'] }}</td>
+                                        <td>{{ $item['DonViTinh'] }}</td>
+                                        <td>{{ $item['DonGia'] }}</td>
                                         <td>{{ $item['SoLuongTon'] }}</td>
                                         <td>{{ $item['SoLuongThucTe'] }}</td>
-                                        <td>{{ $item['ChenhLech'] ?? ($item['SoLuongThucTe'] - $item['SoLuongTon']) }}</td>
+                                        <td>{{ $item['SoLuongThucTe'] - $item['SoLuongTon'] }}</td>
+                                        <td>{{ $item['ConTot'] }}</td>
+                                        <td>{{ $item['KemChatLuong'] }}</td>
+                                        <td>{{ $item['MatChatLuong'] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
