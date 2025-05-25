@@ -271,7 +271,7 @@ class ThanhLyKhoComponent extends Component
                 throw new \Exception('Không tìm thấy phiếu thanh lý');
             }
 
-            $templatePath = storage_path('app/private/bieumau/phieuthanhly.xlsx');
+            $templatePath = public_path('/bieumau/phieuthanhly.xlsx');
             if (!file_exists($templatePath)) {
                 throw new \Exception('Không tìm thấy file mẫu');
             }
