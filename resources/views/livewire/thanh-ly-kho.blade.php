@@ -58,7 +58,7 @@
                                     <button class="btn bg-primary ms-2" title="Xem chi tiết" wire:click="showModalDetail('{{ $item->MaPhieuThanhLy }}')">
                                         <i class="fas fa-eye"></i>
                                     </button>
-                                    <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $item->MaPhieuThanhLy }}')">
+                                    <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $item->MaPhieuThanhLy }}')" {{ $item->TrangThai == 'Đã thanh lý' ? 'disabled' : '' }}>
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="btn bg-danger ms-2" title="Xóa" wire:click="showModalDelete('{{ $item->MaPhieuThanhLy }}')">

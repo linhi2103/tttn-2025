@@ -10,7 +10,9 @@ use App\Models\VatTu;
 use App\Models\DanhMucKho;
 use App\Models\NhanVien;
 use App\Models\LenhDieuDong;
-
+use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class PhieuKiemKeComponent extends Component
 {
@@ -21,18 +23,14 @@ class PhieuKiemKeComponent extends Component
     public $isEdit = false;
     public $isAdd = false;
     public $isDelete = false;
+    public $isDetail = false;
 
     public $MaPhieuKiemKe;
-    public $MaVatTu;
     public $MaKho;
-    public $MaNhanVien;
     public $MaLenhDieuDong;
-    public $NgayKiemKe;
     public $TrangThai;
-    public $SoLuongThucTe;
-    public $SoLuongTon;
-    public $TinhTrang;
-    public $GhiChu;
+
+    public $ChiTietKiemKe = [];
 
     public function render()
     {
@@ -40,24 +38,20 @@ class PhieuKiemKeComponent extends Component
             'phieukiemkes' => PhieuKiemKe::query()
                 ->where(function ($query) {
                     $query->where('MaPhieuKiemKe', 'like', "%{$this->search}%")
-                        ->orWhere('MaVatTu', 'like', "%{$this->search}%")
                         ->orWhere('MaKho', 'like', "%{$this->search}%")
-                        ->orWhere('MaNhanVien', 'like', "%{$this->search}%")
                         ->orWhere('MaLenhDieuDong', 'like', "%{$this->search}%");
                 })
                 ->orderBy('MaPhieuKiemKe', 'asc')
                 ->paginate(10),
             'vattus' => VatTu::all(),
             'danhmuckhos' => DanhMucKho::all(),
-            'nhanViens' => NhanVien::all(),
-            'lenhDieuDongs' => LenhDieuDong::all()
+            'lenhdieudongs' => LenhDieuDong::all()
         ]);
     }
 
     public function showModalAdd()
     {
-        $this->NgayKiemKe = now()->format('Y-m-d');
-        $this->TrangThai = 'Chờ duyệt';
+        $this->addVatTu();
         $this->isAdd = true;
     }
 
@@ -73,17 +67,10 @@ class PhieuKiemKeComponent extends Component
         }
 
         $this->MaPhieuKiemKe = $phieukiemke->MaPhieuKiemKe;
-        $this->MaVatTu = $phieukiemke->MaVatTu;
         $this->MaKho = $phieukiemke->MaKho;
-        $this->MaNhanVien = $phieukiemke->MaNhanVien;
-        $this->NgayKiemKe = $phieukiemke->NgayKiemKe;
-        $this->TrangThai = $phieukiemke->TrangThai;
         $this->MaLenhDieuDong = $phieukiemke->MaLenhDieuDong;
-        $this->SoLuongThucTe = $phieukiemke->SoLuongThucTe;
-        $this->SoLuongTon = $phieukiemke->vatTu->SoLuongTon;
-        $this->TinhTrang = $phieukiemke->TinhTrang;
-        $this->GhiChu = $phieukiemke->GhiChu;
-
+        $this->TrangThai = $phieukiemke->TrangThai;
+        $this->ChiTietKiemKe = json_decode($phieukiemke->ChiTietKiemKe, true);
         $this->isEdit = true;
     }
 
@@ -93,131 +80,78 @@ class PhieuKiemKeComponent extends Component
         $this->MaPhieuKiemKe = $MaPhieuKiemKe;
     }
 
+    public function showModalDetail($MaPhieuKiemKe)
+    {
+        $phieukiemke = PhieuKiemKe::where('MaPhieuKiemKe', $MaPhieuKiemKe)->first();
+        $this->isDetail = true;
+        $this->ChiTietKiemKe = json_decode($phieukiemke->ChiTietKiemKe, true);
+    }
+
     public function closeModal()
     {
         $this->isEdit = false;
         $this->isAdd = false;
         $this->isDelete = false;
+        $this->isDetail = false;
         $this->resetModal();
     }
 
     public function resetModal()
     {
         $this->reset([
-            'MaPhieuKiemKe', 'MaVatTu', 'MaKho', 'MaNhanVien', 'NgayKiemKe',
-            'TrangThai', 'MaLenhDieuDong',
-            'SoLuongThucTe', 'SoLuongTon', 'TinhTrang', 'GhiChu'
+            'MaPhieuKiemKe', 'MaKho', 'TrangThai', 'MaLenhDieuDong', 'ChiTietKiemKe',
         ]);
     }
 
     public function save()
     {
-        $this->validate([
-            'MaPhieuKiemKe' => 'required|unique:phieukiemke,MaPhieuKiemKe',
-            'MaVatTu' => 'required',
-            'MaKho' => 'required',
-            'MaNhanVien' => 'required',
-            'NgayKiemKe' => 'required',
-            'TrangThai' => 'required',
-            'MaLenhDieuDong' => 'required',
-            'SoLuongThucTe' => 'required|integer|min:0',
-            'SoLuongTon' => 'required|integer|min:0',
-            'TinhTrang' => 'required',
-            'GhiChu' => 'nullable'
-        ]);
+        try {
+            $this->validate([
+                'MaPhieuKiemKe' => 'required|unique:phieukiemke,MaPhieuKiemKe',
+                'MaKho' => 'required',
+                'MaLenhDieuDong' => 'required',
+            ]);
 
-        $vatTu = VatTu::where('MaVatTu', $this->MaVatTu)->first();
-        if (!$vatTu) {
-            session()->flash('error', 'Vật tư không tồn tại!');
-            return;
+            PhieuKiemKe::create([
+                'MaPhieuKiemKe' => $this->MaPhieuKiemKe,
+                'MaKho' => $this->MaKho,
+                'MaLenhDieuDong' => $this->MaLenhDieuDong,
+                'ChiTietKiemKe' => json_encode($this->ChiTietKiemKe),
+            ]);
+
+            $this->closeModal();
+            session()->flash('success', 'Phiếu kiểm kê đã được tạo thành công!');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Lỗi! ' . $e->getMessage());
         }
-
-        if ($this->TrangThai === 'Đã Kiểm Kê') {
-            $vatTu->decrement('SoLuongTon', $this->SoLuongThucTe);
-        }
-
-        PhieuKiemKe::create([
-            'MaPhieuKiemKe' => $this->MaPhieuKiemKe,
-            'MaVatTu' => $this->MaVatTu,
-            'MaKho' => $this->MaKho,
-            'MaNhanVien' => $this->MaNhanVien,
-            'NgayKiemKe' => $this->NgayKiemKe,
-            'TrangThai' => $this->TrangThai,
-            'MaLenhDieuDong' => $this->MaLenhDieuDong,
-            'SoLuongThucTe' => $this->SoLuongThucTe,
-            'SoLuongTon' => $this->SoLuongTon,
-            'TinhTrang' => $this->TinhTrang,
-            'GhiChu' => $this->GhiChu
-        ]);
-
-        $this->closeModal();
-        session()->flash('success', 'Phiếu kiểm kê đã được tạo thành công!');
     }
 
     public function update()
     {
-        $this->validate([
-            'MaVatTu' => 'required',
-            'MaKho' => 'required',
-            'MaNhanVien' => 'required',
-            'NgayKiemKe' => 'required',
-            'TrangThai' => 'required',
-            'MaLenhDieuDong' => 'required',
-            'SoLuongThucTe' => 'required|integer|min:0',
-            'SoLuongTon' => 'required|integer|min:0',
-            'TinhTrang' => 'required',
-            'GhiChu' => 'nullable'
-        ]);
-
         $phieukiemke = PhieuKiemKe::where('MaPhieuKiemKe', $this->MaPhieuKiemKe)->first();
         if (!$phieukiemke) {
             session()->flash('error', 'Không tìm thấy phiếu kiểm kê!');
             return;
         }
-
-        $vatTu = VatTu::where('MaVatTu', $this->MaVatTu)->first();
-        if (!$vatTu) {
-            session()->flash('error', 'Vật tư không tồn tại!');
-            return;
-        }
-
-        $oldTrangThai = $phieukiemke->TrangThai;
-        $oldSoLuongThucTe = $phieukiemke->SoLuongThucTe;
-
-        if ($oldTrangThai !== $this->TrangThai) {
-            if ($this->TrangThai === 'Đã Kiểm Kê') {
-                $vatTu->decrement('SoLuongTon', $this->SoLuongThucTe);
-            }
-
-            if ($oldTrangThai === 'Đã Kiểm Kê') {
-                $vatTu->increment('SoLuongTon', $oldSoLuongThucTe);
-            }
-        } else {
-            if ($this->TrangThai === 'Đã Kiểm Kê') {
-                $diff = $this->SoLuongThucTe - $oldSoLuongThucTe;
-                if ($diff > 0) {
-                    if ($vatTu->SoLuongTon < $diff) {
-                        session()->flash('error', 'Số lượng tồn kho không đủ để cập nhật!');
-                        return;
-                    }
-                    $vatTu->decrement('SoLuongTon', $diff);
-                } elseif ($diff < 0) {
-                    $vatTu->increment('SoLuongTon', abs($diff));
+        if ($phieukiemke->TrangThai === 'Đã Kiểm Kê') {
+            foreach (json_decode($phieukiemke->ChiTietKiemKe, true) as $item) {
+                $vatTu = VatTu::where('MaVatTu', $item['MaVatTu'])->first();
+                if ($vatTu) {
+                    $vatTu->update('SoLuongTon', $item['SoLuongThucTe']);
                 }
             }
         }
 
+        if($this->ChiTietKiemKe == []){
+            session()->flash('error', 'Chi tiết kiểm kê không được để trống!');
+            return;
+        }
+
         $phieukiemke->update([
-            'MaVatTu' => $this->MaVatTu,
             'MaKho' => $this->MaKho,
-            'MaNhanVien' => $this->MaNhanVien,
-            'NgayKiemKe' => $this->NgayKiemKe,
             'TrangThai' => $this->TrangThai,
             'MaLenhDieuDong' => $this->MaLenhDieuDong,
-            'SoLuongThucTe' => $this->SoLuongThucTe,
-            'SoLuongTon' => $this->SoLuongTon,
-            'TinhTrang' => $this->TinhTrang,
-            'GhiChu' => $this->GhiChu
+            'ChiTietKiemKe' => json_encode($this->ChiTietKiemKe),
         ]);
 
         $this->closeModal();
@@ -234,9 +168,11 @@ class PhieuKiemKeComponent extends Component
             }
 
             if ($phieukiemke->TrangThai === 'Đã Kiểm Kê') {
-                $vatTu = VatTu::where('MaVatTu', $phieukiemke->MaVatTu)->first();
-                if ($vatTu) {
-                    $vatTu->increment('SoLuongTon', $phieukiemke->SoLuongThucTe);
+                foreach (json_decode($phieukiemke->ChiTietKiemKe, true) as $item) {
+                    $vatTu = VatTu::where('MaVatTu', $item['MaVatTu'])->first();
+                    if ($vatTu) {
+                        $vatTu->update('SoLuongTon', $item['SoLuongTon']);
+                    }
                 }
             }
 
@@ -249,13 +185,130 @@ class PhieuKiemKeComponent extends Component
         }
     }
 
-    #[On('MaVatTu')]
-    public function updatedMaVatTu($value){
-        $vatTu = VatTu::where('MaVatTu', $value)->first();
-        if($vatTu){
-            $this->SoLuongTon = $vatTu->SoLuongTon;
-        }else{
-            $this->SoLuongTon = null;
+    public function addVatTu()
+    {
+        $this->ChiTietKiemKe[] = [
+            'MaVatTu' => '',
+            'TenVatTu' => '',
+            'DonViTinh' => '',
+            'DonGia' => '',
+            'SoLuongTon' => '',
+            'SoLuongThucTe' => '',
+            'ConTot' => '',
+            'KemChatLuong' => '',
+            'MatChatLuong' => '',
+        ];
+    }
+
+    public function removeVatTu($index)
+    {
+        unset($this->ChiTietKiemKe[$index]);
+        $this->ChiTietKiemKe = array_values($this->ChiTietKiemKe);
+    }
+
+    public function updatedChiTietKiemKe($value, $key)
+    {
+        $index = intval(explode('.', $key)[0]);
+        $field = explode('.', $key)[1];
+        if($field == 'MaVatTu'){
+            $vatTu = VatTu::where('MaVatTu', $value)->first();
+            if (!$vatTu) {
+                session()->flash('error', 'Không tìm thấy vật tư!');
+                return;
+            }
+            $this->ChiTietKiemKe[$index]['TenVatTu'] = $vatTu->TenVatTu;
+            $this->ChiTietKiemKe[$index]['SoLuongTon'] = $vatTu->SoLuongTon;
+            $this->ChiTietKiemKe[$index]['DonViTinh'] = $vatTu->DonViTinh->TenDonViTinh;
+            $this->ChiTietKiemKe[$index]['DonGia'] = $vatTu->GiaNhap;
+        }
+
+        if ($field == 'ConTot' || $field == 'KemChatLuong') {
+            $this->ChiTietKiemKe[$index]['MatChatLuong'] = 
+                (intval($this->ChiTietKiemKe[$index]['SoLuongThucTe']) ?? 0) 
+                - (intval($this->ChiTietKiemKe[$index]['ConTot']) ?? 0)
+                - (intval($this->ChiTietKiemKe[$index]['KemChatLuong']) ?? 0);
+        }
+    }
+
+    public function exportExcel()
+    {
+        try {
+            $phieukiemke = PhieuKiemKe::where('MaPhieuKiemKe', $this->MaPhieuKiemKe)
+                ->with(['kho', 'lenhDieuDong'])
+                ->first();
+
+            if (!$phieukiemke) {
+                throw new \Exception('Không tìm thấy phiếu kiểm kê');
+            }
+
+            $templatePath = public_path('/bieumau/phieukiemke.xlsx');
+            if (!file_exists($templatePath)) {
+                throw new \Exception('Không tìm thấy file mẫu');
+            }
+
+            $spreadsheet = IOFactory::load($templatePath);
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $sheet->setCellValue('K4', 'Số (No.): ' . $phieukiemke->MaPhieuKiemKe);
+            $sheet->setCellValue('F7', $phieukiemke->kho->TenKho ?? '');
+            $sheet->setCellValue('F9', $phieukiemke->kho->MaKho ?? '');
+            $sheet->setCellValue('E9', $phieukiemke->kho->DiaChi ?? '');
+            $sheet->setCellValue('G10', $phieukiemke->lenhDieuDong->MaLenhDieuDong ?? '');
+
+            $row = 13;
+            $stt = 1;
+            $chiTiet = json_decode($phieukiemke->ChiTietKiemKe, true);
+
+            foreach ($chiTiet as $item) {
+                $sheet->insertNewRowBefore($row, 1);
+
+                $sheet->setCellValue('C' . $row, $stt);
+                $sheet->setCellValue('D' . $row, $item['MaVatTu'] ?? '');
+                $sheet->setCellValue('E' . $row, $item['TenVatTu'] ?? '');
+                $sheet->setCellValue('F' . $row, $item['SoLuongTon'] ?? 0);
+                $sheet->setCellValue('G' . $row, $item['SoLuongThucTe'] ?? 0);
+
+                $style = $sheet->getStyle('C' . $row . ':G' . $row);
+                $style->getFont()->setBold(false);
+                $style->getAlignment()->setHorizontal('center');
+                $style->getAlignment()->setVertical('center');
+
+                $row++;
+                $stt++;
+            }
+
+            $totalRow = $row;
+            $sheet->setCellValue('C' . $totalRow, 'Tổng');
+            $sheet->setCellValue('F' . $totalRow, '=SUM(F13:F' . ($row - 1) . ')');
+            $sheet->setCellValue('G' . $totalRow, '=SUM(G13:G' . ($row - 1) . ')');
+
+            $totalStyle = $sheet->getStyle('C' . $totalRow . ':G' . $totalRow);
+            $totalStyle->getAlignment()->setHorizontal('center');
+            $totalStyle->getAlignment()->setVertical('center');
+
+            $directory = storage_path('app/public/exports');
+            if (!file_exists($directory)) {
+                mkdir($directory, 0777, true);
+            }
+
+            $fileName = 'PhieuKiemKe_' . $phieukiemke->MaPhieuKiemKe . '.xlsx';
+            $filePath = $directory . '/' . $fileName;
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save($filePath);
+
+            if (file_exists($filePath)) {
+                return response()->download($filePath, $fileName, [
+                    'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+                ])->deleteFileAfterSend(true);
+            }
+
+            session()->flash('success', 'Xuất file thành công!');
+            $this->closeModal();
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Lỗi khi xuất file: ' . $e->getMessage());
+            return;
         }
     }
 }

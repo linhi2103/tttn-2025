@@ -14,34 +14,13 @@ class PhieuKiemKe extends Model
     protected $primaryKey = 'MaPhieuKiemKe';
     protected $keyType = 'string';
     public $incrementing = false;
-    public $timestamps = false;
 
     protected $fillable = [
         'MaPhieuKiemKe',
         'MaKho',
-        'NgayKiemKe',
-        'MaNhanVien',
-        'TrangThai',
-        'MaVatTu',
-        'SoLuongThucTe',
-        'SoLuongTon',
-        'TinhTrang',
         'MaLenhDieuDong',
-        'GhiChu'
-    ];
-    
-    protected $casts = [
-        'NgayKiemKe' => 'date',
-        'SoLuongThucTe' => 'integer',
-        'SoLuongTon' => 'integer',
-        'ChenhLech' => 'integer'
-    ];
-
-    protected $attributes = [
-        'TrangThai' => 'Chờ duyệt',
-        'TinhTrang' => 'Còn tốt 100%',
-        'SoLuongThucTe' => 0,
-        'SoLuongTon' => 0
+        'TrangThai',
+        'ChiTietKiemKe',
     ];
 
     public function vatTu()
