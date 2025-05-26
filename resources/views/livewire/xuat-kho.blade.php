@@ -55,7 +55,7 @@
                             <td>{{ $item->MaPhieuXuat }}</td>
                             <td>{{ $item->MaKho ?? 'N/A' }}</td>
                             <td>{{ $item->lenhDieuDong->MaLenhDieuDong ?? 'N/A' }}</td>
-                            <td>{{ date('d/m/Y', strtotime($item->NgayXuat)) }}</td>
+                            <td>{{ date('d/m/Y', strtotime($item->created_at)) }}</td>
                             <td>{{ $item->donViVanChuyen->TenDonViVanChuyen ?? 'N/A' }}</td>
                             <td>{{ $item->DiaDiemXuat }}</td>
                             <td>{{ $item->DonViTienTe }}</td>

@@ -13,7 +13,6 @@ class XuatKho extends Model
     protected $primaryKey = 'MaPhieuXuat';
     protected $keyType = 'string';
     public $incrementing = false;
-    public $timestamps = false;
 
     protected $fillable = [
         'MaPhieuXuat',
