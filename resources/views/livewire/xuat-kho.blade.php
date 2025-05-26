@@ -165,12 +165,8 @@
                                 <label>Trạng Thái</label>
                                 <select class="form-control @error('TrangThai') is-invalid @enderror" wire:model="TrangThai" required>
                                     <option value="">-- Chọn Trạng Thái --</option>
-                                    <option value="Đã hủy">Đã hủy</option>
                                     <option value="Chờ duyệt">Chờ duyệt</option>
-                                    <option value="Đã thanh lý">Đã thanh lý</option>
                                     <option value="Đã duyệt">Đã duyệt</option>
-                                    <option value="Đang thực hiện">Đang thực hiện</option>
-                                    <option value="Hoàn thành">Hoàn thành</option>
                                     <option value="Hủy">Hủy</option>
                                 </select>
                                 @error('TrangThai') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -199,35 +195,52 @@
                                         <tbody>
                                             @foreach ($ChiTietXuatKho as $stt => $item)
                                                 <tr>
-                                                <td>{{ $stt + 1 }}</td>
-                                                        <td>
-                                                            <select class="form-control @error('MaVatTu') is-invalid @enderror" wire:model.live="ChiTietThanhLy.{{ $stt }}.MaVatTu" required>
-                                                                <option value="">-- Chọn Vật Tư --</option>
-                                                                @foreach ($vattus as $vattu)
-                                                                    <option value="{{ $vattu->MaVatTu }}" {{ $vattu->MaVatTu == $item['MaVatTu'] ? 'selected' : '' }}>{{ $vattu->MaVatTu }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </td>
-                                                        <td>{{ $item['TenVatTu'] }}</td>
-                                                        <td>
-                                                            <input type="number" class="form-control @error('ChiTietThanhLy.{{ $stt }}.SoLuong') is-invalid @enderror" wire:model.live="ChiTietThanhLy.{{ $stt }}.SoLuong" max="{{ $vattus->where('MaVatTu', $item['MaVatTu'])->first()->SoLuongTon ?? 0 }}" min="0" required>
-                                                        </td>
-                                                        <td>{{ $item['DonViTinh'] }}</td>
-                                                        <td>{{ $item['DonGia'] }}</td>
-                                                        <td>{{ $item['ThanhTien'] }}</td>
+                                                    <td>{{ $stt + 1 }}</td>
                                                     <td>
-                                                        <button class="btn btn-danger" wire:click="removeVatTu({{ $stt }})"><i class="fas fa-trash"></i></button>
+                                                        <select class="form-control @error('ChiTietXuatKho.'.$stt.'.MaVatTu') is-invalid @enderror" 
+                                                            wire:model.live="ChiTietXuatKho.{{ $stt }}.MaVatTu" required>
+                                                            <option value="">-- Chọn Vật Tư --</option>
+                                                            @foreach ($vattus as $vattu)
+                                                                <option value="{{ $vattu->MaVatTu }}">{{ $vattu->MaVatTu }} - {{ $vattu->TenVatTu }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>{{ $item['TenVatTu'] ?? '' }}</td>
+                                                    <td>
+                                                        <input type="number" class="form-control @error('ChiTietXuatKho.'.$stt.'.SoLuongXuat') is-invalid @enderror" 
+                                                            wire:model.live="ChiTietXuatKho.{{ $stt }}.SoLuongXuat" min="0" step="1" placeholder="0" required>
+                                                    </td>
+                                                    <td>{{ $item['DonViTinh'] ?? '' }}</td>
+                                                    <td>{{ number_format($item['DonGia'] ?? 0, 0, ',', '.') }} VNĐ</td>
+                                                    <td class="fw-bold text-primary">{{ number_format($item['ThanhTien'] ?? 0, 0, ',', '.') }} VNĐ</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" wire:click="removeVatTu({{ $stt }})">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
+                                            @if(count($ChiTietXuatKho) > 0)
+                                                <tr class="table-info">
+                                                    <td colspan="6" class="text-end fw-bold">TỔNG CỘNG:</td>
+                                                    <td class="fw-bold text-danger">{{ number_format($this->getTongThanhTien(), 0, ',', '.') }} VNĐ</td>
+                                                    <td></td>
+                                                </tr>
+                                            @endif
                                         </tbody>
                                     </table>
+                                    @if(count($ChiTietXuatKho) == 0)
+                                        <div class="text-center text-muted py-3">
+                                            <i class="fas fa-inbox fa-2x mb-2"></i>
+                                            <p>Chưa có vật tư nào được thêm. Nhấn "Thêm vật tư" để bắt đầu.</p>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeModal">Hủy</button>
-                            <button type="button" class="btn btn-danger" wire:click="delete">Xóa</button>
+                            <button class="btn btn-secondary" wire:click="closeModal">Hủy</button>
+                            <button type="submit" class="btn btn-lg-red">Lưu</button>
                         </div>
                     </form>
                 </div>
@@ -265,30 +278,42 @@
                         <button type="button" class="btn-close" wire:click="closeModal"></button>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-hover table-light table-bordered table-responsive text-center" style="table-layout: auto;">
-                            <thead>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Mã Phiếu Xuất:</strong> {{ $MaPhieuXuat }}
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Mã Kho:</strong> {{ $MaKho }}
+                            </div>
+                        </div>
+                        <table class="table table-hover table-light table-bordered">
+                            <thead class="table-dark">
                                 <tr>
                                     <th style="width: 5%;">STT</th>
                                     <th style="width: 10%;">Mã Vật Tư</th>
                                     <th style="width: 25%;">Tên Vật Tư</th>
-                                    <th style="width: 5%;">Số Lượng</th>
-                                    <th style="width: 8%;">Đơn Vị Tính</th>
-                                    <th style="width: 10%;">Đơn giá</th>
-                                    <th style="width: 10%;">Thành Tiền</th>
+                                    <th style="width: 8%;">Số Lượng</th>
+                                    <th style="width: 10%;">Đơn Vị Tính</th>
+                                    <th style="width: 12%;">Đơn giá</th>
+                                    <th style="width: 12%;">Thành Tiền</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($ChiTietXuatKho as $stt => $item)
                                     <tr>
-                                        <td>{{ $stt + 1 }}</td>
-                                        <td>{{ $item['MaVatTu'] }}</td>
-                                        <td>{{ $item['TenVatTu'] }}</td>
-                                        <td>{{ $item['SoLuong'] }}</td>
-                                        <td>{{ $item['DonViTinh'] }}</td>
-                                        <td>{{ $item['DonGia'] }}</td>
-                                        <td>{{ $item['ThanhTien'] }}</td>
+                                        <td class="text-center">{{ $stt + 1 }}</td>
+                                        <td>{{ $item['MaVatTu'] ?? '' }}</td>
+                                        <td>{{ $item['TenVatTu'] ?? '' }}</td>
+                                        <td class="text-center">{{ $item['SoLuongXuat'] ?? 0 }}</td>
+                                        <td class="text-center">{{ $item['DonViTinh'] ?? '' }}</td>
+                                        <td class="text-end">{{ number_format($item['DonGia'] ?? 0, 0, ',', '.') }} VNĐ</td>
+                                        <td class="text-end fw-bold">{{ number_format($item['ThanhTien'] ?? 0, 0, ',', '.') }} VNĐ</td>
                                     </tr>
                                 @endforeach
+                                <tr class="table-warning">
+                                    <td colspan="6" class="text-end fw-bold">TỔNG CỘNG:</td>
+                                    <td class="text-end fw-bold text-danger fs-5">{{ number_format($this->getTongThanhTien(), 0, ',', '.') }} VNĐ</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

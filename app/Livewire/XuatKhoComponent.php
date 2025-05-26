@@ -46,9 +46,9 @@ class XuatKhoComponent extends Component
             'xuatkhos' => XuatKho::query()
             ->when($this->search, function($query) {
                 $query->where('MaPhieuXuat', 'like', "%{$this->search}%")
-                    ->orWhere('MaVatTu', 'like', "%{$this->search}%")
                     ->orWhere('MaKho', 'like', "%{$this->search}%")
-                    ->orWhere('MaLenhDieuDong', 'like', "%{$this->search}%");
+                    ->orWhere('MaLenhDieuDong', 'like', "%{$this->search}%")
+                    ->orWhere('DiaDiemXuat', 'like', "%{$this->search}%");
             })
             ->orderBy('MaPhieuXuat', 'asc')
             ->paginate(10),
@@ -61,12 +61,12 @@ class XuatKhoComponent extends Component
 
     public function addVatTu()
     {
-        $this->ChiTietXuatKho[] = [
+        $this->ChiTietXuatKho[count($this->ChiTietXuatKho)] = [
             'MaVatTu' => '',
             'TenVatTu' => '',
             'DonViTinh' => '',
-            'DonGia' => '',
-            'SoLuongXuat' => '',
+            'DonGia' => 0,
+            'SoLuongXuat' => 0,
             'ThanhTien' => 0
         ];
     }
@@ -80,13 +80,7 @@ class XuatKhoComponent extends Component
     public function showModalEdit($MaPhieuXuat)
     {
         $this->MaPhieuXuat = $MaPhieuXuat;
-        $xuatkho = XuatKho::where('MaPhieuXuat', $MaPhieuXuat)
-            ->with([
-                'vattus',
-                'donViVanChuyen',
-                'lenhdieudongs',
-            ])
-            ->first();
+        $xuatkho = XuatKho::where('MaPhieuXuat', $MaPhieuXuat)->first();
 
         if (!$xuatkho) {
             session()->flash('error', 'Không tìm thấy phiếu xuất kho');
@@ -130,8 +124,8 @@ class XuatKhoComponent extends Component
     public function resetForm()
     {
         $this->reset([
-            'MaPhieuXuat', 'MaKho', 'MaDonViVanChuyen', 'MaLenhDieuDong',
-            'DiaDiemXuat', 'DonViTienTe', 'ChiTietXuatKho', 'TrangThai'
+            'MaPhieuXuat', 'MaKho', 'MaLenhDieuDong', 'MaDonViVanChuyen', 
+            'DiaDiemXuat', 'DonViTienTe', 'TrangThai', 'ChiTietXuatKho'
         ]);
     }
 
@@ -139,40 +133,43 @@ class XuatKhoComponent extends Component
     {
         $this->MaPhieuXuat = null;
         $this->MaKho = null;
-        $this->MaDonViVanChuyen = null;
         $this->MaLenhDieuDong = null;
+        $this->MaDonViVanChuyen = null;
         $this->DiaDiemXuat = null;
         $this->DonViTienTe = null;
-        $this->ChiTietXuatKho = [];
         $this->TrangThai = null;
+        $this->ChiTietXuatKho = [];
     }
 
     public function save()
     {
-        $this->validate([
-            'MaPhieuXuat' => 'required|unique:xuatkho,MaPhieuXuat',
-            'MaKho' => 'required',
-            'MaDonViVanChuyen' => 'required',
-            'DiaDiemXuat' => 'required',
-            'DonViTienTe' => 'required',
-            'ChiTietXuatKho' => 'required|array',
-            'MaLenhDieuDong' => 'required'
-        ]);
-        
-        XuatKho::create([
-            'MaPhieuXuat' => $this->MaPhieuXuat,
-            'MaKho' => $this->MaKho,
-            'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
-            'DiaDiemXuat' => $this->DiaDiemXuat,
-            'DonViTienTe' => $this->DonViTienTe,
-            'ChiTietXuatKho' => json_encode($this->ChiTietXuatKho),
-            'MaLenhDieuDong' => $this->MaLenhDieuDong,
-            'TrangThai' => $this->TrangThai,
-        ]);
-        
-        $this->resetForm();
-        $this->isAdd = false;
-        session()->flash('success', 'Đã thêm phiếu xuất thành công!');
+        try {
+            $this->validate([
+                'MaPhieuXuat' => 'required|unique:xuatkho,MaPhieuXuat',
+                'MaKho' => 'required',
+                'MaDonViVanChuyen' => 'required',
+                'DiaDiemXuat' => 'required',
+                'DonViTienTe' => 'required',
+                'ChiTietXuatKho' => 'required|array',
+                'MaLenhDieuDong' => 'required'
+            ]);
+            
+            XuatKho::create([
+                'MaPhieuXuat' => $this->MaPhieuXuat,
+                'MaKho' => $this->MaKho,
+                'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
+                'DiaDiemXuat' => $this->DiaDiemXuat,
+                'DonViTienTe' => $this->DonViTienTe,
+                'ChiTietXuatKho' => json_encode($this->ChiTietXuatKho),
+                'MaLenhDieuDong' => $this->MaLenhDieuDong,
+            ]);
+            
+            $this->resetForm();
+            $this->isAdd = false;
+            session()->flash('success', 'Đã thêm phiếu xuất thành công!');
+        } catch (Exception $e) {
+            session()->flash('error', 'Lỗi! Vui lòng thực hiện lại. ' . $e->getMessage());
+        }
     }
 
     public function update()
@@ -194,42 +191,52 @@ class XuatKhoComponent extends Component
             return;
         }
 
-        if ($this->TrangThai == 'Hoàn thành') {
+        if ($this->TrangThai == 'Đã duyệt') {
             foreach ($this->ChiTietXuatKho as $value) {
                 $vattu = VatTu::where('MaVatTu', $value['MaVatTu'])->first();
                 if ($vattu) {
-                    $vattu->SoLuongTon -= $value['SoLuongXuat'];
-                    $vattu->save();
+                    // Chuyển đổi SoLuongXuat từ chuỗi sang số nguyên để tránh lỗi kiểu dữ liệu
+                    $soLuongXuat = (int) ($value['SoLuongXuat'] ?? 0);
+                    
+                    // Kiểm tra số lượng tồn có đủ để xuất không
+                    if ($vattu->SoLuongTon >= $soLuongXuat) {
+                        $vattu->update([
+                            'SoLuongTon' => $vattu->SoLuongTon - $soLuongXuat
+                        ]);
+                    } else {
+                        session()->flash('error', "Vật tư {$value['TenVatTu']} không đủ số lượng tồn kho!");
+                        return;
+                    }
                 }
             }
         }
         
-        if ($xuatkho) {
-            $xuatkho->update([
-                'MaKho' => $this->MaKho,
-                'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
-                'DiaDiemXuat' => $this->DiaDiemXuat,
-                'DonViTienTe' => $this->DonViTienTe,
-                'ChiTietXuatKho' => json_encode($this->ChiTietXuatKho),
-                'MaLenhDieuDong' => $this->MaLenhDieuDong,
-                'TrangThai' => $this->TrangThai,
-            ]);
-            $this->resetForm();
-            $this->isEdit = false;
-            session()->flash('success', 'Đã cập nhật phiếu xuất thành công!');
-        } else {
-            session()->flash('error', 'Không tìm thấy phiếu xuất kho');
-        }
+        $xuatkho->update([
+            'MaKho' => $this->MaKho,
+            'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
+            'DiaDiemXuat' => $this->DiaDiemXuat,
+            'DonViTienTe' => $this->DonViTienTe,
+            'ChiTietXuatKho' => json_encode($this->ChiTietXuatKho),
+            'MaLenhDieuDong' => $this->MaLenhDieuDong,
+            'TrangThai' => $this->TrangThai,
+        ]);
+        
+        $this->resetForm();
+        $this->isEdit = false;
+        session()->flash('success', 'Đã cập nhật phiếu xuất thành công!');
+        Log::info($this->ChiTietXuatKho);
     }
 
-    public function delete(){
+    public function delete()
+    {
         try {
-            $xuatkho = XuatKho::where('MaPhieuXuat', $this->MaPhieuXuat)->first();
-            if (!$xuatkho) {
+            $phieuxuat = XuatKho::where('MaPhieuXuat', $this->MaPhieuXuat)->first();
+            if (!$phieuxuat) {
                 session()->flash('error', 'Không tìm thấy phiếu xuất kho này!');
                 return;
             }
-            $xuatkho->update([
+
+            $phieuxuat->update([
                 'TrangThai' => 'Đã hủy'
             ]);
 
@@ -254,40 +261,55 @@ class XuatKhoComponent extends Component
     {
         $index = intval(explode('.', $key)[0]);
         $field = explode('.', $key)[1];
+
         if($field == 'MaVatTu'){
-            $vattu = VatTu::where('MaVatTu', $value)->first();
-            if (!$vattu) {
+            $vatTu = VatTu::where('MaVatTu', $value)->first();
+            if (!$vatTu) {
                 session()->flash('error', 'Không tìm thấy vật tư!');
                 return;
             }
-            if($this->ChiTietXuatKho[$index]['SoLuongXuat'] != ''){
-                $this->ChiTietXuatKho[$index]['ThanhTien'] = $this->ChiTietXuatKho[$index]['SoLuongXuat'] * $vatTu->GiaNhap;
-            } else {
-                $this->ChiTietXuatKho[$index]['ThanhTien'] = 0;
-            }
+            
+            // Cập nhật thông tin vật tư
             $this->ChiTietXuatKho[$index]['TenVatTu'] = $vatTu->TenVatTu;
-            $this->ChiTietXuatKho[$index]['DonVi'] = $vatTu->donvitinh->TenDonViTinh;
+            $this->ChiTietXuatKho[$index]['DonViTinh'] = $vatTu->donvitinh->TenDonViTinh;
             $this->ChiTietXuatKho[$index]['DonGia'] = $vatTu->GiaNhap;
+            
+            // Tính lại thành tiền nếu đã có số lượng
+            $soLuong = (int) ($this->ChiTietXuatKho[$index]['SoLuongXuat'] ?? 0);
+            $this->ChiTietXuatKho[$index]['ThanhTien'] = $soLuong * $vatTu->GiaNhap;
         }
-        if ($field == 'SoLuongXuat') {
-            $vattu = VatTu::where('MaVatTu', $this->ChiTietXuatKho[$index]['MaVatTu'])->first();
-            if (!$vattu) return;
-        
-            if ($value > $vattu->SoLuongTon) {
-                session()->flash('error', 'Số lượng xuất vượt quá số lượng tồn!');
-                $this->ChiTietXuatKho[$index]['SoLuongXuat'] = $vattu->SoLuongTon;
-                $value = $vattu->SoLuongTon;
-            }
 
-            $this->ChiTietXuatKho[$index]['ThanhTien'] = $value * $vattu->GiaNhap;
+        if($field == 'SoLuongXuat'){
+            // Chuyển đổi giá trị thành số nguyên
+            $soLuong = (int) ($value ?? 0);
+            $this->ChiTietXuatKho[$index]['SoLuongXuat'] = $soLuong;
+            
+            // Lấy thông tin vật tư để tính thành tiền
+            $maVatTu = $this->ChiTietXuatKho[$index]['MaVatTu'] ?? '';
+            if (!empty($maVatTu)) {
+                $vatTu = VatTu::where('MaVatTu', $maVatTu)->first();
+                if ($vatTu) {
+                    $donGia = $vatTu->GiaNhap;
+                    $this->ChiTietXuatKho[$index]['DonGia'] = $donGia;
+                    $this->ChiTietXuatKho[$index]['ThanhTien'] = $soLuong * $donGia;
+                }
+            }
         }
     }
+
+    public function getTongThanhTien()
+    {
+        $tong = 0;
+        foreach ($this->ChiTietXuatKho as $item) {
+            $tong += (float) ($item['ThanhTien'] ?? 0);
+        }
+        return $tong;
+    }
+
     public function exportExcel()
     {
         try {
-            $phieuxuat = XuatKho::where('MaPhieuXuat', $this->MaPhieuXuat)
-                ->with(['danhmuckhos', 'donvivangchuyen', 'lenhdieudong'])
-                ->first();
+            $phieuxuat = XuatKho::where('MaPhieuXuat', $this->MaPhieuXuat)->first();
                 
             if (!$phieuxuat) {
                 throw new \Exception('Không tìm thấy phiếu xuất');
@@ -304,7 +326,7 @@ class XuatKhoComponent extends Component
             $sheet->setCellValue('K4', 'Số (No.): ' . $phieuxuat->MaPhieuXuat);
             $sheet->setCellValue('F8', $phieuxuat->MaKho ?? '');
             $sheet->setCellValue('F10', $phieuxuat->DiaDiemXuat ?? '');
-            $sheet->setCellValue('F11', $phieuxuat->lenhdieudong->MaLenhDieuDong ?? '');
+            $sheet->setCellValue('F11', $phieuxuat->MaLenhDieuDong ?? '');
             $sheet->setCellValue('E12', $phieuxuat->DonViTienTe ?? '');
             
             $row = 15;
@@ -317,7 +339,7 @@ class XuatKhoComponent extends Component
                 $sheet->setCellValue('C' . $row, $stt);
                 $sheet->setCellValue('E' . $row, $item['MaVatTu'] ?? '');
                 $sheet->setCellValue('D' . $row, $item['TenVatTu'] ?? '');
-                $sheet->setCellValue('F' . $row, $item['DonVi'] ?? '');
+                $sheet->setCellValue('F' . $row, $item['DonViTinh'] ?? '');
                 $sheet->setCellValue('G' . $row, $item['SoLuongXuat'] ?? '');
                 $sheet->setCellValue('H' . $row, $item['DonGia'] ?? '');
                 $sheet->setCellValue('I' . $row, $item['ThanhTien'] ?? '');
@@ -333,12 +355,10 @@ class XuatKhoComponent extends Component
 
             $totalRow = $row;
             $sheet->setCellValue('C' . $totalRow, 'Tổng');
-            $sheet->setCellValue('G' . $totalRow, '=SUM(G15:G' . ($row) . ')');
-            
-            $sheet->setCellValue('I' . $totalRow, '=SUM(I15:I' . ($row) . ')');
+            $sheet->setCellValue('G' . $totalRow, '=SUM(G15:G' . ($row - 1) . ')');
+            $sheet->setCellValue('I' . $totalRow, '=SUM(I15:I' . ($row - 1) . ')');
             
             $totalStyle = $sheet->getStyle('C' . $totalRow . ':I' . $totalRow);
-
             $totalStyle->getAlignment()->setHorizontal('center');
             $totalStyle->getAlignment()->setVertical('center');
 
