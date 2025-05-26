@@ -231,7 +231,7 @@
                     <div class="header-content">
                         <div class="profile-avatar-container">
                             <div class="profile-avatar">
-                                <img src="{{ asset($user->nhanvien->Anh) }}" alt="Avatar" class="img-fluid rounded-circle" id="avatarPreview">
+                                <img src="{{ asset($user->nhanvien->Anh ?? '') }}" alt="Avatar" class="img-fluid rounded-circle" id="avatarPreview">
                             </div>
                             <div class="avatar-upload">
                                 <i class="fas fa-camera"></i>
