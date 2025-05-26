@@ -25,6 +25,7 @@ class NhanVienComponent extends Component
     public $DiaChi;
     public $GioiTinh = 'Nam'; // Gán giá trị mặc định
     public $MaChucVu;
+    public $NgaySinh;
     public $Anh;
     public $TrangThai;
 
@@ -49,6 +50,7 @@ class NhanVienComponent extends Component
         $this->CCCD = $nhanvien->CCCD;
         $this->DiaChi = $nhanvien->DiaChi;
         $this->GioiTinh = $nhanvien->GioiTinh;
+        $this->NgaySinh = $nhanvien->NgaySinh;
         $this->MaChucVu = $nhanvien->MaChucVu;
         $this->Anh = $nhanvien->Anh;
         $this->TrangThai = $nhanvien->TrangThai;
@@ -77,6 +79,7 @@ class NhanVienComponent extends Component
         $this->CCCD = null;
         $this->DiaChi = null;
         $this->GioiTinh = 'Nam'; // Reset về giá trị mặc định
+        $this->NgaySinh = null;
         $this->MaChucVu = null;
         $this->Anh = null;
         $this->TrangThai = null;
@@ -90,6 +93,7 @@ class NhanVienComponent extends Component
                 'TenNhanVien' => 'required',
                 'DiaChi' => 'required',
                 'GioiTinh' => 'required|in:Nam,Nữ',
+                'NgaySinh' => 'required|date',
                 'SDT' => 'required|numeric',
                 'CCCD' => 'required|numeric',
                 'MaChucVu' => 'required',
@@ -101,6 +105,7 @@ class NhanVienComponent extends Component
             $nhanvien->MaNhanVien = $this->MaNhanVien;
             $nhanvien->TenNhanVien = $this->TenNhanVien;
             $nhanvien->DiaChi = $this->DiaChi;
+            $nhanvien->NgaySinh = $this->NgaySinh;
             $nhanvien->GioiTinh = $this->GioiTinh;
             $nhanvien->SDT = $this->SDT;
             $nhanvien->CCCD = $this->CCCD;
@@ -130,6 +135,7 @@ class NhanVienComponent extends Component
                 'TenNhanVien' => 'required',
                 'DiaChi' => 'required',
                 'GioiTinh' => 'required|in:Nam,Nữ',
+                'NgaySinh' => 'required|date',
                 'SDT' => 'required|numeric',
                 'CCCD' => 'required|numeric',
                 'MaChucVu' => 'required',
@@ -141,6 +147,7 @@ class NhanVienComponent extends Component
             if ($nhanvien) {
                 $nhanvien->TenNhanVien = $this->TenNhanVien;
                 $nhanvien->DiaChi = $this->DiaChi;
+                $nhanvien->NgaySinh = $this->NgaySinh;
                 $nhanvien->GioiTinh = $this->GioiTinh;
                 $nhanvien->SDT = $this->SDT;
                 $nhanvien->CCCD = $this->CCCD;

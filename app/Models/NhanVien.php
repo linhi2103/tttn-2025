@@ -23,6 +23,7 @@ class NhanVien extends Model
         'TenNhanVien',
         'DiaChi',
         'GioiTinh',
+        'NgaySinh',
         'SDT',
         'CCCD',
         'MaChucVu',

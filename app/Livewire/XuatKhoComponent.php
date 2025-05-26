@@ -236,15 +236,14 @@ class XuatKhoComponent extends Component
                 return;
             }
 
-            $phieuxuat->update([
-                'TrangThai' => 'Đã hủy'
-            ]);
+            $phieuxuat->delete();
 
             $this->resetForm();
             $this->isDelete = false;
             session()->flash('success', 'Phiếu xuất kho đã được hủy thành công!');
-        } catch (\Throwable $th) {
-            session()->flash('error', 'Lỗi! Vui lòng thực hiện lại.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Lỗi! Vui lòng thực hiện lại.' . $e->getMessage());
+            $this->closeModal();
         }
     }
 
@@ -323,10 +322,10 @@ class XuatKhoComponent extends Component
             $spreadsheet = IOFactory::load($templatePath);
             $sheet = $spreadsheet->getActiveSheet();
 
-            $sheet->setCellValue('K4', 'Số (No.): ' . $phieuxuat->MaPhieuXuat);
-            $sheet->setCellValue('F8', $phieuxuat->MaKho ?? '');
-            $sheet->setCellValue('F10', $phieuxuat->DiaDiemXuat ?? '');
-            $sheet->setCellValue('F11', $phieuxuat->MaLenhDieuDong ?? '');
+            $sheet->setCellValue('I4', 'Số (No.): ' . $phieuxuat->MaPhieuXuat);
+            $sheet->setCellValue('E8', $phieuxuat->MaKho ?? '');
+            $sheet->setCellValue('E9', $phieuxuat->DiaDiemXuat ?? '');
+            $sheet->setCellValue('E11', $phieuxuat->MaLenhDieuDong ?? '');
             $sheet->setCellValue('E12', $phieuxuat->DonViTienTe ?? '');
             
             $row = 15;

@@ -29,6 +29,7 @@
                         <th>Mã nhân viên</th>
                         <th>Tên nhân viên</th>
                         <th>Giới tính</th>
+                        <th>Ngày sinh</th>
                         <th>SĐT</th>
                         <th>Địa chỉ</th>
                         <th>Chức vụ</th>
@@ -44,6 +45,7 @@
                             <td>{{ $nhanvien->MaNhanVien }}</td>
                             <td>{{ $nhanvien->TenNhanVien }}</td>
                             <td>{{ $nhanvien->GioiTinh }}</td>
+                            <td>{{ $nhanvien->NgaySinh }}</td>
                             <td>{{ $nhanvien->SDT }}</td>
                             <td>{{ $nhanvien->DiaChi }}</td>
                             <td>{{ $nhanvien->chucvu->TenChucVu ?? 'N/A' }}</td>
@@ -99,6 +101,10 @@
                                     <option value="Nam">Nam</option>
                                     <option value="Nữ">Nữ</option>
                                 </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Ngày sinh</label>
+                                <input type="date" class="form-control" wire:model="NgaySinh" value="{{ $NgaySinh || '' }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">SĐT</label>
