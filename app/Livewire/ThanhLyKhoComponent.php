@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 use App\Models\VatTu;
@@ -31,11 +32,8 @@ class ThanhLyKhoComponent extends Component
     public $MaLenhDieuDong;
     public $MaKho;
     public $TrangThai;
-
-    
     
     public $ChiTietThanhLy = [];
-    
     
     public function render()
     {

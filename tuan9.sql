@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 22, 2025 lúc 07:32 PM
+-- Thời gian đã tạo: Th5 25, 2025 lúc 07:50 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -20,6 +20,16 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `tuan9`
 --
+
+--
+-- Đang đổ dữ liệu cho bảng `activity_log`
+--
+
+INSERT INTO `activity_log` (`id`, `log_name`, `description`, `subject_type`, `event`, `subject_id`, `causer_type`, `causer_id`, `properties`, `batch_uuid`, `created_at`, `updated_at`) VALUES
+(1, 'default', 'Tạo mới', 'App\\Models\\NguoiDung', NULL, '1', NULL, NULL, '{\"model_type\":\"App\\\\Models\\\\NguoiDung\",\"attributes\":{\"TaiKhoan\":\"admin\",\"MatKhau\":\"$2y$12$bhAfIIjsLT4N0f7q9DAvku9m05EeNXxFgjnrpq8ZZ4rxj76ZchOcK\",\"Email\":\"nhixinhgai2110@gmail.com\",\"MaNhanVien\":\"2110\",\"MaVaiTro\":\"0\",\"updated_at\":\"2025-05-25 17:47:06\",\"created_at\":\"2025-05-25 17:47:06\",\"id\":1}}', NULL, '2025-05-25 10:47:06', '2025-05-25 10:47:06'),
+(2, 'default', 'Tạo mới', 'App\\Models\\PhieuKiemKe', NULL, '13321', 'App\\Models\\NguoiDung', 1, '{\"model_type\":\"App\\\\Models\\\\PhieuKiemKe\",\"attributes\":{\"MaPhieuKiemKe\":\"13321\",\"MaKho\":\"KHO002\",\"MaLenhDieuDong\":\"LD002\",\"ChiTietKiemKe\":\"[{\\\"MaVatTu\\\":\\\"VT014\\\",\\\"TenVatTu\\\":\\\"B\\\\u0103ng d\\\\u00ednh c\\\\u00e1ch \\\\u0111i\\\\u1ec7n 3M\\\",\\\"DonViTinh\\\":\\\"C\\\\u00e1i\\\",\\\"DonGia\\\":\\\"8000.00\\\",\\\"SoLuongTon\\\":1,\\\"SoLuongThucTe\\\":\\\"1\\\",\\\"ConTot\\\":\\\"1\\\",\\\"KemChatLuong\\\":\\\"0\\\",\\\"MatChatLuong\\\":0},{\\\"MaVatTu\\\":\\\"VT006\\\",\\\"TenVatTu\\\":\\\"Keo d\\\\u00e1n t\\\\u1ea3n nhi\\\\u1ec7t\\\",\\\"DonViTinh\\\":\\\"C\\\\u00e1i\\\",\\\"DonGia\\\":\\\"50000.00\\\",\\\"SoLuongTon\\\":1,\\\"SoLuongThucTe\\\":\\\"1\\\",\\\"ConTot\\\":\\\"1\\\",\\\"KemChatLuong\\\":\\\"0\\\",\\\"MatChatLuong\\\":0},{\\\"MaVatTu\\\":\\\"VT021\\\",\\\"TenVatTu\\\":\\\"\\\\u0110i\\\\u1ec7n tr\\\\u1edf 10k\\\\u03a9\\\",\\\"DonViTinh\\\":\\\"C\\\\u00e1i\\\",\\\"DonGia\\\":\\\"100.00\\\",\\\"SoLuongTon\\\":1000,\\\"SoLuongThucTe\\\":\\\"389\\\",\\\"ConTot\\\":\\\"232\\\",\\\"KemChatLuong\\\":\\\"145\\\",\\\"MatChatLuong\\\":12}]\",\"updated_at\":\"2025-05-25 17:48:27\",\"created_at\":\"2025-05-25 17:48:27\"}}', NULL, '2025-05-25 10:48:27', '2025-05-25 10:48:27'),
+(3, 'default', 'Cập nhật', 'App\\Models\\PhieuKiemKe', NULL, '13321', 'App\\Models\\NguoiDung', 1, '{\"model_type\":\"App\\\\Models\\\\PhieuKiemKe\",\"old_values\":{\"TrangThai\":\"Ch\\u1edd Duy\\u1ec7t\",\"updated_at\":\"2025-05-25T17:48:27.000000Z\"},\"new_values\":{\"TrangThai\":\"\\u0110\\u00e3 Ki\\u1ec3m K\\u00ea\",\"updated_at\":\"2025-05-25 17:48:38\"}}', NULL, '2025-05-25 10:48:38', '2025-05-25 10:48:38'),
+(4, 'default', 'Tạo mới', 'App\\Models\\ThanhLyKho', NULL, '2132', 'App\\Models\\NguoiDung', 1, '{\"model_type\":\"App\\\\Models\\\\ThanhLyKho\",\"attributes\":{\"MaPhieuThanhLy\":\"2132\",\"MaLenhDieuDong\":\"LD001\",\"MaKho\":\"KHO001\",\"ChiTietThanhLy\":\"[{\\\"MaVatTu\\\":\\\"VT005\\\",\\\"TenVatTu\\\":\\\"C\\\\u1ea3m bi\\\\u1ebfn LG Sensor Pro\\\",\\\"SoLuong\\\":\\\"1\\\",\\\"DonVi\\\":\\\"C\\\\u00e1i\\\",\\\"DonGia\\\":\\\"1000000.00\\\",\\\"ThanhTien\\\":1000000,\\\"NguyenNhanThanhLy\\\":\\\"h\\\\u1ecfng\\\",\\\"BienPhapThanhLy\\\":\\\"Xu\\\\u1ea5t tr\\\\u1ea3 nh\\\\u00e0 cung c\\\\u1ea5p\\\"}]\",\"updated_at\":\"2025-05-25 17:49:47\",\"created_at\":\"2025-05-25 17:49:47\"}}', NULL, '2025-05-25 10:49:47', '2025-05-25 10:49:47');
 
 --
 -- Đang đổ dữ liệu cho bảng `chitietvattu`
@@ -102,6 +112,29 @@ INSERT INTO `loaivattu` (`MaLoaiVatTu`, `TenLoaiVatTu`) VALUES
 -- Đang đổ dữ liệu cho bảng `migrations`
 --
 
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2025_04_02_110342_create_parent_table', 1),
+(2, '2025_04_02_112343_create_staff_table', 1),
+(3, '2025_04_02_113047_create_user_table', 1),
+(4, '2025_04_02_114000_create_supplier_table', 1),
+(5, '2025_04_02_114001_create_supplies_table', 1),
+(6, '2025_04_02_114002_create_transport_commands_table', 1),
+(7, '2025_04_02_114003_create_child_table', 1),
+(8, '2025_05_14_063014_create_table_vat_tu_detail', 1),
+(9, '2025_05_18_114331_create_cache_table', 1),
+(10, '2025_05_18_114416_create_password_reset_token_table', 1),
+(11, '2025_05_22_200001_create_positions_table', 1),
+(12, '2025_05_22_222149_create_activity_log_table', 1),
+(13, '2025_05_22_222150_add_event_column_to_activity_log_table', 1),
+(14, '2025_05_22_222151_add_batch_uuid_column_to_activity_log_table', 1),
+(15, '2025_05_23_054221_change_subject_id_to_string', 1);
+
+--
+-- Đang đổ dữ liệu cho bảng `nguoidung`
+--
+
+INSERT INTO `nguoidung` (`id`, `TaiKhoan`, `MatKhau`, `Email`, `MaNhanVien`, `MaVaiTro`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'admin', '$2y$12$bhAfIIjsLT4N0f7q9DAvku9m05EeNXxFgjnrpq8ZZ4rxj76ZchOcK', 'nhixinhgai2110@gmail.com', '2110', '0', NULL, '2025-05-25 10:47:06', '2025-05-25 10:47:06');
 
 --
 -- Đang đổ dữ liệu cho bảng `nhanvien`
@@ -115,23 +148,11 @@ INSERT INTO `nhanvien` (`MaNhanVien`, `TenNhanVien`, `DiaChi`, `GioiTinh`, `Ngay
 ('NV005', 'Hoàng Văn E', 'Cần Thơ', 'Nam', '1991-05-05', 956789012, 5566778899, 'CV002', 'avatar5.jpg', 'Đang làm');
 
 --
--- Đang đổ dữ liệu cho bảng `nhapkho`
---
-
-INSERT INTO `nhapkho` (`MaPhieuNhap`, `MaKho`, `DiaChi`, `MaVatTu`, `SoLuong`, `DonGia`, `NgayNhap`, `MaSoThue_DoiTac`, `MaNhanVien`, `MaLenhDieuDong`, `MaDonViVanChuyen`, `GhiChu`) VALUES
-('PN001', 'KHO001', 'HP', 'VT003', 8, 800000.00, '2025-05-10', '0201234567', 'NV001', 'LD001', 'DVC001', ''),
-('PN002', 'KHO002', 'Số 2, Đường XYZ, TP. Hà Nội', 'VT002', 50, 30000.00, '2025-04-21', '0201234567', 'NV002', 'LD002', 'DVC002', 'Phiếu nhập đợt 2'),
-('PN003', 'KHO003', 'Số 3, Đường DEF, TP. Đà Nẵng', 'VT003', 200, 10000.00, '2025-04-22', '0201234567', 'NV003', 'LD003', 'DVC003', 'Phiếu nhập hàng tồn kho'),
-('PN004', 'KHO003', 'HP NA', 'VT001', 20, 3000000.00, '2025-05-12', '0201234567', 'NV002', 'LD003', 'DVC001', 'KO');
-
---
 -- Đang đổ dữ liệu cho bảng `phieukiemke`
 --
 
-INSERT INTO `phieukiemke` (`MaPhieuKiemKe`, `MaKho`, `NgayKiemKe`, `MaNhanVien`, `TrangThai`, `MaVatTu`, `SoLuongThucTe`, `SoLuongTon`, `TinhTrang`, `MaLenhDieuDong`, `GhiChu`) VALUES
-('PKK001', 'KHO001', '2025-05-14', 'NV001', 'Đã Hủy', 'VT001', 10, 100, 'Còn tốt 100%', 'LD001', 'Kiểm kê định kỳ quý 1'),
-('PKK002', 'KHO002', '2025-05-14', 'NV002', 'Chờ Duyệt', 'VT002', 45, 50, 'Kém chất lượng', 'LD003', 'Sai lệch do bảo quản'),
-('PKK003', 'KHO003', '2025-05-08', 'NV003', 'Đã Kiểm Kê', 'VT003', 22, 35, 'Còn tốt 100%', 'LD002', 'Mất mát trong quá trình vận chuyển');
+INSERT INTO `phieukiemke` (`MaPhieuKiemKe`, `MaKho`, `MaLenhDieuDong`, `TrangThai`, `ChiTietKiemKe`, `created_at`, `updated_at`) VALUES
+('13321', 'KHO002', 'LD002', 'Đã Kiểm Kê', '[{\"MaVatTu\":\"VT014\",\"TenVatTu\":\"B\\u0103ng d\\u00ednh c\\u00e1ch \\u0111i\\u1ec7n 3M\",\"DonViTinh\":\"C\\u00e1i\",\"DonGia\":\"8000.00\",\"SoLuongTon\":1,\"SoLuongThucTe\":\"1\",\"ConTot\":\"1\",\"KemChatLuong\":\"0\",\"MatChatLuong\":0},{\"MaVatTu\":\"VT006\",\"TenVatTu\":\"Keo d\\u00e1n t\\u1ea3n nhi\\u1ec7t\",\"DonViTinh\":\"C\\u00e1i\",\"DonGia\":\"50000.00\",\"SoLuongTon\":1,\"SoLuongThucTe\":\"1\",\"ConTot\":\"1\",\"KemChatLuong\":\"0\",\"MatChatLuong\":0},{\"MaVatTu\":\"VT021\",\"TenVatTu\":\"\\u0110i\\u1ec7n tr\\u1edf 10k\\u03a9\",\"DonViTinh\":\"C\\u00e1i\",\"DonGia\":\"100.00\",\"SoLuongTon\":1000,\"SoLuongThucTe\":\"389\",\"ConTot\":\"232\",\"KemChatLuong\":\"145\",\"MatChatLuong\":12}]', '2025-05-25 10:48:27', '2025-05-25 10:48:38');
 
 --
 -- Đang đổ dữ liệu cho bảng `phongban`
@@ -149,17 +170,14 @@ INSERT INTO `phongban` (`MaPhongBan`, `TenPhongBan`) VALUES
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('eK01AICynQRDkAIU2P84Jit2pA9ParA9XHRVJhtH', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoieElSYmJSYzJ1czhpaUhZMzJBR3hXOUs1R3plQmw0aUx1TEpUZUdCQyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1747916026);
+('9PgXf5iJuOlGFAribIUu6RXrcCDZfYyJ3n4fEAWg', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiNDlCc1J5YWJVQ2h0Zmw5NmlBSXBNOEZBdHhzQWhDUnA1Z3AyUDJUSiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM4OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvZGFzaGJvYXJkP3BhZ2U9NCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjE6e2k6MDtzOjc6InN1Y2Nlc3MiO31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1748195387);
 
 --
 -- Đang đổ dữ liệu cho bảng `thanhlykho`
 --
 
-INSERT INTO `thanhlykho` (`MaPhieuThanhLy`, `MaKho`, `NgayLap`, `MaNhanVien`, `TrangThai`, `LyDoThanhLy`, `MaVatTu`, `SoLuong`, `DonGia`, `BienPhapThanhLy`, `MaLenhDieuDong`) VALUES
-('PTL001', 'KHO001', '2025-05-01', 'NV001', 'Đã thanh lý', 'Hư hỏng do sử dụng lâu ngày', 'VT001', 10, 50000.00, 'Tiêu hủy', 'LD001'),
-('PTL002', 'KHO002', '2025-05-02', 'NV002', 'Chờ duyệt', 'Không còn sử dụng trong sản xuất', 'VT002', 3, 70000.00, 'Chuyển đổi sử dụng', 'LD002'),
-('PTL004', 'KHO001', '2025-05-04', 'NV004', 'Đã hủy', 'Lỗi đề xuất không chính xác', 'VT004', 8, 45000.00, 'Tiêu hủy', 'LD003'),
-('TL003', 'KHO003', '2025-05-03', 'NV003', 'Đã thanh lý', 'Thanh lý định kỳ quý 1', 'VT003', 5, 150000.00, 'Bán thanh lý', 'LD003');
+INSERT INTO `thanhlykho` (`MaPhieuThanhLy`, `MaKho`, `MaLenhDieuDong`, `TrangThai`, `ChiTietThanhLy`, `created_at`, `updated_at`) VALUES
+('2132', 'KHO001', 'LD001', 'Chờ duyệt', '[{\"MaVatTu\":\"VT005\",\"TenVatTu\":\"C\\u1ea3m bi\\u1ebfn LG Sensor Pro\",\"SoLuong\":\"1\",\"DonVi\":\"C\\u00e1i\",\"DonGia\":\"1000000.00\",\"ThanhTien\":1000000,\"NguyenNhanThanhLy\":\"h\\u1ecfng\",\"BienPhapThanhLy\":\"Xu\\u1ea5t tr\\u1ea3 nh\\u00e0 cung c\\u1ea5p\"}]', '2025-05-25 10:49:47', '2025-05-25 10:49:47');
 
 --
 -- Đang đổ dữ liệu cho bảng `vaitro`
@@ -173,7 +191,7 @@ INSERT INTO `vaitro` (`MaVaiTro`, `TenVaiTro`, `QuyenHan`) VALUES
 -- Đang đổ dữ liệu cho bảng `vattu`
 --
 
-INSERT INTO vattu (MaVatTu, MaLoaiVatTu, TenVatTu, MaDonViTinh, GiaNhap, DonViTienTe, SoLuongTon, MaSoThue_DoiTac, NgayNhap, HanSuDung, GhiChu, AnhVatTu) VALUES
+INSERT INTO `vattu` (`MaVatTu`, `MaLoaiVatTu`, `TenVatTu`, `MaDonViTinh`, `GiaNhap`, `DonViTienTe`, `SoLuongTon`, `MaSoThue_DoiTac`, `NgayNhap`, `HanSuDung`, `GhiChu`, `AnhVatTu`) VALUES
 ('VT001', 'LVT002', 'Chip xử lý LG Alpha', 'DVT001', 3000000.00, 'VND', 2, '0505678901', '2025-04-05', '2025-05-02', 'nhy21', 'LVT002\\download (1).jpg'),
 ('VT002', 'LVT005', 'Bo mạch chủ LG Main X1', 'DVT001', 1500000.00, 'VND', 22, '0505678901', '2025-04-05', '2025-05-17', 'NHYYY', 'LVT005\\download.jpg'),
 ('VT003', 'LVT003', 'RAM LG DDR4 8GB', 'DVT001', 800000.00, 'VND', 1, '0505678901', '2025-04-05', NULL, NULL, 'LVT003\\download (1).jpg'),
@@ -215,14 +233,6 @@ INSERT INTO vattu (MaVatTu, MaLoaiVatTu, TenVatTu, MaDonViTinh, GiaNhap, DonViTi
 ('VT041', 'LVT008', 'Adapter 12V 2A', 'DVT001', 55000.00, 'VND', 300, '0601234567', '2025-04-23', NULL, NULL, 'LVT008\\download (4).jpg'),
 ('VT042', 'LVT008', 'Module nguồn LM2596 DC-DC Buck', 'DVT001', 20000.00, 'VND', 500, '0601234567', '2025-04-23', NULL, NULL, 'LVT008\\download.jpg'),
 ('VT043', 'LVT008', 'Bộ chuyển đổi DC-AC mini inverter 150W', 'DVT001', 120000.00, 'VND', 150, '0601234567', '2025-04-23', NULL, NULL, 'LVT008\\download (1).jpg');
---
--- Đang đổ dữ liệu cho bảng `xuatkho`
---
-
-INSERT INTO `xuatkho` (`MaPhieuXuat`, `MaKho`, `NgayXuat`, `MaNhanVien`, `MaDonViVanChuyen`, `DiaDiemXuat`, `DiaChi`, `DonViTienTe`, `MaVatTu`, `SoLuong`, `DonGia`, `ThanhTien`, `MaLenhDieuDong`, `TrangThai`, `GhiChu`) VALUES
-('PX1001', 'KHO001', '2025-05-05', 'NV001', 'DVC001', '12 Nguyễn Trãi, Hà Nội', '', 'VND', 'VT001', 10, 120000.00, 1200000.00, 'LD001', 'Đã duyệt', 'Xuất cho công trình A'),
-('PX1002', 'KHO002', '2025-05-04', 'NV002', 'DVC002', '89 Trần Hưng Đạo, Hải Phòng', '', 'VND', 'VT002', 5, 230000.00, 1150000.00, 'LD002', 'Chờ duyệt', 'Xuất phục vụ bảo trì thiết bị'),
-('PX1003', 'KHO003', '2025-05-03', 'NV003', 'DVC003', '45 Lý Thường Kiệt, Đà Nẵng', '', 'VND', 'VT003', 20, 85000.00, 1700000.00, 'LD003', 'Hoàn thành', 'Xuất nội bộ kho dự án B');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

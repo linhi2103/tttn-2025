@@ -3,8 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\VaiTro;
-use App\Models\PhongBan;
+use App\Models\ChucVu;
+use App\Models\NhapKho;
+use App\Models\DonViVanChuyen;
+use App\Models\XuatKho;
+use App\Models\PhieuKiemKe;
+use App\Models\ThanhLyKho;
 
 class NhanVien extends Model
 {
@@ -12,7 +16,7 @@ class NhanVien extends Model
     protected $primaryKey = 'MaNhanVien';
     protected $keyType = 'string';
     public $incrementing = false;
-    public $timestamps = false;  // Disable timestamps since they're not in the database
+    public $timestamps = false;  
     
     protected $fillable = [
         'MaNhanVien',
