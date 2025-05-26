@@ -282,12 +282,9 @@
                             <div class="col-md-6">
                                 <strong>Mã Phiếu Xuất:</strong> {{ $MaPhieuXuat }}
                             </div>
-                            <div class="col-md-6">
-                                <strong>Mã Kho:</strong> {{ $MaKho }}
-                            </div>
                         </div>
                         <table class="table table-hover table-light table-bordered">
-                            <thead class="table-dark">
+                            <thead>
                                 <tr>
                                     <th style="width: 5%;">STT</th>
                                     <th style="width: 10%;">Mã Vật Tư</th>
