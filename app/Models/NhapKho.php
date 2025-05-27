@@ -20,47 +20,26 @@ class NhapKho extends Model
 
     protected $fillable = [
         'MaPhieuNhap',
-        'MaVatTu',
-        'MaNhanVien',
         'MaKho',
-        'SoLuong',
-        'DonGia',
-        'NgayNhap',
-        'MaDonViVanChuyen',
-        'GhiChu',
         'MaLenhDieuDong',
-        'DiaChi',
-        'MaSoThue_DoiTac',
-    ];
-    
-    protected $casts = [
-        'NgayNhap' => 'datetime',
+        'MaDonViVanChuyen',
+        'DonViTienTe',
+        'TrangThai',
+        'ChiTietNhapKho',
+        'MaSoThue_DoiTac'
     ];
 
-    protected $appends = ['DonGia'];
-    
-    
-    public function vattu()
-    {
-        return $this->belongsTo(VatTu::class, 'MaVatTu', 'MaVatTu');
-    }   
-    
-    public function nhanVien()
-    {
-        return $this->belongsTo(NhanVien::class, 'MaNhanVien', 'MaNhanVien');
-    }
-    
-    public function kho()
-    {
-        return $this->belongsTo(DanhMucKho::class, 'MaKho', 'MaKho');
-    }
-    
-    public function donViVanChuyen()
+    public function donvivanchuyen()
     {
         return $this->belongsTo(DonViVanChuyen::class, 'MaDonViVanChuyen', 'MaDonViVanChuyen');
     }
     
-    public function lenhDieuDong()
+    public function danhmuckho()
+    {
+        return $this->belongsTo(DanhMucKho::class, 'MaKho', 'MaKho');
+    }
+    
+    public function lenhdieudong()
     {
         return $this->belongsTo(LenhDieuDong::class, 'MaLenhDieuDong', 'MaLenhDieuDong');
     }

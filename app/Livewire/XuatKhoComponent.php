@@ -195,8 +195,8 @@ class XuatKhoComponent extends Component
             foreach ($this->ChiTietXuatKho as $value) {
                 $vattu = VatTu::where('MaVatTu', $value['MaVatTu'])->first();
                 if ($vattu) {
-                    // Chuyển đổi SoLuongXuat từ chuỗi sang số nguyên để tránh lỗi kiểu dữ liệu
-                    $soLuongXuat = (int) ($value['SoLuongXuat'] ?? 0);
+                     // Chuyển đổi SoLuongXuat từ chuỗi sang số nguyên để tránh lỗi kiểu dữ liệu
+                   $soLuongXuat = (int) ($value['SoLuongXuat'] ?? 0);
                     
                     // Kiểm tra số lượng tồn có đủ để xuất không
                     if ($vattu->SoLuongTon >= $soLuongXuat) {

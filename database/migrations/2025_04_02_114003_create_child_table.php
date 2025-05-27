@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('MaDonViVanChuyen', 20)->nullable();
             $table->string('MaSoThue_DoiTac', 20);
             $table->string('DonViTienTe', 50);
-            $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Đang thực hiện', 'Hoàn thành', 'Hủy'])->default('Chờ duyệt');
+            $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Hủy'])->default('Chờ duyệt');
             $table->json('ChiTietNhapKho')->nullable();
             $table->timestamps();
         });
