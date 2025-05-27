@@ -62,12 +62,9 @@
                             <td>
                                 <span class="badge rounded-pill 
                                     {{ 
-                                        $item->TrangThai == 'Đã thanh lý' ? 'bg-success' : 
                                         ($item->TrangThai == 'Chờ duyệt' ? 'bg-warning text-dark' : 
                                         ($item->TrangThai == 'Đã duyệt' ? 'bg-primary' : 
-                                        ($item->TrangThai == 'Đang thực hiện' ? 'bg-info' : 
-                                        ($item->TrangThai == 'Hoàn thành' ? 'bg-success' : 
-                                        ($item->TrangThai == 'Hủy' ? 'bg-danger' : 'bg-danger'))))) 
+                                        ($item->TrangThai == 'Hủy' ? 'bg-danger' : 'bg-danger')))
                                     }}">
                                     {{ $item->TrangThai }}
                                 </span>

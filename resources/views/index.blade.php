@@ -114,7 +114,7 @@
     @endforelse
     
     <footer class="footer py-4 bg-dark text-white">
-        <p>&copy; 2025 Tổng Kho Điều Hòa LG. All rights reserved.</p>
+        <p>&copy; 2025 Tổng Kho Vật Tư LG Innotek Hải Phòng. All rights reserved.</p>
     </footer>
 </body>
 </html>

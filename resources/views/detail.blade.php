@@ -89,7 +89,7 @@
                                         <div class="product-card-body">
                                             <h5 class="product-card-title">{{ $item->TenVatTu }}</h5>
                                             <p class="product-card-price">{{ number_format($item->GiaNhap) }} VNĐ</p>
-                                            <a href="{{ url($item->MaVatTu) }}" class="product-card-link">Xem chi tiết</a>
+                                            <a href="{{ url('product/' . $vatTu->MaVatTu) }}" class="product-card-link">Xem chi tiết</a>
                                         </div>
                                     </div>
                                 @endforeach

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\LoaiVatTu;
+use App\Models\VatTu;
 
 class ChiTietVatTu extends Model
 {
@@ -19,5 +21,8 @@ class ChiTietVatTu extends Model
     {
         return $this->belongsTo(VatTu::class, 'MaVatTu');
     }
-    
+    public function loaivattu()
+    {
+        return $this->belongsTo(LoaiVatTu::class, 'MaLoaiVatTu', 'MaLoaiVatTu');
+    }
 }

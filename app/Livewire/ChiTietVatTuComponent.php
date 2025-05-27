@@ -9,6 +9,7 @@ use Livewire\Attributes\On;
 use App\Models\ChiTietVatTu;
 use App\Models\VatTu;
 use App\Models\LoaiVatTu;
+use Illuminate\Support\Facades\Storage;
 
 class ChiTietVatTuComponent extends Component
 {
@@ -20,7 +21,6 @@ class ChiTietVatTuComponent extends Component
     public $isDelete = false;
 
     public $MaVatTu;
-    public $MaLoaiVatTu;
     public $ThuongHieu;
     public $KichThuoc;
     public $XuatXu;
@@ -33,32 +33,23 @@ class ChiTietVatTuComponent extends Component
     public function showModalEdit($MaVatTu)
     {
         $this->MaVatTu = $MaVatTu;
-        $chitietvatTu = ChiTietVatTu::where('MaVatTu', $MaVatTu)->first();
-
-        if (!$chitietvatTu) {
-            session()->flash('error', 'Không tìm thấy chi tiết vật tư có mã: ' . $MaVatTu);
-            return;
-        }
-
+        $chitietvatTu = ChiTietVatTu::where('MaVatTu',$MaVatTu)->first();
         $this->ThuongHieu = $chitietvatTu->ThuongHieu;
         $this->KichThuoc = $chitietvatTu->KichThuoc;
         $this->XuatXu = $chitietvatTu->XuatXu;
         $this->MoTa = $chitietvatTu->MoTa;
         $this->isEdit = true;
     }
-
     public function showModalDelete($MaVatTu)
     {
         $this->isDelete = true;
         $this->MaVatTu = $MaVatTu;
     }
-    
     public function closeModal(){
         $this->isEdit = false;
         $this->isAdd = false;
         $this->isDelete = false;
         $this->resetModal();
-        $this->resetValidation();
     }
     public function resetModal(){
         $this->MaVatTu = null;
@@ -67,7 +58,6 @@ class ChiTietVatTuComponent extends Component
         $this->XuatXu = null;
         $this->MoTa = null;
     }
-
     public function save(){
         try {
             $this->validate([
@@ -87,17 +77,16 @@ class ChiTietVatTuComponent extends Component
             
             $chitietvatTu->save();
             $this->closeModal();
-            session()->flash('success', 'Chi tiết vật tư đã được thêm thành công');
+            session()->flash('success', 'Chi tiết Vật Tư đã được thêm thành công');
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
             $this->closeModal();
         }
     }
-
     public function update(){
         try {
             $this->validate([
-                'MaVatTu' => 'required|unique:chi_tiet_vat_tus,MaVatTu,' . $this->MaVatTu . ',MaVatTu',
+                'MaVatTu' => 'required',
                 'ThuongHieu' => 'required',
                 'KichThuoc' => 'required',
                 'XuatXu' => 'required',
@@ -105,11 +94,7 @@ class ChiTietVatTuComponent extends Component
             ]);
             
             $chitietvatTu = ChiTietVatTu::where('MaVatTu', $this->MaVatTu)->first();
-            if (!$chitietvatTu) {
-                session()->flash('error', 'Chi tiết vật tư không tồn tại');
-                $this->closeModal();
-                return;
-            }
+            $chitietvatTu->MaVatTu = $this->MaVatTu;
             $chitietvatTu->ThuongHieu = $this->ThuongHieu;
             $chitietvatTu->KichThuoc = $this->KichThuoc;
             $chitietvatTu->XuatXu = $this->XuatXu;
@@ -117,44 +102,43 @@ class ChiTietVatTuComponent extends Component
             
             $chitietvatTu->update();
             $this->closeModal();
-            session()->flash('success', 'Chi tiết vật tư đã được cập nhật thành công');
+            session()->flash('success', 'Chi tiết Vật Tư đã được cập nhật thành công');
         } catch (\Exception $e) {
             session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
             $this->closeModal();
         }
     }
-
     public function delete(){
         try {
             $chitietvatTu = ChiTietVatTu::where('MaVatTu', $this->MaVatTu)->first();
             
-            if ($chitietvatTu->nhapkho()->exists()) {
-                session()->flash('error', 'Không thể xóa Chi tiết Vật Tư này vì nó đang được sử dụng trong các phiếu nhập kho.');
+            // Check if there are any related records in nhanvien table
+            if ($chitietvatTu->vatTu()->exists()) {
+                session()->flash('error', 'Không thể xóa Chi tiết Vật Tư này vì nó đang được sử dụng trong các Vật Tư.');
                 $this->closeModal();
                 return;
             }
             
             $chitietvatTu->delete();
             $this->closeModal();
-            session()->flash('success', 'Chi tiết vật tư đã được xóa thành công');
+            session()->flash('success', 'Chi tiết Vật Tư đã được xóa thành công');
         } catch (\Exception $e) {
             $this->closeModal();
             session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
     }
-
     public function render()
     {
-        $chitietvatTus = ChiTietVatTu::where(function($query) {
-            $query->where('MaVatTu', 'like', "%{$this->search}%")
-                  ->orWhere('ThuongHieu', 'like', "%{$this->search}%");
-        })->orderBy('MaVatTu', 'asc')->paginate(10);
+        $this->vatTus = VatTu::all();
+        $chitietvatTus = ChiTietVatTu::query()
+            ->where('ThuongHieu', 'like', "%{$this->search}%")
+            ->orWhere('MaVatTu', 'like', "%{$this->search}%")
+            ->orderBy('MaVatTu', 'asc')
+            ->paginate(10);
 
-        $loaivattus = LoaiVatTu::all();
-
-        return view('livewire.chi-tiet-vat-tu', [
+        return view('livewire.chuc-vu', [
             'chitietvatTus' => $chitietvatTus,
-            'loaivattus' => $loaivattus,
+            'vatTus' => $this->vatTus,
         ]);
     }
 
