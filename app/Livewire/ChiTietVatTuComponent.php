@@ -37,7 +37,6 @@ class ChiTietVatTuComponent extends Component
         $this->ThuongHieu = $chitietvatTu->ThuongHieu;
         $this->KichThuoc = $chitietvatTu->KichThuoc;
         $this->XuatXu = $chitietvatTu->XuatXu;
-        $this->MoTa = $chitietvatTu->MoTa;
         $this->isEdit = true;
     }
     public function showModalDelete($MaVatTu)
@@ -64,8 +63,7 @@ class ChiTietVatTuComponent extends Component
                 'MaVatTu' => 'required',
                 'ThuongHieu' => 'required',
                 'KichThuoc' => 'required',
-                'XuatXu' => 'required',
-                'MoTa' => 'required',
+                'XuatXu' => 'required'
             ]);
             
             $chitietvatTu = new ChiTietVatTu();
@@ -90,7 +88,6 @@ class ChiTietVatTuComponent extends Component
                 'ThuongHieu' => 'required',
                 'KichThuoc' => 'required',
                 'XuatXu' => 'required',
-                'MoTa' => 'required',
             ]);
             
             $chitietvatTu = ChiTietVatTu::where('MaVatTu', $this->MaVatTu)->first();
@@ -98,7 +95,6 @@ class ChiTietVatTuComponent extends Component
             $chitietvatTu->ThuongHieu = $this->ThuongHieu;
             $chitietvatTu->KichThuoc = $this->KichThuoc;
             $chitietvatTu->XuatXu = $this->XuatXu;
-            $chitietvatTu->MoTa = $this->MoTa;
             
             $chitietvatTu->update();
             $this->closeModal();
@@ -112,7 +108,6 @@ class ChiTietVatTuComponent extends Component
         try {
             $chitietvatTu = ChiTietVatTu::where('MaVatTu', $this->MaVatTu)->first();
             
-            // Check if there are any related records in nhanvien table
             if ($chitietvatTu->vatTu()->exists()) {
                 session()->flash('error', 'Không thể xóa Chi tiết Vật Tư này vì nó đang được sử dụng trong các Vật Tư.');
                 $this->closeModal();
@@ -136,7 +131,7 @@ class ChiTietVatTuComponent extends Component
             ->orderBy('MaVatTu', 'asc')
             ->paginate(10);
 
-        return view('livewire.chuc-vu', [
+        return view('livewire.chi-tiet-vat-tu', [
             'chitietvatTus' => $chitietvatTus,
             'vatTus' => $this->vatTus,
         ]);

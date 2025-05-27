@@ -40,7 +40,7 @@
                     {{ number_format($vatTu->GiaNhap) }} VNĐ
                 </div>
                 <div class="product-specs">
-                    <div class="spec-item">
+                    <!-- <div class="spec-item">
                         <i class="fas fa-trademark"></i>
                         <span class="spec-label">Thương hiệu:</span>
                         <span class="spec-value">{{ $vatTu->chitietvattu->ThuongHieu ?? 'Không có thông tin' }}</span>
@@ -54,7 +54,7 @@
                         <i class="fas fa-globe-asia"></i>
                         <span class="spec-label">Xuất xứ:</span>
                         <span class="spec-value">{{ $vatTu->chitietvattu->XuatXu ?? 'Không có thông tin' }}</span>
-                    </div>
+                    </div> -->
                     <div class="spec-item">
                         <i class="fas fa-box"></i>
                         <span class="spec-label">Số lượng tồn:</span>
@@ -118,59 +118,59 @@
     </div>
     <hr>
     <footer class="footer py-4 bg-dark text-white">
-        <p>&copy; 2025 Tổng Kho Điều Hòa LG. All rights reserved.</p>
+        <p>&copy; 2025 Tổng Kho Vật Tư LG Innotek Hải Phòng. All rights reserved.</p>
     </footer>
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-                const sliderContainer = document.querySelector('.slider-container');
-                const pages = document.querySelectorAll('.slider-page');
-                const prevBtn = document.querySelector('.prev-btn');
-                const nextBtn = document.querySelector('.next-btn');
-                const indicators = document.querySelectorAll('.page-indicator');
+        const sliderContainer = document.querySelector('.slider-container');
+        const pages = document.querySelectorAll('.slider-page');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const indicators = document.querySelectorAll('.page-indicator');
                 
-                let currentPage = 1;
-                const totalPages = pages.length;
+        let currentPage = 1;
+        const totalPages = pages.length;
                 
-                function goToPage(pageNum) {
-                    pages.forEach(page => {
-                        page.classList.remove('active');
-                    });
-                    
-                    indicators.forEach(indicator => {
-                        indicator.classList.remove('active');
-                    });
-                    
-                    document.querySelector(`.slider-page[data-page="${pageNum}"]`).classList.add('active');
-                    document.querySelector(`.page-indicator[data-page="${pageNum}"]`).classList.add('active');
-                    
-                    currentPage = pageNum;
-                    updateNavButtons();
-                }
-                
-                function updateNavButtons() {
-                    prevBtn.disabled = currentPage === 1;
-                    nextBtn.disabled = currentPage === totalPages;
-                }
-                
-                prevBtn.addEventListener('click', function() {
-                    if (currentPage > 1) {
-                        goToPage(currentPage - 1);
-                    }
-                });
-                
-                nextBtn.addEventListener('click', function() {
-                    if (currentPage < totalPages) {
-                        goToPage(currentPage + 1);
-                    }
-                });
-                
-                indicators.forEach(indicator => {
-                    indicator.addEventListener('click', function() {
-                        const page = parseInt(this.getAttribute('data-page'));
-                        goToPage(page);
-                    });
-                });
+        function goToPage(pageNum) {
+            pages.forEach(page => {
+                page.classList.remove('active');
             });
-        </script>
+                    
+            indicators.forEach(indicator => {
+                indicator.classList.remove('active');
+            });
+                    
+            document.querySelector(`.slider-page[data-page="${pageNum}"]`).classList.add('active');
+            document.querySelector(`.page-indicator[data-page="${pageNum}"]`).classList.add('active');
+                    
+            currentPage = pageNum;
+            updateNavButtons();
+        }
+                
+        function updateNavButtons() {
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+        }
+                
+        prevBtn.addEventListener('click', function() {
+            if (currentPage > 1) {
+                goToPage(currentPage - 1);
+            }
+        });
+                
+        nextBtn.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                goToPage(currentPage + 1);
+            }
+        });
+                
+        indicators.forEach(indicator => {
+            indicator.addEventListener('click', function() {
+                const page = parseInt(this.getAttribute('data-page'));
+                goToPage(page);
+            });
+        });
+    });
+</script>
 </html>

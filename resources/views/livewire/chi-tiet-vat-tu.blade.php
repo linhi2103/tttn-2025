@@ -25,7 +25,6 @@
             <table class="table table-hover table-light table-bordered">
                 <thead>
                     <tr>
-                        <th>Ảnh Vật Tư</th>
                         <th>Mã Vật tư</th>
                         <th>Tên Vật tư</th>
                         <th>Thương hiệu</th>
@@ -38,7 +37,6 @@
                 <tbody>
                     @foreach ($chitietvatTus as $chitietvattu)
                         <tr>
-                            <td><img src="{{ asset('images/' . $chitietvattu->vatTu->AnhVatTu) }}" alt="{{ $chitietvattu->vatTu->TenVatTu }}" width="120" height="120"></td>
                             <td>{{ $chitietvattu->vatTu->MaVatTu }}</td>
                             <td>{{ $chitietvattu->vatTu->TenVatTu }}</td>
                             <td>{{ $chitietvattu->ThuongHieu }}</td>
@@ -75,37 +73,33 @@
                     <form wire:submit.prevent="isAdd ? save : update" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <select class="form-control @error('ChiTietVatTu.'.$stt.'.MaVatTu') is-invalid @enderror" wire:model.live="ChiTietVatTu.{{ $stt }}.MaVatTu" required>
+                                <label class="form-label">Vật Tư</label>
+                                <select class="form-control @error('MaVatTu') is-invalid @enderror" wire:model.live="MaVatTu" required>
                                     <option value="">-- Chọn Vật Tư --</option>
-                                    @foreach ($vattus as $vattu)
+                                    @foreach ($vatTus as $vattu)
                                         <option value="{{ $vattu->MaVatTu }}">{{ $vattu->MaVatTu }} - {{ $vattu->TenVatTu }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Tên Vật Tư</label>
-                                <input type="text" class="form-control @error('ChiTietVatTu.'.$stt.'.TenVatTu') is-invalid @enderror" 
-                                    wire:model.live="ChiTietVatTu.{{ $stt }}.TenVatTu" readonly>
-                            </div>
-                            <div class="col-md-6 mb-3">
                                 <label class="form-label">Thương hiệu</label>
-                                <input type="text" class="form-control @error('ChiTietVatTu.'.$stt.'.ThuongHieu') is-invalid @enderror" 
-                                    wire:model.live="ChiTietVatTu.{{ $stt }}.ThuongHieu" required>
+                                <input type="text" class="form-control @error('ThuongHieu') is-invalid @enderror" 
+                                    wire:model.live="ThuongHieu" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Kích thước</label>
-                                <input type="text" class="form-control @error('ChiTietVatTu.'.$stt.'.KichThuoc') is-invalid @enderror" 
-                                    wire:model.live="ChiTietVatTu.{{ $stt }}.KichThuoc" required>
+                                <input type="text" class="form-control @error('KichThuoc') is-invalid @enderror" 
+                                    wire:model.live="KichThuoc" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Mô tả</label>
-                                <input type="text" class="form-control @error('ChiTietVatTu.'.$stt.'.MoTa') is-invalid @enderror" 
-                                    wire:model.live="ChiTietVatTu.{{ $stt }}.MoTa" required>
+                                <input type="text" class="form-control @error('MoTa') is-invalid @enderror" 
+                                    wire:model.live="MoTa" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Xuất xứ</label>
-                                <input type="text" class="form-control @error('ChiTietVatTu.'.$stt.'.XuatXu') is-invalid @enderror" 
-                                    wire:model.live="ChiTietVatTu.{{ $stt }}.XuatXu" required>
+                                <input type="text" class="form-control @error('XuatXu') is-invalid @enderror" 
+                                    wire:model.live="XuatXu" required>
                             </div>
                         </div>
                     </form>

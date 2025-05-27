@@ -9,11 +9,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('chitietvattu')">
                             <i class="fas fa-box"></i> Chi tiết vật tư
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('dashboard')">
                             <i class="fas fa-box"></i> Vật Tư
