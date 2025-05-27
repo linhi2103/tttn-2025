@@ -16,7 +16,6 @@ class NhapKho extends Model
     public $primaryKey = 'MaPhieuNhap';
     public $keyType = 'string';
     public $incrementing = false;
-    public $timestamps = false;
 
     protected $fillable = [
         'MaPhieuNhap',

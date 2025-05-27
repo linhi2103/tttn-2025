@@ -105,9 +105,9 @@
                                 <label class="form-label">Tình trạng</label>
                                 <select class="form-select" wire:model="TinhTrang" required>
                                     <option value="">-- Chọn Tình Trạng --</option>
-                                    <option value="Còn hàng">Còn hàng</option>
-                                    <option value="Gần hết">Gần hết</option>
-                                    <option value="Hết hàng">Hết hàng</option>
+                                    <option value="Còn Trống">Còn Trống</option>
+                                    <option value="Có Hàng">Có Hàng</option>
+                                    <option value="Đã Đầy">Đã Đầy</option>
                                 </select>
                             </div>
                         </div>

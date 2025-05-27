@@ -22,8 +22,7 @@ use Exception;
 class NhapKhoComponent extends Component
 {
     use WithPagination;
-    use WithFileUploads;
-
+    
     public $search = '';
 
     public $isEdit = false;
@@ -41,6 +40,7 @@ class NhapKhoComponent extends Component
 
     public $ChiTietNhapKho = [];
 
+    
     public function render()
     {
         return view('livewire.nhap-kho')
@@ -48,23 +48,23 @@ class NhapKhoComponent extends Component
                 'nhapkhos' => NhapKho::query()
                     ->when($this->search, function($query) {
                         $query->where('MaPhieuNhap', 'like', "%{$this->search}%")
+                            ->orWhere('MaVatTu', 'like', "%{$this->search}%")
                             ->orWhere('MaKho', 'like', "%{$this->search}%")
-                            ->orWhere('MaLenhDieuDong', 'like', "%{$this->search}%")
-                            ->orWhere('MaSoThue_DoiTac', 'like', "%{$this->search}%");
+                            ->orWhere('MaSoThue_DoiTac', 'like', "%{$this->search}%")
+                            ->orWhere('MaLenhDieuDong', 'like', "%{$this->search}%");;
                     })
                     ->orderBy('MaPhieuNhap', 'asc')
                     ->paginate(10),
                 'vattus' => VatTu::all(),
                 'danhmuckhos' => DanhMucKho::all(),
-                'donvivanchuyen' => DonViVanChuyen::all(), // Fixed: changed from donViVanChuyen to donvivanchuyen
+                'donvivanchuyen' => DonViVanChuyen::all(),
                 'doitacs' => Doitac::all(),
                 'lenhdieudongs' => LenhDieuDong::all()
             ]);
     }
-
     public function addVatTu()
     {
-        $this->ChiTietNhapKho[count($this->ChiTietNhapKho)] = [
+        $this->ChiTietNhapKho[] = [
             'MaVatTu' => '',
             'TenVatTu' => '',
             'DonViTinh' => '',
@@ -73,13 +73,13 @@ class NhapKhoComponent extends Component
             'ThanhTien' => 0
         ];
     }
-
+    
     public function showModalAdd()
     {
         $this->addVatTu();
         $this->isAdd = true;
     }
-
+    
     public function showModalEdit($MaPhieuNhap)
     {
         $this->MaPhieuNhap = $MaPhieuNhap;
@@ -107,7 +107,6 @@ class NhapKhoComponent extends Component
         $this->isDelete = true;
         $this->MaPhieuNhap = $MaPhieuNhap;
     }
-
     public function showModalDetail($MaPhieuNhap)
     {
         $this->MaPhieuNhap = $MaPhieuNhap;
@@ -115,8 +114,8 @@ class NhapKhoComponent extends Component
         $this->ChiTietNhapKho = json_decode($nhapkho->ChiTietNhapKho, true);
         $this->isDetail = true;
     }
-
-    public function closeModal(){
+    public function closeModal()
+    {
         $this->isEdit = false;
         $this->isAdd = false;
         $this->isDelete = false;
@@ -124,59 +123,59 @@ class NhapKhoComponent extends Component
         $this->resetModal();
     }
 
-    public function resetForm()
-    {
+    public function resetForm() {
         $this->reset([
-            'MaPhieuNhap', 'MaKho', 'MaLenhDieuDong', 'MaDonViVanChuyen', 
-            'DonViTienTe', 'TrangThai', 'ChiTietNhapKho', 'MaSoThue_DoiTac'
+            'MaPhieuNhap', 'MaKho', 'MaDonViVanChuyen', 'MaLenhDieuDong',
+            'DonViTienTe', 'ChiTietNhapKho', 'TrangThai', 'MaSoThue_DoiTac'
         ]);
     }
-
+    
     public function resetModal()
     {
         $this->MaPhieuNhap = null;
         $this->MaKho = null;
-        $this->MaLenhDieuDong = null;
         $this->MaDonViVanChuyen = null;
+        $this->MaLenhDieuDong = null;
         $this->DonViTienTe = null;
-        $this->TrangThai = null;
         $this->ChiTietNhapKho = [];
+        $this->TrangThai = null;
         $this->MaSoThue_DoiTac = null;
     }
-
-    public function save()
-    {
+    
+    
+    public function save() {
         try {
-            $this->validate([
-                'MaPhieuNhap' => 'required|unique:nhapkho,MaPhieuNhap',
-                'MaKho' => 'required',
-                'MaDonViVanChuyen' => 'required',
-                'DonViTienTe' => 'required',
-                'ChiTietNhapKho' => 'required|array',
-                'MaLenhDieuDong' => 'required',
-                'MaSoThue_DoiTac' => 'required'
-            ]);
-            
-            NhapKho::create([
-                'MaPhieuNhap' => $this->MaPhieuNhap,
-                'MaKho' => $this->MaKho,
-                'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
-                'DonViTienTe' => $this->DonViTienTe,
-                'ChiTietNhapKho' => json_encode($this->ChiTietNhapKho),
-                'MaLenhDieuDong' => $this->MaLenhDieuDong,
-                'MaSoThue_DoiTac' => $this->MaSoThue_DoiTac,
-            ]);
-            
-            $this->resetForm();
-            $this->isAdd = false;
-            session()->flash('success', 'Đã thêm phiếu nhập thành công!');
-        } catch (Exception $e) {
-            session()->flash('error', 'Lỗi! Vui lòng thực hiện lại. ' . $e->getMessage());
-        }
-    }
+        $this->validate([
+            'MaPhieuNhap' => 'required|unique:nhapkho,MaPhieuNhap',
+            'MaKho' => 'required',
+            'MaDonViVanChuyen' => 'required',
+            'DonViTienTe' => 'required',
+            'ChiTietNhapKho' => 'required|array',
+            'MaLenhDieuDong' => 'required',
+            'MaSoThue_DoiTac' => 'required',
+        ]);
+    
 
-    public function update()
-    {
+        NhapKho::create([
+            'MaPhieuNhap' => $this->MaPhieuNhap,
+            'MaKho' => $this->MaKho,
+            'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
+            'DonViTienTe' => $this->DonViTienTe,
+            'ChiTietNhapKho' => json_encode($this->ChiTietNhapKho),
+            'MaLenhDieuDong' => $this->MaLenhDieuDong,
+            'MaSoThue_DoiTac' => $this->MaSoThue_DoiTac,
+        ]);
+        
+    
+        $this->resetForm();
+        $this->isAdd = false;
+        session()->flash('success', 'Đã thêm phiếu nhập thành công!');
+    } catch (Exception $e) {
+        session()->flash('error', 'Lỗi! Vui lòng thực hiện lại. ' . $e->getMessage());
+       }
+    }
+    
+    public function update() {
         $this->validate([
             'MaKho' => 'required',
             'MaDonViVanChuyen' => 'required',
@@ -184,9 +183,9 @@ class NhapKhoComponent extends Component
             'ChiTietNhapKho' => 'required|array',
             'MaLenhDieuDong' => 'required',
             'TrangThai' => 'required',
-            'MaSoThue_DoiTac' => 'required'
+            'MaSoThue_DoiTac' => 'required',
         ]);
-
+    
         $nhapkho = NhapKho::where('MaPhieuNhap', $this->MaPhieuNhap)->first();
 
         if(!$nhapkho){
@@ -198,32 +197,29 @@ class NhapKhoComponent extends Component
             foreach ($this->ChiTietNhapKho as $value) {
                 $vattu = VatTu::where('MaVatTu', $value['MaVatTu'])->first();
                 if ($vattu) {
-                    // Chuyển đổi SoLuongNhap từ chuỗi sang số nguyên để tránh lỗi kiểu dữ liệu
                     $soLuongNhap = (int) ($value['SoLuongNhap'] ?? 0);
-                    
-                    $vattu->update([
-                        'SoLuongTon' => $vattu->SoLuongTon + $soLuongNhap
-                    ]);
+                    $vattu->SoLuongTon += $soLuongNhap;
+                    $vattu->save();
                 }
             }
         }
-        
+    
         $nhapkho->update([
-            'MaKho' => $this->MaKho,
-            'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
-            'DonViTienTe' => $this->DonViTienTe,
-            'ChiTietNhapKho' => json_encode($this->ChiTietNhapKho),
-            'MaLenhDieuDong' => $this->MaLenhDieuDong,
-            'TrangThai' => $this->TrangThai,
-            'MaSoThue_DoiTac' => $this->MaSoThue_DoiTac,
-        ]);
-        
-        $this->resetForm();
-        $this->isEdit = false;
-        session()->flash('success', 'Đã cập nhật phiếu nhập thành công!');
-        Log::info($this->ChiTietNhapKho);
+                'MaKho' => $this->MaKho,
+                'MaDonViVanChuyen' => $this->MaDonViVanChuyen,
+                'DonViTienTe' => $this->DonViTienTe,
+                'ChiTietNhapKho' => json_encode($this->ChiTietNhapKho),
+                'MaLenhDieuDong' => $this->MaLenhDieuDong,
+                'TrangThai' => $this->TrangThai,
+                'MaSoThue_DoiTac' => $this->MaSoThue_DoiTac,
+            ]);
+    
+            $this->resetForm();
+            $this->isEdit = false;
+            session()->flash('success', 'Đã cập nhật phiếu nhập thành công!');
+            Log::info($this->ChiTietNhapKho);
     }
-
+    
     public function delete()
     {
         try {
@@ -243,7 +239,6 @@ class NhapKhoComponent extends Component
             $this->closeModal();
         }
     }
-
     public function removeVatTu($index)
     {
         unset($this->ChiTietNhapKho[$index]);
@@ -252,47 +247,42 @@ class NhapKhoComponent extends Component
             $key++;
         }
     }
-
     public function updatedChiTietNhapKho($value, $key)
     {
         $index = intval(explode('.', $key)[0]);
         $field = explode('.', $key)[1];
 
         if($field == 'MaVatTu'){
-            $vatTu = VatTu::where('MaVatTu', $value)->first();
-            if (!$vatTu) {
+            $vattu = VatTu::where('MaVatTu', $value)->first();
+            if (!$vattu) {
                 session()->flash('error', 'Không tìm thấy vật tư!');
                 return;
             }
-            
-            // Cập nhật thông tin vật tư
-            $this->ChiTietNhapKho[$index]['TenVatTu'] = $vatTu->TenVatTu;
-            $this->ChiTietNhapKho[$index]['DonViTinh'] = $vatTu->donvitinh->TenDonViTinh;
-            $this->ChiTietNhapKho[$index]['DonGia'] = $vatTu->GiaNhap;
+
+            $this->ChiTietNhapKho[$index]['TenVatTu'] = $vattu->TenVatTu;
+            $this->ChiTietNhapKho[$index]['DonViTinh'] = $vattu->donvitinh->TenDonViTinh;
+            $this->ChiTietNhapKho[$index]['DonGia'] = $vattu->GiaNhap;
             
             // Tính lại thành tiền nếu đã có số lượng
             $soLuong = (int) ($this->ChiTietNhapKho[$index]['SoLuongNhap'] ?? 0);
-            $this->ChiTietNhapKho[$index]['ThanhTien'] = $soLuong * $vatTu->GiaNhap;
+            $this->ChiTietNhapKho[$index]['ThanhTien'] = $soLuong * $vattu->GiaNhap;
         }
-
-        if($field == 'SoLuongNhap'){
-            // Chuyển đổi giá trị thành số nguyên
+        if ($field == 'SoLuongNhap') {
             $soLuong = (int) ($value ?? 0);
             $this->ChiTietNhapKho[$index]['SoLuongNhap'] = $soLuong;
             
             // Lấy thông tin vật tư để tính thành tiền
             $maVatTu = $this->ChiTietNhapKho[$index]['MaVatTu'] ?? '';
             if (!empty($maVatTu)) {
-                $vatTu = VatTu::where('MaVatTu', $maVatTu)->first();
-                if ($vatTu) {
-                    $donGia = $vatTu->GiaNhap;
+                $vattu = VatTu::where('MaVatTu', $maVatTu)->first();
+                if ($vattu) {
+                    $donGia = $vattu->GiaNhap;
                     $this->ChiTietNhapKho[$index]['DonGia'] = $donGia;
                     $this->ChiTietNhapKho[$index]['ThanhTien'] = $soLuong * $donGia;
                 }
             }
         }
     }
-
     public function getTongThanhTien()
     {
         $tong = 0;
@@ -301,7 +291,6 @@ class NhapKhoComponent extends Component
         }
         return $tong;
     }
-
     public function exportExcel()
     {
         try {
@@ -339,7 +328,7 @@ class NhapKhoComponent extends Component
                 $sheet->setCellValue('C' . $row, $stt);
                 $sheet->setCellValue('D' . $row, $item['TenVatTu'] ?? '');
                 $sheet->setCellValue('E' . $row, $item['MaVatTu'] ?? '');
-                $sheet->setCellValue('F' . $row, $item['DonViTinh'] ?? '');
+                $sheet->setCellValue('F' . $row, $item['DonVi'] ?? '');
                 $sheet->setCellValue('G' . $row, $item['SoLuongNhap'] ?? '');
                 $sheet->setCellValue('H' . $row, $item['DonGia'] ?? '');
                 $sheet->setCellValue('I' . $row, $item['ThanhTien'] ?? '');
@@ -355,10 +344,12 @@ class NhapKhoComponent extends Component
 
             $totalRow = $row;
             $sheet->setCellValue('C' . $totalRow, 'Tổng');
-            $sheet->setCellValue('G' . $totalRow, '=SUM(G19:G' . ($row - 1) . ')');
-            $sheet->setCellValue('I' . $totalRow, '=SUM(I19:I' . ($row - 1) . ')');
+            $sheet->setCellValue('G' . $totalRow, '=SUM(G15:G' . ($row) . ')');
+            
+            $sheet->setCellValue('I' . $totalRow, '=SUM(I15:I' . ($row) . ')');
             
             $totalStyle = $sheet->getStyle('C' . $totalRow . ':I' . $totalRow);
+
             $totalStyle->getAlignment()->setHorizontal('center');
             $totalStyle->getAlignment()->setVertical('center');
 
