@@ -21,7 +21,7 @@ class LoginController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-        $remember = $request->has('remember');
+        $remember = $request->has('remember');//có muốn nhớ ko
         $field = filter_var($credentials['username'], FILTER_VALIDATE_EMAIL) ? 'Email' : 'TaiKhoan';
 
         $user = NguoiDung::where($field, $credentials['username'])->first();
@@ -30,13 +30,12 @@ class LoginController extends Controller
             session()->flash('error', 'Tài khoản không tồn tại');
             return redirect()->back();
         }
-
+        //sosanh pass_nhap với pass_đã mã hóa
         if(!Hash::check($credentials['password'], $user->MatKhau)){
             session()->flash('error', 'Sai tài khoản hoặc mật khẩu');
             return redirect()->back();
         }
-
-        Auth::login($user, $remember);
+        Auth::login($user, $remember);// đ_nhap lâu hon
 
         return redirect()->intended(route('dashboard'));
     }

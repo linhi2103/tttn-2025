@@ -14,13 +14,13 @@ class LenhDieuDongComponent extends Component
 {
     use WithPagination;
     use WithFileUploads;
+
     public $search = '';
 
     public $MaLenhDieuDong;
     public $TenLenhDieuDong;
     public $LyDo;
-    public $NgayLapDon;
-    public $TrangThai = false;
+    public $TrangThai;
     public $GhiChu;
     public $MaNhanVien;
 
@@ -38,8 +38,6 @@ class LenhDieuDongComponent extends Component
     public function showModalAdd()
     {
         $this->isAdd = true;
-        $this->NgayLapDon = now()->format('Y-m-d');
-        $this->TrangThai = false; // Default value
     }
 
     public function showModalEdit($MaLenhDieuDong)
@@ -52,10 +50,10 @@ class LenhDieuDongComponent extends Component
         if ($lenhdieudong) {
             $this->TenLenhDieuDong = $lenhdieudong->TenLenhDieuDong;
             $this->LyDo = $lenhdieudong->LyDo;
-            $this->NgayLapDon = $lenhdieudong->NgayLapDon;
             $this->TrangThai = $lenhdieudong->TrangThai;
             $this->MaNhanVien = $lenhdieudong->MaNhanVien;
             $this->GhiChu = $lenhdieudong->GhiChu;
+
             $this->isEdit = true;
         }
     }
@@ -77,78 +75,60 @@ class LenhDieuDongComponent extends Component
         $this->MaLenhDieuDong = null;
         $this->TenLenhDieuDong = null;
         $this->LyDo = null;
-        $this->NgayLapDon = null;
-        $this->TrangThai = false;
+        $this->TrangThai = null;
         $this->MaNhanVien = null;
         $this->GhiChu = null;
     }
 
     public function save()
     {
-        $validated = $this->validate([
-            'MaLenhDieuDong' => 'required|unique:lenhdieudong,MaLenhDieuDong',
+        $this->validate([
+            'MaLenhDieuDong' => 'required|unique:lenh_dieu_dongs,MaLenhDieuDong',
             'TenLenhDieuDong' => 'required',
             'LyDo' => 'required',
-            'NgayLapDon' => 'required|date',
-            'MaNhanVien' => 'required|exists:nhanvien,MaNhanVien',
-            'TrangThai' => 'boolean',
-            'GhiChu' => 'nullable|string',
+            'MaNhanVien' => 'required',
         ]);
 
-        try {
-            LenhDieuDong::create([
-                'MaLenhDieuDong' => $this->MaLenhDieuDong,
-                'TenLenhDieuDong' => $this->TenLenhDieuDong,
-                'LyDo' => $this->LyDo,
-                'NgayLapDon' => $this->NgayLapDon,
-                'MaNhanVien' => $this->MaNhanVien,
-                'TrangThai' => $this->TrangThai ?? false,
-                'GhiChu' => $this->GhiChu,
-            ]);
-            
-            $this->resetModal();
-            $this->isAdd = false;
-            
-            session()->flash('success', 'Lệnh Điều Động đã được thêm thành công');
-        } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
-        }
+        LenhDieuDong::create([
+            'MaLenhDieuDong' => $this->MaLenhDieuDong,
+            'TenLenhDieuDong' => $this->TenLenhDieuDong,
+            'LyDo' => $this->LyDo,
+            'TrangThai' => 'Đang hoạt động',
+            'MaNhanVien' => $this->MaNhanVien,
+            'GhiChu' => $this->GhiChu,
+        ]);
+
+        session()->flash('success', 'Thêm Lệnh Điều Động thành công!');
+        $this->closeModal();
     }
+
 
     public function update()
     {
-        $validated = $this->validate([
-            'MaLenhDieuDong' => 'required',
+        $this->validate([
             'TenLenhDieuDong' => 'required',
             'LyDo' => 'required',
-            'NgayLapDon' => 'required|date',
-            'MaNhanVien' => 'required|exists:nhanvien,MaNhanVien',
-            'TrangThai' => 'boolean',
-            'GhiChu' => 'nullable|string',
+            'MaNhanVien' => 'required',
+            'TrangThai' => 'required|in:Đang hoạt động,Ngừng hoạt động',
         ]);
 
-        try {
-            $lenhdieudong = LenhDieuDong::where('MaLenhDieuDong', $this->MaLenhDieuDong)->first();
-            if ($lenhdieudong) {
-                $lenhdieudong->update([
-                    'TenLenhDieuDong' => $this->TenLenhDieuDong,
-                    'LyDo' => $this->LyDo,
-                    'NgayLapDon' => $this->NgayLapDon,
-                    'MaNhanVien' => $this->MaNhanVien,
-                    'TrangThai' => $this->TrangThai ?? false,
-                    'GhiChu' => $this->GhiChu,
-                ]);
-                
-                $this->resetModal();
-                $this->isEdit = false;
-                
-                session()->flash('success', 'Lệnh Điều Động đã được cập nhật thành công');
-            } else {
-                session()->flash('error', 'Không tìm thấy Lệnh Điều Động');
-            }
-        } catch (\Exception $e) {
-            session()->flash('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+        $lenhdieudong = LenhDieuDong::where('MaLenhDieuDong', $this->MaLenhDieuDong)->first();
+
+        if ($lenhdieudong) {
+            $lenhdieudong->update([
+                'TenLenhDieuDong' => $this->TenLenhDieuDong,
+                'LyDo' => $this->LyDo,
+                'TrangThai' => $this->TrangThai,
+                'MaNhanVien' => $this->MaNhanVien,
+                'GhiChu' => $this->GhiChu,
+            ]);
+
+            session()->flash('success', 'Cập nhật Lệnh Điều Động thành công!');
+        } else {
+            session()->flash('error', 'Không tìm thấy Lệnh Điều Động để cập nhật!');
         }
+
+        $this->closeModal();
     }
 
     public function delete(){
@@ -186,9 +166,7 @@ class LenhDieuDongComponent extends Component
             'lenhdieudongs' => LenhDieuDong::query()
                 ->when($this->search, function($query) {
                     $query->where('MaLenhDieuDong', 'like', "%{$this->search}%")
-                        ->orWhere('TenLenhDieuDong', 'like', "%{$this->search}%")
-                        ->orWhere('LyDo', 'like', "%{$this->search}%")
-                        ->orWhere('GhiChu', 'like', "%{$this->search}%");
+                        ->orWhere('LyDo', 'like', "%{$this->search}%");
                 })
                 ->with('nhanVien')
                 ->orderBy('MaLenhDieuDong', 'asc')

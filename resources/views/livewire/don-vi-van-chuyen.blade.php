@@ -27,7 +27,6 @@
                     <tr>
                         <th>Mã đơn vị vận chuyển</th>
                         <th>Tên đơn vị vận chuyển</th>
-                        <th>Tên nhân viên</th>
                         <th>Phương tiện vận chuyển</th>
                         <th>Ghi chú</th>
                         <th>Thao tác</th>
@@ -38,7 +37,6 @@
                         <tr>
                             <td>{{ $donvivanchuyen->MaDonViVanChuyen }}</td>
                             <td>{{ $donvivanchuyen->TenDonViVanChuyen }}</td>
-                            <td>{{ $donvivanchuyen->NhanVien->TenNhanVien }}</td>
                             <td>{{ $donvivanchuyen->PhuongTienVanChuyen }}</td>
                             <td>{{ $donvivanchuyen->GhiChu ?? 'Không có' }}</td>
                             <td>
@@ -77,15 +75,6 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Tên ĐVVC</label>
                                 <input type="text" class="form-control" wire:model="TenDonViVanChuyen" value="{{ $TenDonViVanChuyen || '' }}" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Tên Nhân Viên</label>
-                                <select class="form-select" wire:model="MaNhanVien">
-                                    <option value="">--Chọn Nhân Viên--</option>
-                                    @foreach ($nhanviens as $nhanvien)
-                                        <option value="{{ $nhanvien->MaNhanVien }}">{{ $nhanvien->TenNhanVien }}</option>
-                                    @endforeach
-                                </select>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Phương tiện vận chuyển</label>

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\LenhDieuDong;
-use App\Models\NhanVien;
 
 class DonViVanChuyen extends Model
 {
@@ -16,7 +15,6 @@ class DonViVanChuyen extends Model
     protected $fillable = [
         'MaDonViVanChuyen',
         'TenDonViVanChuyen',
-        'MaNhanVien',
         'PhuongTienVanChuyen',
         'GhiChu'
     ];
@@ -26,10 +24,5 @@ class DonViVanChuyen extends Model
     public function lenhdieudong()
     {
         return $this->hasMany(LenhDieuDong::class, 'MaDonViVanChuyen', 'MaDonViVanChuyen');
-    }
-
-    public function nhanvien()
-    {
-        return $this->belongsTo(NhanVien::class, 'MaNhanVien', 'MaNhanVien');
     }
 }

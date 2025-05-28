@@ -52,7 +52,6 @@ return new class extends Migration
         Schema::create('donvivanchuyen', function (Blueprint $table) {
             $table->string('MaDonViVanChuyen', 20)->primary();
             $table->string('TenDonViVanChuyen', 255);
-            $table->string('MaNhanVien', 20);
             $table->string('PhuongTienVanChuyen', 255);
             $table->text('GhiChu')->nullable();
         });

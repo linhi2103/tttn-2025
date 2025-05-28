@@ -22,41 +22,50 @@
             </div>
         @endif
         <div class="table-responsive">
-            <table class="table table-hover table-light table-bordered">
-                <thead>
+        <table class="table table-hover table-light table-bordered">
+            <thead>
+                <tr>
+                    <th>Mã LĐĐ</th>
+                    <th>Tên LĐĐ</th>
+                    <th>Lý do</th>
+                    <th>Người lập đơn</th>
+                    <th>Ngày lập</th>
+                    <th>Trạng thái</th>
+                    <th>Ghi chú</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($lenhdieudongs as $lenhdieudong)
                     <tr>
-                        <th>Mã LĐĐ</th>
-                        <th>Tên LĐĐ</th>
-                        <th>Lý do</th>
-                        <th>Người lập đơn</th>
-                        <th>Ngày lập</th>
-                        <th>Trạng thái</th>
-                        <th>Ghi chú</th>
-                        <th>Thao tác</th>
+                        <td>{{ $lenhdieudong->MaLenhDieuDong }}</td>
+                        <td>{{ $lenhdieudong->TenLenhDieuDong }}</td>
+                        <td>{{ $lenhdieudong->LyDo }}</td>
+                        <td>{{ $lenhdieudong->nhanVien?->TenNhanVien ?? 'Không xác định' }}</td>
+                        <td>{{ date('d/m/Y', strtotime($lenhdieudong->created_at)) }}</td>
+                        <td>
+                            @php
+                                $trangThaiText = $lenhdieudong->TrangThai == 1 ? 'Đang hoạt động' : 'Ngừng hoạt động';
+                                $badgeClass = $lenhdieudong->TrangThai == 1 ? 'bg-warning text-dark' : 'bg-danger';
+                            @endphp
+                            <span class="badge rounded-pill {{ $badgeClass }}">
+                                {{ $trangThaiText }}
+                            </span>
+                        </td>
+                        <td>{{ $lenhdieudong->GhiChu }}</td>
+                        <td>
+                            <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $lenhdieudong->MaLenhDieuDong }}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn bg-danger ms-2" title="Xóa" wire:click="showModalDelete('{{ $lenhdieudong->MaLenhDieuDong }}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach ($lenhdieudongs as $lenhdieudong)
-                        <tr>
-                            <td>{{ $lenhdieudong->MaLenhDieuDong }}</td>
-                            <td>{{ $lenhdieudong->TenLenhDieuDong }}</td>
-                            <td>{{ $lenhdieudong->LyDo }}</td>
-                            <td>{{ $lenhdieudong->nhanVien?->TenNhanVien ?? 'Không xác định' }}</td>
-                            <td>{{ $lenhdieudong->NgayLapDon }}</td>
-                            <td>{{ $lenhdieudong->TrangThai ? 'Hoạt động' : 'Ngừng hoạt động' }}</td>
-                            <td>{{ $lenhdieudong->GhiChu }}</td>
-                            <td>
-                                <button class="btn bg-warning ms-2" title="Sửa" wire:click="showModalEdit('{{ $lenhdieudong->MaLenhDieuDong }}')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn bg-danger ms-2" title="Xóa" wire:click="showModalDelete('{{ $lenhdieudong->MaLenhDieuDong }}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                @endforeach
+            </tbody>
+        </table>
+
             <div class="d-flex justify-content-between align-items-center">
                 Hiển thị từ {{ $lenhdieudongs->firstItem() }} đến {{ $lenhdieudongs->lastItem() }} trong tổng số {{ $lenhdieudongs->total() }} Lệnh Điều Động
                 {{ $lenhdieudongs->links('pagination') }}
@@ -99,19 +108,17 @@
                                 </select>
                                 @error('MaNhanVien') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
+                            @if($isEdit)
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Ngày lập</label>
-                                <input type="date" class="form-control" wire:model="NgayLapDon" required>
-                                @error('NgayLapDon') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Trạng thái</label>
-                                <select class="form-select" wire:model="TrangThai">
-                                    <option value="1">Hoạt động</option>
-                                    <option value="0">Ngừng hoạt động</option>
+                                <label>Trạng Thái</label>
+                                <select class="form-control @error('TrangThai') is-invalid @enderror" wire:model="TrangThai" required>
+                                    <option value="">-- Chọn Trạng Thái --</option>
+                                    <option value="Đang hoạt động">Đang hoạt động</option>
+                                    <option value="Ngừng hoạt động">Ngừng hoạt động</option>
                                 </select>
-                                @error('TrangThai') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('TrangThai') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
+                            @endif
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Ghi chú</label>
                                 <input type="text" class="form-control" wire:model="GhiChu">

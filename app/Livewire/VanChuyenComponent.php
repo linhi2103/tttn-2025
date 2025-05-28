@@ -18,7 +18,6 @@ class VanChuyenComponent extends Component
     // Modal fields
     public $MaDonViVanChuyen;
     public $TenDonViVanChuyen;
-    public $MaNhanVien;
     public $PhuongTienVanChuyen;
     public $GhiChu;
 
@@ -37,7 +36,6 @@ class VanChuyenComponent extends Component
         $this->MaDonViVanChuyen = $MaDonViVanChuyen;
         $donvivanchuyen = DonViVanChuyen::where('MaDonViVanChuyen', $MaDonViVanChuyen)->first();
         $this->TenDonViVanChuyen = $donvivanchuyen->TenDonViVanChuyen;
-        $this->MaNhanVien = $donvivanchuyen->MaNhanVien;
         $this->PhuongTienVanChuyen = $donvivanchuyen->PhuongTienVanChuyen;
         $this->GhiChu = $donvivanchuyen->GhiChu;
         $this->isEdit = true;
@@ -61,7 +59,6 @@ class VanChuyenComponent extends Component
     {
         $this->MaDonViVanChuyen = null;
         $this->TenDonViVanChuyen = null;
-        $this->MaNhanVien = null;
         $this->PhuongTienVanChuyen = null;
         $this->GhiChu = null;
     }
@@ -72,7 +69,6 @@ class VanChuyenComponent extends Component
             $this->validate([
                 'MaDonViVanChuyen' => 'required',
                 'TenDonViVanChuyen' => 'required',
-                'MaNhanVien' => 'required',
                 'PhuongTienVanChuyen' => 'required',
                 'GhiChu' => 'nullable',
             ]);
@@ -80,7 +76,6 @@ class VanChuyenComponent extends Component
             $donvivanchuyen = new DonViVanChuyen();
             $donvivanchuyen->MaDonViVanChuyen = $this->MaDonViVanChuyen;
             $donvivanchuyen->TenDonViVanChuyen = $this->TenDonViVanChuyen;
-            $donvivanchuyen->MaNhanVien = $this->MaNhanVien;
             $donvivanchuyen->PhuongTienVanChuyen = $this->PhuongTienVanChuyen;
             $donvivanchuyen->GhiChu = $this->GhiChu;
             $donvivanchuyen->save();
@@ -98,14 +93,12 @@ class VanChuyenComponent extends Component
         try {
             $this->validate([
                 'TenDonViVanChuyen' => 'required',
-                'MaNhanVien' => 'required',
                 'PhuongTienVanChuyen' => 'required',
                 'GhiChu' => 'nullable',
             ]);
             
             $donvivanchuyen = DonViVanChuyen::where('MaDonViVanChuyen', $this->MaDonViVanChuyen)->first();
             $donvivanchuyen->TenDonViVanChuyen = $this->TenDonViVanChuyen;
-            $donvivanchuyen->MaNhanVien = $this->MaNhanVien;
             $donvivanchuyen->PhuongTienVanChuyen = $this->PhuongTienVanChuyen;
             $donvivanchuyen->GhiChu = $this->GhiChu;
             $donvivanchuyen->save();
@@ -139,11 +132,8 @@ class VanChuyenComponent extends Component
             ->orderBy('MaDonViVanChuyen', 'asc')
             ->paginate(10);
 
-        $nhanviens = NhanVien::all();
-
         return view('livewire.don-vi-van-chuyen', [
             'donvivanchuyens' => $donvivanchuyens,
-            'nhanviens' => $nhanviens
         ]);
     }
 

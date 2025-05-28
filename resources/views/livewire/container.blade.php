@@ -39,6 +39,11 @@
                             <i class="fas fa-chart-bar"></i> Phiếu Kiểm Kê
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" wire:click.prevent="setActiveComponent('baocao')">
+                            <i class="fas fa-chart-bar"></i> Báo cáo nhập/xuất
+                        </a>
+                    </li>
                 </ul>
                 <div class="d-flex">
                     <div class="dropdown">
@@ -134,6 +139,8 @@
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4" id="mainContent">
                 @if ($activeComponent === 'dashboard')
                     @livewire('dashboard')
+                @elseif ($activeComponent === 'baocao')
+                    @livewire('baocao')
                 @elseif ($activeComponent === 'chitietvattu')
                     @livewire('ChiTietVatTuComponent')
                 @elseif ($activeComponent === 'nhapkho')

@@ -133,35 +133,40 @@ class PhieuKiemKeComponent extends Component
 
     public function update()
     {
-        $phieukiemke = PhieuKiemKe::where('MaPhieuKiemKe', $this->MaPhieuKiemKe)->first();
-        if (!$phieukiemke) {
-            session()->flash('error', 'Không tìm thấy phiếu kiểm kê!');
-            return;
-        }
-        if ($phieukiemke->TrangThai === 'Đã Kiểm Kê') {
-            foreach (json_decode($phieukiemke->ChiTietKiemKe, true) as $item) {
-                $vatTu = VatTu::where('MaVatTu', $item['MaVatTu'])->first();
-                if ($vatTu) {
-                    $vatTu->update('SoLuongTon', $item['SoLuongThucTe']);
-                }
-            }
-        }
-
-        if($this->ChiTietKiemKe == []){
-            session()->flash('error', 'Chi tiết kiểm kê không được để trống!');
-            return;
-        }
-
-        $phieukiemke->update([
-            'MaKho' => $this->MaKho,
-            'TrangThai' => $this->TrangThai,
-            'MaLenhDieuDong' => $this->MaLenhDieuDong,
-            'ChiTietKiemKe' => json_encode($this->ChiTietKiemKe),
-        ]);
-
-        $this->closeModal();
-        session()->flash('success', 'Phiếu kiểm kê đã được cập nhật thành công!');
+    $phieukiemke = PhieuKiemKe::where('MaPhieuKiemKe', $this->MaPhieuKiemKe)->first();
+    if (!$phieukiemke) {
+        session()->flash('error', 'Không tìm thấy phiếu kiểm kê!');
+        return;
     }
+
+    if ($this->ChiTietKiemKe == []) {
+        session()->flash('error', 'Chi tiết kiểm kê không được để trống!');
+        return;
+    }
+
+    // Cập nhật thông tin vào database trước
+    $phieukiemke->update([
+        'MaKho' => $this->MaKho,
+        'TrangThai' => $this->TrangThai,
+        'MaLenhDieuDong' => $this->MaLenhDieuDong,
+        'ChiTietKiemKe' => json_encode($this->ChiTietKiemKe),
+    ]);
+
+    // Sau khi cập nhật xong mới xử lý cập nhật tồn kho nếu trạng thái là 'Đã Kiểm Kê'
+    if ($this->TrangThai === 'Đã Kiểm Kê') {
+        logger("Bắt đầu cập nhật tồn kho từ phiếu: " . $phieukiemke->MaPhieuKiemKe);
+        foreach ($this->ChiTietKiemKe as $value) {
+            $vattu = VatTu::where('MaVatTu', $value['MaVatTu'])->first();
+            $SoLuongThucTe = (int)($value['SoLuongThucTe'] ?? 0);
+            $vattu->SoLuongTon = $SoLuongThucTe;
+            $vattu->save();
+        }
+    }
+
+    $this->closeModal();
+    session()->flash('success', 'Phiếu kiểm kê đã được cập nhật thành công!');
+}
+
 
     public function delete()
     {
@@ -173,13 +178,14 @@ class PhieuKiemKeComponent extends Component
             }
 
             if ($phieukiemke->TrangThai === 'Đã Kiểm Kê') {
-                foreach (json_decode($phieukiemke->ChiTietKiemKe, true) as $item) {
-                    $vatTu = VatTu::where('MaVatTu', $item['MaVatTu'])->first();
-                    if ($vatTu) {
-                        $vatTu->update('SoLuongTon', $item['SoLuongTon']);
-                    }
-                }
+                    foreach ($this->ChiTietKiemKe as $item) {
+                        $vatTu = VatTu::where('MaVatTu', $item['MaVatTu'])->first();
+                        if ($vatTu) {
+                            $vatTu->SoLuongTon = $item['SoLuongThucTe'];
+                            $vatTu->save();
             }
+        }
+    }
 
             $phieukiemke->delete();
             $this->closeModal();

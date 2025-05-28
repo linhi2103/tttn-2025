@@ -65,11 +65,9 @@ INSERT INTO `chitietvattu` (`MaVatTu`, `ThuongHieu`, `KichThuoc`, `XuatXu`, `MoT
 --
 
 INSERT INTO `chucvu` (`MaChucVu`, `MaPhongBan`, `TenChucVu`) VALUES
-('CV001', 'PB005', 'Quản lí'),
-('CV002', 'PB001', 'Nhân Viên'),
-('CV003', 'PB002', 'Nhân Viên'),
-('CV004', 'PB003', 'Nhân Viên'),
-('CV005', 'PB004', 'Nhân Viên');
+('CV001', 'PB002', 'Quản lí'),
+('CV002', 'PB001', 'Nhân Viên');
+
 
 --
 -- Đang đổ dữ liệu cho bảng `danhmuckho`
@@ -77,10 +75,10 @@ INSERT INTO `chucvu` (`MaChucVu`, `MaPhongBan`, `TenChucVu`) VALUES
 
 INSERT INTO `danhmuckho` (`MaKho`, `TenKho`, `DiaChi`, `QuyMo`, `DienTichSuDung`) VALUES
 ('KHO001', 'Kho A', 'Số 1, Đường ABC, TP. HCM', 1000, 750),
-('KHO002', 'Kho B', 'Số 2, Đường XYZ, TP. Hải Phòng', 1500, 500),
-('KHO003', 'Kho C', 'Số 3, Đường DEF, TP. Đà Nẵng', 2000, 1000),
-('KHO004', 'Kho D', 'Số 4, Đường GHI, TP. Cần Thơ', 1200, 0),
-('KHO005', 'Kho E', 'Số 43, Đường ABC, TP. HCM', 320, 120);
+('KHO002', 'Kho B', 'Số 2, Đường XYZ, TP. Hải Phòng', 1500, 1250),
+('KHO003', 'Kho C', 'Số 3, Đường DEF, TP. Đà Nẵng', 2000, 1720),
+('KHO004', 'Kho D', 'Số 4, Đường GHI, TP. Cần Thơ', 1200, 1100),
+('KHO005', 'Kho E', 'Số 43, Đường ABC, TP. HCM', 320, 220);
 
 --
 -- Đang đổ dữ liệu cho bảng `doitac`
@@ -112,19 +110,19 @@ INSERT INTO `donvitinh` (`MaDonViTinh`, `TenDonViTinh`) VALUES
 -- Đang đổ dữ liệu cho bảng `donvivanchuyen`
 --
 
-INSERT INTO `donvivanchuyen` (`MaDonViVanChuyen`, `TenDonViVanChuyen`, `MaNhanVien`, `PhuongTienVanChuyen`, `GhiChu`) VALUES
-('DVC001', 'Đơn Vị Vận Chuyển 1', 'NV002', 'Xe tải', 'Ghi chú đơn vị 1'),
-('DVC002', 'Đơn Vị Vận Chuyển 2', 'NV002', 'Xe container', 'Ghi chú đơn vị 2'),
-('DVC003', 'Đơn Vị Vận Chuyển 3', 'NV003', 'Xe máy', 'Ghi chú đơn vị 3');
+INSERT INTO `donvivanchuyen` (`MaDonViVanChuyen`, `TenDonViVanChuyen`, `PhuongTienVanChuyen`, `GhiChu`) VALUES
+('DVC001', 'Đơn Vị Vận Chuyển 1', 'Xe tải', 'Ghi chú đơn vị 1'),
+('DVC002', 'Đơn Vị Vận Chuyển 2', 'Xe container', 'Ghi chú đơn vị 2'),
+('DVC003', 'Đơn Vị Vận Chuyển 3', 'Xe tải 5T', 'Ghi chú đơn vị 3');
 
 --
 -- Đang đổ dữ liệu cho bảng `lenhdieudong`
 --
 
-INSERT INTO `lenhdieudong` (`MaLenhDieuDong`, `TenLenhDieuDong`, `LyDo`, `MaNhanVien`, `NgayLapDon`, `TrangThai`, `GhiChu`) VALUES
-('LD001', 'Lệnh điều động 1', 'Vận chuyển hàng hóa từ kho A đến kho B', 'NV001', '2025-04-05', '', 'nhy'),
-('LD002', 'Lệnh điều động 2', 'Chuyển hàng từ kho C đến kho D', 'NV002', '2025-04-05', 'Đã duyệt', 'Ghi chú về lệnh điều động 2'),
-('LD003', 'Lệnh điều động 3', 'Vận chuyển sản phẩm từ kho A đến kho C', 'NV003', '2025-04-05', 'Đang vận chuyển', 'Ghi chú về lệnh điều động 3');
+INSERT INTO `lenhdieudong` (`MaLenhDieuDong`, `TenLenhDieuDong`, `LyDo`, `MaNhanVien`, `created_at`, `updated_at`, `TrangThai`, `GhiChu`) VALUES
+('LD001', 'Lệnh điều động 1', 'Vận chuyển hàng hóa từ kho A đến kho B', 'NV001', '2025-05-26', '2025-05-26', 'Đang hoạt động', 'nhy'),
+('LD002', 'Lệnh điều động 2', 'Chuyển hàng từ kho C đến kho D', 'NV002', '2025-05-26', '2025-05-26', 'Đang hoạt động', 'Ghi chú về lệnh điều động 2'),
+('LD003', 'Lệnh điều động 3', 'Vận chuyển sản phẩm từ kho A đến kho C', 'NV003', '2025-05-26', '2025-05-26', 'Đang hoạt động', 'Ghi chú về lệnh điều động 3');
 
 --
 -- Đang đổ dữ liệu cho bảng `loaivattu`
@@ -154,7 +152,6 @@ INSERT INTO `nguoidung` (`id`, `TaiKhoan`, `MatKhau`, `Email`, `MaNhanVien`, `Ma
 INSERT INTO `nhanvien` (`MaNhanVien`, `TenNhanVien`, `DiaChi`, `GioiTinh`, `NgaySinh`, `SDT`, `CCCD`, `MaChucVu`, `Anh`, `TrangThai`) VALUES
 ('NV001', 'Nguyễn Thị Linh Nhi', 'Thái Bình', 'Nữ', '1990-01-01', 975053833, 1122334455, 'CV001', 'images/nhanvien/NV001.jpg', 'Đang làm'),
 ('NV002', 'Trần Thị B', 'Hải Phòng', 'Nam', '1992-02-02', 923456789, 2233445566, 'CV002', 'avatar2.jpg', 'Đang làm'),
-('NV003', 'Lê Văn C', 'Đà Nẵng', 'Nam', '1988-03-03', 934567890, 3344556677, 'CV001', 'avatar3.jpg', 'Nghỉ việc'),
 ('NV004', 'Phạm Thị D', 'TP.HCM', 'Nữ', '1995-04-04', 945678901, 4455667788, 'CV003', 'avatar4.jpg', 'Đang làm'),
 ('NV005', 'Hoàng Văn E', 'Cần Thơ', 'Nam', '1991-05-05', 956789012, 5566778899, 'CV002', 'avatar5.jpg', 'Đang làm');
 
@@ -170,11 +167,8 @@ INSERT INTO `phieukiemke` (`MaPhieuKiemKe`, `MaKho`, `MaLenhDieuDong`, `TrangTha
 --
 
 INSERT INTO `phongban` (`MaPhongBan`, `TenPhongBan`) VALUES
-('PB001', 'Nhân Sự '),
-('PB002', 'Vận Chuyển'),
-('PB003', 'phòng ban kế toán'),
-('PB004', 'bảo hành -  kiểm định'),
-('PB005', 'Cán bộ Kho');
+('PB001', 'Nhân Viên '),
+('PB002', 'Cán Bộ Kho');
 
 --
 -- Đang đổ dữ liệu cho bảng `sessions`

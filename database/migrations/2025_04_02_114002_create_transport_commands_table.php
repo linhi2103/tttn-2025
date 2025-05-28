@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('TenLenhDieuDong', 255);
             $table->text('LyDo');
             $table->string('MaNhanVien', 20);
-            $table->date('NgayLapDon')->default(now());
-            $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Đang vận chuyển', 'Hoàn thành', 'Hủy'])->default('Chờ duyệt');
+            $table->timestamps();
+            $table->enum('TrangThai', ['Đang hoạt động', 'Ngừng hoạt động'])->default('Đang hoạt động');
             $table->text('GhiChu')->nullable();
         });
     }

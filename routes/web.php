@@ -11,11 +11,14 @@ use App\Livewire\Dashboard;
 use App\Http\Controllers\Auth\CreateAccountController;
 use App\Http\Controllers\ProfileController;
 
+//php artisan make:middleware IsAdmin
 
 Route::get('/', [HomeController::class, 'index'])->middleware('auth');
 Route::get('/dashboard', function () {
     return view('livewire.app');
 })->name('dashboard')->middleware('auth')->middleware('IsAdmin');
+//auth: ktra người dùng đã đăng nhập.
+//middleware chỉ ng có vai trò admin.
 Route::get('/product/{MaVatTu}', [DetailController::class, 'index'])->middleware('auth');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');

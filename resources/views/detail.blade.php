@@ -63,12 +63,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
+        <!-- <div class="col-12">
             <div class="product-description">
                 <h2>Mô tả sản phẩm</h2>
                 <p>{{ $vatTu->MoTa ?? 'Không có thông tin' }}</p>
             </div>
-        </div>
+        </div> -->
         </div>
         
         <div class="related-products animate__animated animate__fadeIn">

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('DonViTienTe', 50);
             $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Hủy'])->default('Chờ duyệt');
             $table->json('ChiTietNhapKho')->nullable();
+            
             $table->timestamps();
         });
         
@@ -34,7 +35,7 @@ return new class extends Migration
             $table->string('MaDonViVanChuyen', 20);
             $table->string('DiaDiemXuat', 255);
             $table->string('DonViTienTe', 50);
-            $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Đang thực hiện', 'Hoàn thành', 'Hủy'])->default('Chờ duyệt');
+            $table->enum('TrangThai', ['Chờ duyệt', 'Đã duyệt', 'Hủy'])->default('Chờ duyệt');
             $table->json('ChiTietXuatKho')->nullable();
             $table->timestamps();
         });

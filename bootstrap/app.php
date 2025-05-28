@@ -12,9 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
+        $middleware->alias([//đặt tên middleware
             'IsAdmin' => IsAdmin::class,
-        ]);
+        ]);//dki
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
